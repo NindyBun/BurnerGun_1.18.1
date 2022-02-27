@@ -33,7 +33,7 @@ public class TrashScreen extends AbstractContainerScreen<TrashContainer> {
     protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         //this.minecraft
-        this.minecraft.getTextureManager().bindForSetup(DEFAULT_TEXTURE);
+        RenderSystem._setShaderTexture(0, DEFAULT_TEXTURE);
 
         // width and height are the size provided to the window when initialised after creation.
         // xSize, ySize are the expected size of the texture-? usually seems to be left as a default.
