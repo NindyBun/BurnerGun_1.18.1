@@ -8,6 +8,7 @@ import com.nindybun.burnergun.common.network.packets.PacketRefuel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
     }
 
     public static boolean isFuel(ItemStack stack) {
-        return stack.getBurnTime(RecipeType.SMELTING) > 0;
+        return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
     }
 
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {

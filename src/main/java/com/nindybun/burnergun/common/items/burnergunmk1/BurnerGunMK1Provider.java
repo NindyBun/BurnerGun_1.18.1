@@ -19,8 +19,7 @@ public class BurnerGunMK1Provider implements ICapabilitySerializable<CompoundTag
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == cap) return (LazyOptional<T>)(lazyInitialisionSupplier).cast();
-        return LazyOptional.empty();
+        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == cap ? (LazyOptional<T>)(LazyOptional.of(()->instance)) : LazyOptional.empty();
     }
 
     @Override
@@ -32,29 +31,4 @@ public class BurnerGunMK1Provider implements ICapabilitySerializable<CompoundTag
     public void deserializeNBT(CompoundTag nbt) {
         instance.deserializeNBT(nbt);
     }
-
-    /**
-     * Return a lazily-initialised inventory
-     * i.e. After the class instance has been created, but before the first call to this function, the inventory hasn't been created yet.
-     * At the time of the first call, we create the inventory
-     * For all subsequent calls, we return the previously-created instance.
-     * To be honest, unless your initialisation is very expensive in memory or time, it's probably not worth the effort, i.e. you
-     *   could just allocate the itemStackHandlerFlowerBag in your constructor and your lazyInitialisationSupplier could just
-     *   return that without a dedicated method to perform a cache check.
-     * @return the ItemStackHandlerFlowerBag which stores the flowers.
-     */
-    private BurnerGunMK1Handler getCachedInventory() {
-        if (handler == null) {
-            handler = new BurnerGunMK1Handler(BurnerGunMK1Container.MAX_EXPECTED_GUN_SLOT_COUNT);
-        }
-        return handler;
-    }
-
-    private BurnerGunMK1Handler handler;  // initially null until our first call to getCachedInventory
-
-
-    //  a supplier: when called, returns the result of getCachedInventory()
-    private final LazyOptional<IItemHandler> lazyInitialisionSupplier = LazyOptional.of(this::getCachedInventory);
-
-    
 }
