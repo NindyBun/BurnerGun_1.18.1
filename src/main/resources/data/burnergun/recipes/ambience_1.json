@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "iui",
+    "uou",
+    "ifi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:glass"
+    },
+    "o": {
+      "item": "minecraft:daylight_detector"
+    },
+    "f": {
+      "item": "burnergun:base_tier_1"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:ambience_1",
+    "count": 1
+  }
+}

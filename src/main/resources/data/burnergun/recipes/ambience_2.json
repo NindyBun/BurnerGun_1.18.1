@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "iui",
+    "gog",
+    "ifi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:glass"
+    },
+    "o": {
+      "item": "burnergun:ambience_1"
+    },
+    "f": {
+      "item": "burnergun:base_tier_2"
+    },
+    "g": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:ambience_2",
+    "count": 1
+  }
+}
