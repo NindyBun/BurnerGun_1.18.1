@@ -36,7 +36,6 @@ public class BurnerGunMK1Screen extends AbstractContainerScreen<BurnerGunMK1Cont
     @Override
     protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        //this.minecraft
         RenderSystem._setShaderTexture(0, DEFAULT_TEXTURE);
 
         // width and height are the size provided to the window when initialised after creation.

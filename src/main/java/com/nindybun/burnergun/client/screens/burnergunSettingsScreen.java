@@ -217,9 +217,9 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float ticks_) {
         //Gives us the darkened background
         this.renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, ticks_);
         TranslatableComponent string  = new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.settings");
         drawString(matrixStack, Minecraft.getInstance().font, string , (width/2)-StringUtil.getStringPixelLength(string.getString())/2, 20, Color.WHITE.getRGB());
-        super.render(matrixStack, mouseX, mouseY, ticks_);
     }
 
     @Override

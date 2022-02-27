@@ -104,10 +104,10 @@ public class colorScreen extends Screen implements Slider.ISlider {
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float ticks_) {
         //Gives us the darkened background
         this.renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, ticks_);
         TranslatableComponent string = new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.color");
         drawString(matrixStack, Minecraft.getInstance().font, string, (width/2)-StringUtil.getStringPixelLength(string.getString())/2, 20, Color.WHITE.getRGB());
         fill(matrixStack, width/2+15, height/2-50, width/2+115, height/2+50, new Color(color[0], color[1], color[2]).hashCode());
-        super.render(matrixStack, mouseX, mouseY, ticks_);
     }
 
     @Override
