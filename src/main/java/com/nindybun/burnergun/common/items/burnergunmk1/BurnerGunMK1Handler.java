@@ -27,7 +27,7 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
     }
 
     public static boolean isFuel(ItemStack stack) {
-        return FurnaceBlockEntity.isFuel(stack);
+        return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
     }
 
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {

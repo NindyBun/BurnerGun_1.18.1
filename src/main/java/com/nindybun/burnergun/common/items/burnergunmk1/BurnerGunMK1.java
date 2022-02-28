@@ -42,6 +42,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.world.BlockEvent;
@@ -139,9 +140,9 @@ public class BurnerGunMK1 extends Item {
                 && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
                 && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())) {
             while (handler.getStackInSlot(0).getCount() > 0){
-                if (BurnerGunNBT.getFuelValue(gun) + handler.getStackInSlot(0).getBurnTime(RecipeType.SMELTING) > base_use_buffer)
+                if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > base_use_buffer)
                     break;
-                BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + handler.getStackInSlot(0).getBurnTime(RecipeType.SMELTING));
+                BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING));
                 ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                 handler.getStackInSlot(0).shrink(1);
                 if (player.getInventory().add(containerItem))
