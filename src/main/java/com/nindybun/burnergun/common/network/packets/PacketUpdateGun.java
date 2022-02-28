@@ -1,6 +1,7 @@
 package com.nindybun.burnergun.common.network.packets;
 
 import com.nindybun.burnergun.client.screens.ModScreens;
+import com.nindybun.burnergun.client.screens.burnergunSettingsScreen;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
@@ -8,7 +9,9 @@ import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
 import com.nindybun.burnergun.common.items.upgrades.Trash.Trash;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
+import com.nindybun.burnergun.common.network.PacketHandler;
 import com.nindybun.burnergun.util.UpgradeUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
@@ -23,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class PacketUpdateGun {
@@ -128,8 +132,8 @@ public class PacketUpdateGun {
                     }
                 });
                 BurnerGunNBT.setUprades(gun, currentUpgrades);
-                if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER && open)
-                    ModScreens.openGunSettingsScreen(gun);
+                if (open)
+                    PacketHandler.sendTo(new PacketClientUpdateGun(), player);
             });
             ctx.get().setPacketHandled(true);
         }

@@ -39,7 +39,6 @@ public class PacketChangeColor {
                 ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
                 if (gun.isEmpty())
                     return;
-
                 BurnerGunNBT.setColor(gun, new float[]{
                         msg.nbt.getFloat("Red"),
                         msg.nbt.getFloat("Green"),

@@ -6,6 +6,7 @@ import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.containers.BurnerGunMK2Container;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.network.PacketHandler;
+import com.nindybun.burnergun.common.network.packets.PacketClientUpdateGun;
 import com.nindybun.burnergun.common.network.packets.PacketUpdateGun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -69,7 +70,7 @@ public class BurnerGunMK2Screen extends AbstractContainerScreen<BurnerGunMK2Cont
         int y = this.height / 2;
         addRenderableWidget(new Button(x-45, y+(130/2), 90, 20,
                 new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.openSettings"), (button) -> {
-            PacketHandler.sendToServer(new PacketUpdateGun(true));
+            PacketHandler.sendToServer(new PacketClientUpdateGun());
         }));
     }
 

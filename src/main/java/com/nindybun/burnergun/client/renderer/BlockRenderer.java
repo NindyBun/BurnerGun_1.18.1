@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.client.renderer;
 
+import com.mojang.blaze3d.vertex.BufferVertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -11,6 +12,7 @@ import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -23,11 +25,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jline.reader.impl.BufferImpl;
 import org.lwjgl.opengl.GL11;
 
 
@@ -91,13 +94,13 @@ public class BlockRenderer {
     }
 
     @SubscribeEvent
-    public static void onRenderWorldEvent(RenderBlockOverlayEvent e) {
+    public static void onRenderWorldEvent(RenderLevelLastEvent e) {
         final GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
         Player player = Minecraft.getInstance().player;
         ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
         if (gun.isEmpty())
             return;
-        gameRenderer.resetProjectionMatrix(e.getPoseStack().last().pose());
+        gameRenderer.resetProjectionMatrix(e.getProjectionMatrix());
 
         final AABB test = new AABB(0, 0, 0, 1, 1, 1);
         drawArea(gun, player, test, e.getPoseStack());

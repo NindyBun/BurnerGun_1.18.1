@@ -6,6 +6,7 @@ import com.nindybun.burnergun.client.screens.ModScreens;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.containers.BurnerGunMK1Container;
 import com.nindybun.burnergun.common.network.PacketHandler;
+import com.nindybun.burnergun.common.network.packets.PacketClientUpdateGun;
 import com.nindybun.burnergun.common.network.packets.PacketUpdateGun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -13,18 +14,24 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.awt.*;
 
 public class BurnerGunMK1Screen extends AbstractContainerScreen<BurnerGunMK1Container> {
     private static ItemStack gun;
+    private static Player player;
     public BurnerGunMK1Screen(BurnerGunMK1Container container, Inventory playerInv, Component title) {
         super(container, playerInv, title);
         this.gun = BurnerGunMK1.getGun(playerInv.player);
+        this.player = Minecraft.getInstance().player;
     }
 
     @Override

@@ -6,12 +6,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BurnerGunNBT {
     private BurnerGunNBT() {}
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String SMELTING_WHITELIST = "burnergun.tag.smelt_whitelist";
     private static final String SMELTING_FILTER = "burnergun.tag.smelt_filter";
@@ -158,9 +162,9 @@ public class BurnerGunNBT {
     public static float[] getColor(ItemStack gun){
         CompoundTag tag = gun.getOrCreateTag();
         return !tag.contains(COLOR) ? setColor(gun, new float[]{0, 0, 0}) : new float[]{
-                tag.getList(COLOR, Tag.TAG_COMPOUND).getCompound(0).getFloat("Red"),
-                tag.getList(COLOR, Tag.TAG_COMPOUND).getCompound(0).getFloat("Green"),
-                tag.getList(COLOR, Tag.TAG_COMPOUND).getCompound(0).getFloat("Blue"),
+                tag.getCompound(COLOR).getFloat("Red"),
+                tag.getCompound(COLOR).getFloat("Green"),
+                tag.getCompound(COLOR).getFloat("Blue"),
         };
     }
 
