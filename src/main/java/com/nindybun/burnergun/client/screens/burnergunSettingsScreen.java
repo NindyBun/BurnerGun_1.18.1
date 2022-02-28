@@ -103,12 +103,12 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
 
         if (containsTrash){
             ToggleButton btn = new ToggleButton(x, y, new TextComponent(Upgrade.TRASH.getName()), new ResourceLocation(BurnerGun.MOD_ID, "textures/items/" + Upgrade.TRASH.getName() + "_upgrade.png"), send -> this.toggleUpgrade(UpgradeUtil.getUpgradeFromListByUpgrade(toggleableList, Upgrade.TRASH), send));
-            addWidget(btn);
+            addRenderableWidget(btn);
             upgradeButtons.put(UpgradeUtil.getUpgradeFromListByUpgrade(toggleableList, Upgrade.TRASH), btn);
-            addWidget(new Button(x+25, y, 95, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.edit_filter"), (button) -> {
+            addRenderableWidget(new Button(x+25, y, 95, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.edit_filter"), (button) -> {
                 PacketHandler.sendToServer(new PacketOpenTrashGui());
             }));
-            addWidget(new WhitelistButton(x+125, y, 20, 20, trashFilterWhitelist, (button) -> {
+            addRenderableWidget(new WhitelistButton(x+125, y, 20, 20, trashFilterWhitelist, (button) -> {
                 trashFilterWhitelist = !trashFilterWhitelist;
                 ((WhitelistButton) button).setWhitelist(trashFilterWhitelist);
                 PacketHandler.sendToServer(new PacketToggleTrashFilter());
@@ -117,12 +117,12 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
 
         if (containsSmelt){
             ToggleButton btn = new ToggleButton(x, y+(containsTrash?25:0), new TextComponent(Upgrade.AUTO_SMELT.getName()), new ResourceLocation(BurnerGun.MOD_ID, "textures/items/" + Upgrade.AUTO_SMELT.getName() + "_upgrade.png"), send -> this.toggleUpgrade(UpgradeUtil.getUpgradeFromListByUpgrade(toggleableList, Upgrade.AUTO_SMELT), send));
-            addWidget(btn);
+            addRenderableWidget(btn);
             upgradeButtons.put(UpgradeUtil.getUpgradeFromListByUpgrade(toggleableList, Upgrade.AUTO_SMELT), btn);
-            addWidget(new Button(x+25, y+(containsTrash?25:0), 95, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.edit_filter"), (button) -> {
+            addRenderableWidget(new Button(x+25, y+(containsTrash?25:0), 95, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.edit_filter"), (button) -> {
                 PacketHandler.sendToServer(new PacketOpenAutoSmeltGui());
             }));
-            addWidget(new WhitelistButton(x+125, y+(containsTrash?25:0), 20, 20, smeltFilterWhitelist, (button) -> {
+            addRenderableWidget(new WhitelistButton(x+125, y+(containsTrash?25:0), 20, 20, smeltFilterWhitelist, (button) -> {
                 smeltFilterWhitelist = !smeltFilterWhitelist;
                 ((WhitelistButton) button).setWhitelist(smeltFilterWhitelist);
                 PacketHandler.sendToServer(new PacketToggleSmeltFilter());
@@ -132,7 +132,7 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         for (Upgrade upgrade : toggleableList){
             if (!upgrade.equals(Upgrade.AUTO_SMELT) && !upgrade.equals(Upgrade.TRASH)){
                 ToggleButton btn = new ToggleButton(x + (index*25), y+(containsTrash?25:0)+(containsSmelt?25:0), new TextComponent(upgrade.getName()), new ResourceLocation(BurnerGun.MOD_ID, "textures/items/" + upgrade.getName() + "_upgrade.png"), send -> this.toggleUpgrade(upgrade, send));
-                addWidget(btn);
+                addRenderableWidget(btn);
                 upgradeButtons.put(upgrade, btn);
                 index++;
                 if (index % 4 == 0) {
@@ -154,7 +154,7 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         int top = midY-(((settings.size()*20)+(settings.size()-1)*5)/2);
         for (int i = 0; i < settings.size(); i++) {
             settings.get(i).y = (top)+(i*25);
-            addWidget(settings.get(i));
+            addRenderableWidget(settings.get(i));
         }
     }
 

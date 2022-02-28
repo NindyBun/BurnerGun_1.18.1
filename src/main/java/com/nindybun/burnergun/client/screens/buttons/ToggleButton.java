@@ -23,7 +23,7 @@ public class ToggleButton extends AbstractWidget {
     private ResourceLocation texture;
 
     public ToggleButton(int xIn, int yIn, Component msg, ResourceLocation texture, Predicate<Boolean> onPress) {
-        super(xIn, yIn, 21, 26, msg);
+        super(xIn, yIn, 20, 20, msg);
 
         this.onPress = onPress;
         this.texture = texture;

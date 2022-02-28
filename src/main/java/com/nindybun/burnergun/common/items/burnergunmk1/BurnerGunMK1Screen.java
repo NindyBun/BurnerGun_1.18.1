@@ -2,6 +2,7 @@ package com.nindybun.burnergun.common.items.burnergunmk1;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.nindybun.burnergun.client.screens.ModScreens;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.containers.BurnerGunMK1Container;
 import com.nindybun.burnergun.common.network.PacketHandler;
@@ -68,7 +69,7 @@ public class BurnerGunMK1Screen extends AbstractContainerScreen<BurnerGunMK1Cont
         clearWidgets();
         int x = this.width / 2;
         int y = this.height / 2;
-        addWidget(new Button(x-45, y+(130/2), 90, 20,
+        addRenderableWidget(new Button(x-45, y+(130/2), 90, 20,
                 new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.openSettings"), (button) -> {
             PacketHandler.sendToServer(new PacketUpdateGun(true));
         }));

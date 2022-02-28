@@ -67,7 +67,7 @@ public class BurnerGunMK2Screen extends AbstractContainerScreen<BurnerGunMK2Cont
         clearWidgets();
         int x = this.width / 2;
         int y = this.height / 2;
-        addWidget(new Button(x-45, y+(130/2), 90, 20,
+        addRenderableWidget(new Button(x-45, y+(130/2), 90, 20,
                 new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.openSettings"), (button) -> {
             PacketHandler.sendToServer(new PacketUpdateGun(true));
         }));

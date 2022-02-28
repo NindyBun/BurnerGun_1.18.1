@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.client;
 
+import com.nindybun.burnergun.client.screens.ModScreens;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.network.PacketHandler;

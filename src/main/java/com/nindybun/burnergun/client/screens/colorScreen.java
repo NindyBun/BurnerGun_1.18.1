@@ -47,7 +47,7 @@ public class colorScreen extends Screen implements Slider.ISlider {
         int top = midY-(((settings.size()*20)+(settings.size()-1)*5)/2);
         for (int i = 0; i < settings.size(); i++) {
             settings.get(i).y = (top)+(i*25);
-            addWidget(settings.get(i));
+            addRenderableWidget(settings.get(i));
         }
     }
 
