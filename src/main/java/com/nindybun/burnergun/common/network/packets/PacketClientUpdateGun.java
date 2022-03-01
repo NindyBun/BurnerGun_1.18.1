@@ -30,21 +30,24 @@ import java.util.function.Supplier;
 
 public class PacketClientUpdateGun {
     private static final Logger LOGGER = LogManager.getLogger();
-    public PacketClientUpdateGun() {
+    private static ItemStack gun;
+    public PacketClientUpdateGun(ItemStack stack) {
+        this.gun = stack;
     }
 
     public static void encode(PacketClientUpdateGun msg, FriendlyByteBuf buffer) {
+    buffer.writeItemStack(msg.gun, false);
     }
 
     public static PacketClientUpdateGun decode(FriendlyByteBuf buffer) {
-        return new PacketClientUpdateGun();
+        return new PacketClientUpdateGun(gun);
     }
 
     public static class Handler {
         public static void handle(PacketClientUpdateGun msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    Player player = Minecraft.getInstance().player;
+                    /*Player player = Minecraft.getInstance().player;
                     if (player == null)
                         return;
 
@@ -128,9 +131,9 @@ public class PacketClientUpdateGun {
                             upgrade.setActive(!upgrade.isActive());
                         }
                     });
-                    BurnerGunNBT.setUprades(gun, currentUpgrades);
+                    BurnerGunNBT.setUprades(gun, currentUpgrades);*/
                     ModScreens.openGunSettingsScreen(gun);
-                    return;
+                    //return;
                 });
             });
             ctx.get().setPacketHandled(true);
