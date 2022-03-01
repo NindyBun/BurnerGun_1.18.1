@@ -133,7 +133,7 @@ public class PacketUpdateGun {
                 });
                 BurnerGunNBT.setUprades(gun, currentUpgrades);
                 if (open)
-                    PacketHandler.sendTo(new PacketClientUpdateGun(), player);
+                    PacketHandler.sendTo(new PacketClientUpdateGun(gun), player);
             });
             ctx.get().setPacketHandled(true);
         }
