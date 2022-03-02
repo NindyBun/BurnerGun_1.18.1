@@ -58,8 +58,10 @@ public class BlockRenderer {
 
         voxelShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
             if (!pos.equals(aimed)){
-                bufferIn.vertex(matrix4f, (float) (x0 + originX), (float) (y0 + originY), (float) (z0 + originZ)).color(red, green, blue, alpha).endVertex();
-                bufferIn.vertex(matrix4f, (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ)).color(red, green, blue, alpha).endVertex();
+                bufferIn.vertex(matrix4f, (float) (x0 + originX), (float) (y0 + originY), (float) (z0 + originZ))
+                        .vertex(matrix4f, (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ))
+                        .color(red, green, blue, alpha).endVertex();
+                //bufferIn.vertex(matrix4f, (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ)).color(red, green, blue, alpha).endVertex();
             }
 
         });
@@ -103,7 +105,8 @@ public class BlockRenderer {
         gameRenderer.resetProjectionMatrix(e.getProjectionMatrix());
 
         final AABB test = new AABB(0, 0, 0, 1, 1, 1);
-        drawArea(gun, player, test, e.getPoseStack());
+        if (player.level.isClientSide)
+            drawArea(gun, player, test, e.getPoseStack());
 
         //drawBoundingBoxAtBlockPos(e.getMatrixStack(), test, 1.0F, 0.0F, 0.0F, 1.0F, new BlockPos(0, 65, 0), new BlockPos(0, 65, 0));
         //drawBoundingBoxAtBlockPos(e.getMatrixStack(), test, 1.0F, 0.0F, 0.0F, 1.0F, new BlockPos(1, 65, 0), new BlockPos(0, 65, 0));
