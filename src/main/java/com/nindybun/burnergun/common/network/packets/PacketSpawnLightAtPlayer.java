@@ -5,6 +5,7 @@ import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
+import com.nindybun.burnergun.common.network.PacketHandler;
 import com.nindybun.burnergun.util.UpgradeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -46,14 +47,16 @@ public class PacketSpawnLightAtPlayer {
                 List<Upgrade> upgrades = BurnerGunNBT.getUpgrades(gun);
                 BlockState state = player.level.getBlockState(new BlockPos(player.position().add(new Vec3(0, 1, 0))));
                 if (UpgradeUtil.containsUpgradeFromList(upgrades, Upgrade.LIGHT)){
-                    if (gun.getItem() instanceof BurnerGunMK1 && state == Blocks.AIR.defaultBlockState()){
-                        if (BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost())
-                            BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
-                        else
-                            return;
-                    }
-                    if (state == Blocks.AIR.defaultBlockState())
+                    if (state == Blocks.AIR.defaultBlockState() || state == Blocks.CAVE_AIR.defaultBlockState()){
+                        if (gun.getItem() instanceof BurnerGunMK1){
+                            if (BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost())
+                                BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
+                            else
+                                return;
+                        }
+                        PacketHandler.sendTo(new PacketClientPlayLightSound(), player);
                         player.level.setBlockAndUpdate(new BlockPos(player.position().add(new Vec3(0, 1, 0))), ModBlocks.LIGHT.get().defaultBlockState());
+                    }
                 }
             });
             ctx.get().setPacketHandled(true);

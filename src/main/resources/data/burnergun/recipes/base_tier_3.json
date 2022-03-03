@@ -8,10 +8,10 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingots/gold"
+      "tag": "forge:ingots/copper"
     },
     "g": {
-      "item": "minecraft:gold_block"
+      "item": "minecraft:copper_block"
     },
     "b": {
       "item": "burnergun:base_tier_2"

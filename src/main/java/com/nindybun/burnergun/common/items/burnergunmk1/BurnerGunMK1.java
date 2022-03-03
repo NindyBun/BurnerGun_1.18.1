@@ -35,7 +35,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -170,13 +172,14 @@ public class BurnerGunMK1 extends Item {
     }
 
     public boolean canMine(ItemStack gun, Level world, BlockPos pos, BlockState state, Player player, List<Upgrade> upgrades){
-        if (    state.getDestroySpeed(world, pos) <= 0
+        if (    state.getDestroySpeed(world, pos) < 0
                 || state.getBlock() instanceof Light
-                || !world.mayInteract(player, pos) || !player.mayBuild()
-                || MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))
+                || !world.mayInteract(player, pos)
                 || BurnerGunNBT.getFuelValue(gun) < getUseValue(upgrades)
                 || state.getBlock().equals(Blocks.AIR.defaultBlockState())
-                || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState()))
+                || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState())
+                || (!state.getFluidState().isEmpty() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || world.isEmptyBlock(pos))
             return false;
         return true;
     }

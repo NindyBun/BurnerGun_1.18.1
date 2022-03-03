@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.common.blocks.Light;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
@@ -17,8 +18,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -38,6 +44,7 @@ import org.lwjgl.opengl.GL11;
 @Mod.EventBusSubscriber(modid = BurnerGun.MOD_ID, value = Dist.CLIENT)
 public class BlockRenderer {
     private static final Logger LOGGER = LogManager.getLogger();
+
     public static void drawBoundingBoxAtBlockPos(PoseStack matrixStackIn, AABB aabbIn, float red, float green, float blue, float alpha, BlockPos pos, BlockPos aimed) {
         Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
@@ -79,7 +86,7 @@ public class BlockRenderer {
         int xRad = BurnerGunNBT.getHorizontal(gun);
         int yRad = BurnerGunNBT.getVertical(gun);
         BlockPos aimedPos = ray.getBlockPos();
-        if (ray.getType() != BlockHitResult.Type.BLOCK)
+        if (!BurnerGunMK2.canMine(player.level, aimedPos, player.level.getBlockState(aimedPos), player))
             return;
         Vec3 size = WorldUtil.getDim(ray, xRad, yRad, player);
         float[] color = BurnerGunNBT.getColor(gun);
@@ -92,7 +99,7 @@ public class BlockRenderer {
             for (int yPos = aimedPos.getY() - (int)size.y(); yPos <= aimedPos.getY() + (int)size.y(); ++yPos){
                 for (int zPos = aimedPos.getZ() - (int)size.z(); zPos <= aimedPos.getZ() + (int)size.z(); ++zPos){
                     BlockPos thePos = new BlockPos(xPos, yPos, zPos);
-                    if (thePos != aimedPos && player.level.getBlockState(thePos) != Blocks.AIR.defaultBlockState() && player.level.getBlockState(thePos) != Blocks.CAVE_AIR.defaultBlockState())
+                    if (thePos != aimedPos && BurnerGunMK2.canMine(player.level, thePos, player.level.getBlockState(thePos), player))
                         drawBoundingBoxAtBlockPos(matrixStack, player.level.getBlockState(thePos).getShape(player.getLevel(), aimedPos, CollisionContext.of(player)).optimize().bounds(), color[0], color[1], color[2], 1.0F, thePos, aimedPos);
                 }
             }

@@ -42,3 +42,7 @@
 - Fuel was used on air blocks
 ### v3.1.4
 - Blaze cage captured pigs, now it captures Blazes
+## 1.18.1
+-Updated from 1.16.5 to 1.18.1
+-Updated to forge 1.18.1-39.0.88
+-Uses Java JDK 17

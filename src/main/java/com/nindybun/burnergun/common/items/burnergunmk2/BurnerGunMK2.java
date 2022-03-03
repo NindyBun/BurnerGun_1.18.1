@@ -33,7 +33,9 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -99,14 +101,14 @@ public class BurnerGunMK2 extends Item {
         return false;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean canMine(Level world, BlockPos pos, BlockState state, Player player){
-        if (    state.getDestroySpeed(world, pos) <= 0
+    public static boolean canMine(Level world, BlockPos pos, BlockState state, Player player){
+        if (    state.getDestroySpeed(world, pos) < 0
                 || state.getBlock() instanceof Light
                 || !world.mayInteract(player, pos)
-                || !player.mayBuild()
-                || MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))
                 || state.getBlock().equals(Blocks.AIR.defaultBlockState())
-                || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState()))
+                || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState())
+                || (!state.getFluidState().isEmpty() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || world.isEmptyBlock(pos))
             return false;
         return true;
     }
