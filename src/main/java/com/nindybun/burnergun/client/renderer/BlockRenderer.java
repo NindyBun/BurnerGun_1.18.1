@@ -12,14 +12,17 @@ import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,27 +52,27 @@ public class BlockRenderer {
     }
 
     private static void drawShapeOutline(PoseStack matrixStack, VoxelShape voxelShape, double originX, double originY, double originZ, float red, float green, float blue, float alpha, BlockPos pos, BlockPos aimed) {
-        Matrix4f matrix4f = matrixStack.last().pose();
-
+        PoseStack.Pose pose = matrixStack.last();
         MultiBufferSource.BufferSource renderTypeBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
         VertexConsumer bufferIn = renderTypeBuffer.getBuffer(RenderType.lines());
-        if (!pos.equals(aimed))
-            LevelRenderer.renderVoxelShape(matrixStack, bufferIn, voxelShape, (originX), (originY), (originZ), red, green, blue, alpha);
-
-        /*voxelShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
+        voxelShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
             if (!pos.equals(aimed)){
-                bufferIn.vertex(matrix4f, (float) (x0 + originX), (float) (y0 + originY), (float) (z0 + originZ))
-                        .vertex(matrix4f, (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ))
-                        .color(red, green, blue, alpha).endVertex();
-                //bufferIn.vertex(matrix4f, (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ)).color(red, green, blue, alpha).endVertex();
+                bufferIn.vertex(pose.pose(), (float) (x0 + originX), (float) (y0 + originY), (float) (z0 + originZ))
+                        .color(red, green, blue, alpha)
+                        .normal(pose.normal(), (float) (x1-x0), (float) (y1-y0), (float) (z1-z0))
+                        .endVertex();
+                bufferIn.vertex(pose.pose(), (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ))
+                        .color(red, green, blue, alpha)
+                        .normal(pose.normal(), (float) (x1-x0), (float) (y1-y0), (float) (z1-z0))
+                        .endVertex();
             }
 
-        });*/
+        });
 
         renderTypeBuffer.endBatch(RenderType.lines());
     }
 
-    public static void drawArea(ItemStack gun, Player player, AABB test, PoseStack matrixStack){
+    public static void drawArea(ItemStack gun, Player player, PoseStack matrixStack){
         BlockHitResult ray = WorldUtil.getLookingAt(player.level, player, ClipContext.Fluid.NONE, BurnerGunNBT.getRaycast(gun));
         if (player.level.getBlockState(ray.getBlockPos()) == Blocks.AIR.defaultBlockState())
             return;
@@ -80,6 +83,7 @@ public class BlockRenderer {
             return;
         Vec3 size = WorldUtil.getDim(ray, xRad, yRad, player);
         float[] color = BurnerGunNBT.getColor(gun);
+        AABB test = player.level.getBlockState(aimedPos).getShape(player.getLevel(), aimedPos, CollisionContext.of(player)).bounds();
         drawBoundingBoxAtBlockPos(matrixStack, test, color[0], color[1], color[2], 1.0F, aimedPos.relative(ray.getDirection()), aimedPos.relative(ray.getDirection()));
         drawBoundingBoxAtBlockPos(matrixStack, test, color[0], color[1], color[2], 1.0F, aimedPos, aimedPos.relative(ray.getDirection()));
         if (player.isCrouching())
@@ -89,7 +93,7 @@ public class BlockRenderer {
                 for (int zPos = aimedPos.getZ() - (int)size.z(); zPos <= aimedPos.getZ() + (int)size.z(); ++zPos){
                     BlockPos thePos = new BlockPos(xPos, yPos, zPos);
                     if (thePos != aimedPos && player.level.getBlockState(thePos) != Blocks.AIR.defaultBlockState() && player.level.getBlockState(thePos) != Blocks.CAVE_AIR.defaultBlockState())
-                        drawBoundingBoxAtBlockPos(matrixStack, test, color[0], color[1], color[2], 1.0F, thePos, aimedPos);
+                        drawBoundingBoxAtBlockPos(matrixStack, player.level.getBlockState(thePos).getShape(player.getLevel(), aimedPos, CollisionContext.of(player)).optimize().bounds(), color[0], color[1], color[2], 1.0F, thePos, aimedPos);
                 }
             }
         }
@@ -103,10 +107,8 @@ public class BlockRenderer {
         if (gun.isEmpty())
             return;
         gameRenderer.resetProjectionMatrix(e.getProjectionMatrix());
-
-        final AABB test = new AABB(0, 0, 0, 1, 1, 1);
         if (player.level.isClientSide)
-            drawArea(gun, player, test, e.getPoseStack());
+            drawArea(gun, player, e.getPoseStack());
 
         //drawBoundingBoxAtBlockPos(e.getMatrixStack(), test, 1.0F, 0.0F, 0.0F, 1.0F, new BlockPos(0, 65, 0), new BlockPos(0, 65, 0));
         //drawBoundingBoxAtBlockPos(e.getMatrixStack(), test, 1.0F, 0.0F, 0.0F, 1.0F, new BlockPos(1, 65, 0), new BlockPos(0, 65, 0));
