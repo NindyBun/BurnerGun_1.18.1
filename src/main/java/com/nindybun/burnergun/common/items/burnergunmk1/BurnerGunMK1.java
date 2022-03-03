@@ -61,7 +61,7 @@ import java.util.Optional;
 
 public class BurnerGunMK1 extends Item {
     private static final double base_use = 100;
-    public static final double base_use_buffer = 10_000;
+    public static final double base_use_buffer = 20_000;
     private static final Logger LOGGER = LogManager.getLogger();
     private static final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
 

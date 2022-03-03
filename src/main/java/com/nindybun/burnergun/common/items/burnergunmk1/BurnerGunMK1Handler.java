@@ -21,12 +21,14 @@ import java.util.List;
 
 public class BurnerGunMK1Handler extends ItemStackHandler {
     public static final int MAX_SLOTS = BurnerGunMK1Container.MAX_EXPECTED_GUN_SLOT_COUNT;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public BurnerGunMK1Handler(int numberOfSlots){
         super(numberOfSlots);
     }
 
     public static boolean isFuel(ItemStack stack) {
+        LOGGER.info(ForgeHooks.getBurnTime(stack, RecipeType.SMELTING));
         return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
     }
 
@@ -102,9 +104,4 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
     protected void onContentsChanged(int slot) {
         this.validateSlotIndex(slot);
     }
-
-    private final Logger LOGGER = LogManager.getLogger();
-
-
-
 }

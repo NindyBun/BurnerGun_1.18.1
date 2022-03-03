@@ -6,6 +6,7 @@ import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
@@ -41,7 +42,7 @@ public class PacketRefuel {
                     return;
                 IItemHandler handler = BurnerGunMK1.getHandler(gun);
                 ItemStack stack = handler.getStackInSlot(0);
-                if (stack == ItemStack.EMPTY
+                if (    stack == ItemStack.EMPTY || stack.getItem() == Items.BUCKET
                         || stack.getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
                         || stack.getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
                         || stack.getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
@@ -54,7 +55,7 @@ public class PacketRefuel {
                     BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING));
                     ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                     handler.getStackInSlot(0).shrink(1);
-                    if (!containerItem.isEmpty())
+                    //if (!containerItem.isEmpty())
                         handler.insertItem(0, containerItem, false);
                 }
             });

@@ -27,17 +27,17 @@ public enum Upgrade {
     FUEL_EFFICIENCY_3("fuel_efficiency_3", 3, 0, 1, 0.50, true),
     FUEL_EFFICIENCY_4("fuel_efficiency_4", 4, 0, 1, 0.75, true),
     FUEL_EFFICIENCY_5("fuel_efficiency_5", 5, 0, 1, 0.90, true),
+    AMBIENCE_1("ambience_1", 1, 0, 1, 1, false),
+    AMBIENCE_2("ambience_2", 1, 0, 1, 2, false),
+    AMBIENCE_3("ambience_3", 1, 0, 1, 6, false),
+    AMBIENCE_4("ambience_4", 1, 0, 1, 24, false),
+    AMBIENCE_5("ambience_5", 1, 0, 1, 120, false),
 
     MAGNET("magnet", -1, 75, 1, 0, true),
     SILK_TOUCH("silk_touch", -1, 150, 1, 0, true),
     LIGHT("light", -1, 50, 1, 0, true),
     AUTO_SMELT("auto_smelt", -1, 50 + (int)(Math.random() * ((175 - 50) + 1)), 1, 0, true),
-    TRASH("trash", -1, 75, 1, 0, true),
-    AMBIENCE_1("ambience_1", 1, 0, 1, 1, false),
-    AMBIENCE_2("ambience_2", 1, 0, 1, 2, false),
-    AMBIENCE_3("ambience_3", 1, 0, 1, 4, false),
-    AMBIENCE_4("ambience_4", 1, 0, 1, 6, false),
-    AMBIENCE_5("ambience_5", 1, 0, 1, 8, false)
+    TRASH("trash", -1, 75, 1, 0, true)
     ;
 
     private final String name;
