@@ -10,10 +10,7 @@ import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderBuffers;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -56,14 +53,16 @@ public class BlockRenderer {
 
         MultiBufferSource.BufferSource renderTypeBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
         VertexConsumer bufferIn = renderTypeBuffer.getBuffer(RenderType.lines());
+        if (!pos.equals(aimed))
+            LevelRenderer.renderVoxelShape(matrixStack, bufferIn, voxelShape, (originX), (originY), (originZ), red, green, blue, alpha);
 
-        voxelShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
+        /*voxelShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
             if (!pos.equals(aimed)){
                 bufferIn.vertex(matrix4f, (float) (x0 + originX), (float) (y0 + originY), (float) (z0 + originZ)).color(red, green, blue, alpha).endVertex();
                 bufferIn.vertex(matrix4f, (float) (x1 + originX), (float) (y1 + originY), (float) (z1 + originZ)).color(red, green, blue, alpha).endVertex();
             }
 
-        });
+        });*/
 
         renderTypeBuffer.endBatch(RenderType.lines());
     }
