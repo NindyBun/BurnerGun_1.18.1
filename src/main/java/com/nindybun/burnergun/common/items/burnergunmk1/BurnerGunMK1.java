@@ -6,6 +6,8 @@ import com.nindybun.burnergun.common.blocks.ModBlocks;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
+import com.nindybun.burnergun.common.network.PacketHandler;
+import com.nindybun.burnergun.common.network.packets.PacketRefuel;
 import com.nindybun.burnergun.util.UpgradeUtil;
 import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.ChatFormatting;
@@ -134,8 +136,9 @@ public class BurnerGunMK1 extends Item {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void refuel(ItemStack gun, Player player){
-        IItemHandler handler = getHandler(gun);
+    public void refuel(){
+        PacketHandler.sendToServer(new PacketRefuel());
+        /*IItemHandler handler = getHandler(gun);
         if (!handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
                 && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
                 && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
@@ -147,20 +150,20 @@ public class BurnerGunMK1 extends Item {
                 BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING));
                 ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                 handler.getStackInSlot(0).shrink(1);
-                if (player.getInventory().add(containerItem))
-                    player.drop(containerItem, true);
+                if (!containerItem.isEmpty())
+                    PacketHandler.sendToServer(new PacketRefuel());
             }
-        }
+        }*/
     }
 
-    public void useFuel(ItemStack gun, Player player, List<Upgrade> upgrades){
+    public void useFuel(ItemStack gun, List<Upgrade> upgrades){
+        BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) - getUseValue(upgrades));
         if (!getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
                 && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
                 && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
                 && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
                 && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem()))
-            refuel(gun, player);
-        BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) - getUseValue(upgrades));
+            refuel();
     }
 
     public double getUseValue(List<Upgrade> upgrades){
@@ -215,7 +218,7 @@ public class BurnerGunMK1 extends Item {
 
     public void mineBlock(Level world, BlockHitResult ray, ItemStack gun, List<Upgrade> activeUpgrades, List<Item> smeltFilter, List<Item> trashFilter, BlockPos blockPos, BlockState blockState, Player player){
         if (canMine(gun, world, blockPos, blockState, player, activeUpgrades)){
-            useFuel(gun, player, activeUpgrades);
+            useFuel(gun, activeUpgrades);
             List<ItemStack> blockDrops = blockState.getDrops(new LootContext.Builder((ServerLevel) world)
                     .withParameter(LootContextParams.TOOL, gun)
                     .withParameter(LootContextParams.ORIGIN, new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
@@ -293,7 +296,7 @@ public class BurnerGunMK1 extends Item {
         if (world.isClientSide)
             player.playSound(SoundEvents.FIRECHARGE_USE, BurnerGunNBT.getVolume(gun)*0.5f, 1.0f);
         if (!world.isClientSide){
-            refuel(gun, player);
+            refuel();
             if (canMine(gun, world, blockPos, blockState, player, activeUpgrades)){
                 gun.enchant(Enchantments.BLOCK_FORTUNE, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.FORTUNE_1) ? UpgradeUtil.getUpgradeFromListByUpgrade(activeUpgrades, Upgrade.FORTUNE_1).getTier() : 0);
                 gun.enchant(Enchantments.SILK_TOUCH, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.SILK_TOUCH) ? 1 : 0);
