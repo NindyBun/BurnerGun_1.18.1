@@ -43,6 +43,11 @@
 ### v3.1.4
 - Blaze cage captured pigs, now it captures Blazes
 ## 1.18.1
--Updated from 1.16.5 to 1.18.1
--Updated to forge 1.18.1-39.0.88
--Uses Java JDK 17
+### v1.18.1-4.0.0
+- Updated from 1.16.5 to 1.18.1
+- Updated to forge 1.18.1-39.0.88
+- Uses Java JDK 17
+- Changed most upgrades that uses gold to copper
+### v1.18.1-4.0.1
+- Changed max fuel to 20,000 to use lava buckets
+- BurnerGunMk2 uses Blaze Nebula instead of Blaze Singularity
