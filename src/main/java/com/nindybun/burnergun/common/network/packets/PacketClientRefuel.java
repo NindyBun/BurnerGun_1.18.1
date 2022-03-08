@@ -5,6 +5,7 @@ import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -45,7 +46,7 @@ public class PacketClientRefuel {
         public static void handle(PacketClientRefuel msg, Supplier<NetworkEvent.Context> ctx){
             ctx.get().enqueueWork( ()-> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    Player player = Minecraft.getInstance().player;
+                    LocalPlayer player = Minecraft.getInstance().player;
                     if (player == null)
                         return;
                     IItemHandler handler = BurnerGunMK1.getHandler(gun);
