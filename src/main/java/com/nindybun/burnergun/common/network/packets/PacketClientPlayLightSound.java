@@ -7,10 +7,12 @@ import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
@@ -35,13 +37,13 @@ public class PacketClientPlayLightSound {
         public static void handle(PacketClientPlayLightSound msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    LocalPlayer player = Minecraft.getInstance().player;
+                    /*Player player = Minecraft.getInstance().player;
                     if (player == null)
                         return;
                     ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
                     if (gun.isEmpty())
-                        return;
-                    player.playSound(SoundEvents.WOOL_PLACE, BurnerGunNBT.getVolume(gun)*0.5f, 1.0f);
+                        return;*/
+                    Minecraft.getInstance().player.playSound(SoundEvents.WOOL_PLACE, 0.5f, 1.0f);
                 });
             });
             ctx.get().setPacketHandled(true);

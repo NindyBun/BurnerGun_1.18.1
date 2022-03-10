@@ -15,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.loot.providers.score.ScoreboardNameProvider;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.IItemHandler;
@@ -46,9 +47,6 @@ public class PacketClientRefuel {
         public static void handle(PacketClientRefuel msg, Supplier<NetworkEvent.Context> ctx){
             ctx.get().enqueueWork( ()-> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    LocalPlayer player = Minecraft.getInstance().player;
-                    if (player == null)
-                        return;
                     IItemHandler handler = BurnerGunMK1.getHandler(gun);
                     handler.insertItem(0, container, false);
                 });
