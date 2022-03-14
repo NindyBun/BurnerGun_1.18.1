@@ -40,7 +40,7 @@ public class PacketClientUpdateGun {
     }
 
     public static PacketClientUpdateGun decode(FriendlyByteBuf buffer) {
-        return new PacketClientUpdateGun(gun);
+        return new PacketClientUpdateGun(buffer.readItem());
     }
 
     public static class Handler {
@@ -132,7 +132,8 @@ public class PacketClientUpdateGun {
                         }
                     });
                     BurnerGunNBT.setUprades(gun, currentUpgrades);*/
-                    ModScreens.openGunSettingsScreen(gun);
+                    //ItemStack stack = BurnerGunMK1.getGun(Minecraft.getInstance().player) != ItemStack.EMPTY ? BurnerGunMK1.getGun(Minecraft.getInstance().player) : BurnerGunMK2.getGun(Minecraft.getInstance().player);
+                    ModScreens.openGunSettingsScreen(msg.gun);
                     //return;
                 });
             });

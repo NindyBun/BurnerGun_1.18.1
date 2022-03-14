@@ -47,8 +47,8 @@ public class PacketClientRefuel {
         public static void handle(PacketClientRefuel msg, Supplier<NetworkEvent.Context> ctx){
             ctx.get().enqueueWork( ()-> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    IItemHandler handler = BurnerGunMK1.getHandler(gun);
-                    handler.insertItem(0, container, false);
+                    IItemHandler handler = BurnerGunMK1.getHandler(msg.gun);
+                    handler.insertItem(0, msg.container, false);
                 });
             });
 
