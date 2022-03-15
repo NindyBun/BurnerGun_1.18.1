@@ -17,6 +17,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -137,7 +138,8 @@ public class BurnerGunMK1 extends Item {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void refuel(ItemStack gun){
-        IItemHandler handler = getHandler(gun);
+        PacketHandler.sendToServer(new PacketRefuel());
+        /*IItemHandler handler = getHandler(gun);
         if (!handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
                 && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
                 && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
@@ -150,9 +152,10 @@ public class BurnerGunMK1 extends Item {
                 ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                 handler.getStackInSlot(0).shrink(1);
                 if (!containerItem.isEmpty())
-                    handler.insertItem(0, containerItem, false);
+                    PacketHandler.sendToServer(new PacketRefuel());
+                    //handler.insertItem(0, containerItem, false);
             }
-        }
+        }*/
     }
 
     public void useFuel(ItemStack gun, List<Upgrade> upgrades){

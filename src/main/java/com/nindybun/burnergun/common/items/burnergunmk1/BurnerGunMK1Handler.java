@@ -28,7 +28,6 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
     }
 
     public static boolean isFuel(ItemStack stack) {
-        LOGGER.info(ForgeHooks.getBurnTime(stack, RecipeType.SMELTING));
         return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
     }
 
