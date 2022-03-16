@@ -152,7 +152,7 @@ public class BurnerGunMK1 extends Item {
                 ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                 handler.getStackInSlot(0).shrink(1);
                 if (!containerItem.isEmpty())
-                    PacketHandler.send(new PacketClientRefuel(gun, containerItem), ()-> player);
+                    PacketHandler.send(new PacketClientRefuel(containerItem), ()-> player);
                     //PacketHandler.sendToServer(new PacketRefuel());
                     //handler.insertItem(0, containerItem, false);
             }

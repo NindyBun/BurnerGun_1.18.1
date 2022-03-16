@@ -27,27 +27,28 @@ import java.util.function.Supplier;
 
 public class PacketClientRefuel {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static ItemStack gun, container;
+    private static ItemStack container;
 
-    public PacketClientRefuel(ItemStack gun, ItemStack container){
-        this.gun = gun;
+    public PacketClientRefuel(ItemStack container){
         this.container = container;
     }
 
     public static void encode(PacketClientRefuel msg, FriendlyByteBuf buffer){
-        buffer.writeItemStack(msg.gun, false);
         buffer.writeItemStack(msg.container, true);
     }
 
     public static PacketClientRefuel decode(FriendlyByteBuf buffer){
-        return new PacketClientRefuel(gun, container);
+        return new PacketClientRefuel(buffer.readItem());
     }
 
     public static class Handler {
         public static void handle(PacketClientRefuel msg, Supplier<NetworkEvent.Context> ctx){
             ctx.get().enqueueWork( ()-> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    IItemHandler handler = BurnerGunMK1.getHandler(msg.gun);
+                    ItemStack gun = Minecraft.getInstance().player.getMainHandItem().getItem() instanceof BurnerGunMK1 ? Minecraft.getInstance().player.getMainHandItem() : Minecraft.getInstance().player.getOffhandItem();
+                    if (gun == ItemStack.EMPTY || !(gun.getItem() instanceof BurnerGunMK1))
+                        return;
+                    IItemHandler handler = BurnerGunMK1.getHandler(gun);
                     handler.insertItem(0, msg.container, false);
                 });
             });

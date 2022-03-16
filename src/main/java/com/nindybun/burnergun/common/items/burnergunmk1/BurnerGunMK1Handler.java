@@ -43,7 +43,7 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
                     || stack.getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem()))
                 return true;
             else if (isFuel(stack) || stack.getItem() == Items.BUCKET){
-                PacketHandler.sendToServer(new PacketRefuel());
+                //PacketHandler.sendToServer(new PacketRefuel());
                 return true;
             }
         }
