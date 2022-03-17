@@ -56,7 +56,6 @@ public class PacketRefuel {
                     handler.getStackInSlot(0).shrink(1);
                     if (!containerItem.isEmpty())
                         PacketHandler.sendTo(new PacketClientRefuel(containerItem), player);
-                    //handler.insertItem(0, containerItem, false);
                 }
             });
 

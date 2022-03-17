@@ -79,9 +79,9 @@ public class BurnerGunMK1Screen extends AbstractContainerScreen<BurnerGunMK1Cont
     @Override
     protected void slotClicked(Slot slot, int gui_slot, int p_97780_, ClickType clickType) {
         super.slotClicked(slot, gui_slot, p_97780_, clickType);
-        if (gui_slot == 36 && ForgeHooks.getBurnTime(slot.getItem(), RecipeType.SMELTING) > 0){
+//        if (gui_slot == 36 && ForgeHooks.getBurnTime(slot.getItem(), RecipeType.SMELTING) > 0){
             PacketHandler.sendToServer(new PacketRefuel());
-        }
+//        }
     }
 
     @Override

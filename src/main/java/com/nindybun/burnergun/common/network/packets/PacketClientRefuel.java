@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 
 public class PacketClientRefuel {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static ItemStack container;
+    private ItemStack container;
 
     public PacketClientRefuel(ItemStack container){
         this.container = container;

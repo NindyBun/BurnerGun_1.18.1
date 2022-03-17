@@ -26,10 +26,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -152,9 +149,9 @@ public class BurnerGunMK1 extends Item {
                 ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                 handler.getStackInSlot(0).shrink(1);
                 if (!containerItem.isEmpty())
-                    PacketHandler.send(new PacketClientRefuel(containerItem), ()-> player);
+                    //PacketHandler.send(new PacketClientRefuel(containerItem), ()-> player);
                     //PacketHandler.sendToServer(new PacketRefuel());
-                    //handler.insertItem(0, containerItem, false);
+                    handler.insertItem(0, containerItem, false);
             }
         }
     }
