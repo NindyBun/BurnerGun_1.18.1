@@ -137,31 +137,20 @@ public class BurnerGunMK1 extends Item {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void refuel(ItemStack gun, Player player){
         IItemHandler handler = getHandler(gun);
-        if (!handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())) {
-            while (handler.getStackInSlot(0).getCount() > 0){
-                if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > base_use_buffer)
-                    break;
-                BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING));
-                ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
-                handler.getStackInSlot(0).shrink(1);
-                if (!containerItem.isEmpty())
-                    //PacketHandler.send(new PacketClientRefuel(containerItem), ()-> player);
-                    //PacketHandler.sendToServer(new PacketRefuel());
-                    handler.insertItem(0, containerItem, false);
+        while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > 0){
+            if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > base_use_buffer)
+                break;
+            BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING));
+            ItemStack containerItem = handler.getStackInSlot(0).copy();
+            handler.getStackInSlot(0).shrink(1);
+            if (containerItem.hasContainerItem()){
+                handler.insertItem(0, Items.BUCKET.getDefaultInstance(), false);
             }
         }
     }
 
     public void useFuel(ItemStack gun, List<Upgrade> upgrades, Player player){
-        if (!getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                && !getHandler(gun).getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem()))
+        if (ForgeHooks.getBurnTime(getHandler(gun).getStackInSlot(0), RecipeType.SMELTING) > 0)
             refuel(gun, player);
         BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) - getUseValue(upgrades));
     }
@@ -280,8 +269,9 @@ public class BurnerGunMK1 extends Item {
                     || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
                     || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
                     || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
-                if (BurnerGunNBT.getFuelValue(gun)+((UpgradeCard)handler.getStackInSlot(0).getItem()).getUpgrade().getExtraValue() < base_use_buffer && world.getMaxLocalRawBrightness((entity.blockPosition())) >= 8)
-                    BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)+((UpgradeCard)handler.getStackInSlot(0).getItem()).getUpgrade().getExtraValue());
+                double fuel = BurnerGunNBT.getFuelValue(gun)+((UpgradeCard)handler.getStackInSlot(0).getItem()).getUpgrade().getExtraValue();
+                if (BurnerGunNBT.getFuelValue(gun)+fuel <= base_use_buffer && world.getMaxLocalRawBrightness((entity.blockPosition())) >= 8)
+                    BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)+fuel >= base_use_buffer ? base_use_buffer : BurnerGunNBT.getFuelValue(gun)+fuel);
             }
         }
     }

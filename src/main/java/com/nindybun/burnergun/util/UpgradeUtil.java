@@ -135,10 +135,10 @@ public class UpgradeUtil {
     }
 
     //Returns upgrade stacks
-    public static List<ItemStack> getUpgradeStacks(ItemStack stack){
+    public static List<ItemStack> getUpgradeStacks(ItemStack gun){
         List<ItemStack> upgradeStacks = new ArrayList<>();
-        IItemHandler handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-        int start = stack.getItem() instanceof BurnerGunMK1 ? 1 : 0;
+        IItemHandler handler = gun.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
+        int start = gun.getItem() instanceof BurnerGunMK1 ? 1 : 0;
         for (int index = start; index < handler.getSlots(); index++){
             if (handler.getStackInSlot(index).getItem() != Items.AIR){
                 upgradeStacks.add(handler.getStackInSlot(index));
@@ -147,9 +147,9 @@ public class UpgradeUtil {
         return upgradeStacks;
     }
 
-    public static ItemStack getStackByUpgrade(ItemStack stack, Upgrade upgrade){
-        List<ItemStack> upgradeStack = getUpgradeStacks(stack);
-        List<Upgrade> upgradeCard = BurnerGunNBT.getUpgrades(stack);
+    public static ItemStack getStackByUpgrade(ItemStack gun, Upgrade upgrade){
+        List<ItemStack> upgradeStack = getUpgradeStacks(gun);
+        List<Upgrade> upgradeCard = BurnerGunNBT.getUpgrades(gun);
         for (int index = 0 ; index < upgradeCard.size() ; index++) {
             if (upgradeCard.get(index).getBaseName().equals(upgrade.getBaseName())){
                 return upgradeStack.get(index);

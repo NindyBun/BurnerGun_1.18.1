@@ -41,21 +41,14 @@ public class PacketRefuel {
                     return;
                 IItemHandler handler = BurnerGunMK1.getHandler(gun);
                 ItemStack stack = handler.getStackInSlot(0);
-                if (    stack == ItemStack.EMPTY || stack.getItem() == Items.BUCKET
-                        || stack.getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                        || stack.getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                        || stack.getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                        || stack.getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                        || stack.getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem()))
-                    return;
-                while (handler.getStackInSlot(0).getCount() > 0){
+                while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0){
                     if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > BurnerGunMK1.base_use_buffer)
                         break;
                     BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING));
                     ItemStack containerItem = handler.getStackInSlot(0).getContainerItem();
                     handler.getStackInSlot(0).shrink(1);
                     if (!containerItem.isEmpty())
-                        PacketHandler.sendTo(new PacketClientRefuel(containerItem), player);
+                        handler.insertItem(0, containerItem, false);
                 }
             });
 

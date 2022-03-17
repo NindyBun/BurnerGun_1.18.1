@@ -63,9 +63,9 @@ public class PacketUpdateGun {
                 int type = gun.getItem() instanceof BurnerGunMK1 ? 1 : 0;
                 for (int i = type; i < handler.getSlots(); i++) {
                     if (!handler.getStackInSlot(i).getItem().equals(Items.AIR)){
-                        if (UpgradeUtil.getStackByUpgrade(gun, Upgrade.TRASH) != null)
+                        if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.TRASH))
                             trashHandler = Trash.getHandler(handler.getStackInSlot(i));
-                        if (UpgradeUtil.getStackByUpgrade(gun, Upgrade.AUTO_SMELT) != null)
+                        if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.AUTO_SMELT))
                             smeltHandler = AutoSmelt.getHandler(handler.getStackInSlot(i));
                         currentUpgrades.add(((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade());
                     }

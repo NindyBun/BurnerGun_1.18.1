@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.common.items.upgrades.Trash;
 
+import com.nindybun.burnergun.common.containers.TrashContainer;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
@@ -20,36 +21,23 @@ public class TrashHandler extends ItemStackHandler {
         super(numberOfSlots);
     }
 
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public CompoundTag serializeNBT() {
-        super.serializeNBT();
-        return new CompoundTag();
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        super.deserializeNBT(nbt);
-    }
-
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        if (slot < 0 || slot >= TrashContainer.MAX_EXPECTED_HANDLER_SLOT_COUNT) {
+            throw new IllegalArgumentException("Invalid slot number: " + slot);
+        }
         if (stack.getItem() instanceof BurnerGunMK1 || stack.getItem() instanceof BurnerGunMK2 || stack.getItem() instanceof UpgradeCard)
             return false;
-        if (this.getStackInSlot(slot).getItem() == Items.AIR){
+        this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
+        this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
+        /*if (this.getStackInSlot(slot).getItem() == Items.AIR){
             this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
         }else if (stack.getItem() == Items.AIR){
             this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
         }else if (stack.getItem() != Items.AIR){
             this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
             this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
-        }
+        }*/
         return false;
     }
 
