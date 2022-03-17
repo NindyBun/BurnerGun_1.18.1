@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 public class PacketUpdateGun {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static boolean open;
+    private boolean open;
     public PacketUpdateGun(boolean open) {
         this.open = open;
     }
@@ -132,7 +132,7 @@ public class PacketUpdateGun {
                     }
                 });
                 BurnerGunNBT.setUprades(gun, currentUpgrades);
-                if (open)
+                if (msg.open)
                     PacketHandler.sendTo(new PacketClientUpdateGun(gun), player);
             });
             ctx.get().setPacketHandled(true);

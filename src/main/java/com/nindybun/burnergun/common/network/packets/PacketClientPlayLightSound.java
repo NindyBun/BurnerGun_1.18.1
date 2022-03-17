@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 public class PacketClientPlayLightSound {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static float volume;
+    private float volume;
     public PacketClientPlayLightSound(float volume) {
         this.volume = volume;
     }
@@ -32,14 +32,14 @@ public class PacketClientPlayLightSound {
     }
 
     public static PacketClientPlayLightSound decode(FriendlyByteBuf buffer) {
-        return new PacketClientPlayLightSound(volume);
+        return new PacketClientPlayLightSound(buffer.readFloat());
     }
 
     public static class Handler {
         public static void handle(PacketClientPlayLightSound msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    Minecraft.getInstance().player.playSound(SoundEvents.WOOL_PLACE, volume*0.5f, 1.0f);
+                    Minecraft.getInstance().player.playSound(SoundEvents.WOOL_PLACE, msg.volume*0.5f, 1.0f);
                 });
             });
             ctx.get().setPacketHandled(true);

@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 
 public class PacketClientUpdateGun {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static ItemStack gun;
+    private ItemStack gun;
     public PacketClientUpdateGun(ItemStack stack) {
         this.gun = stack;
     }
