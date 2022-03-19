@@ -4,13 +4,17 @@ import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmeltHandler;
+import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,11 +27,9 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
 
     public AutoSmeltContainer(int windowId, Inventory playerInventory, AutoSmeltHandler handler){
         super(ModContainers.AUTO_SMELT_CONTAINER.get(), windowId);
-        this.handler = handler;
-        this.setup(playerInventory);
+        this.setup(new InvWrapper(playerInventory), handler);
     }
 
-    private final AutoSmeltHandler handler;
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -52,11 +54,11 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
     private final int HOTBAR_XPOS = 8;
     private final int HOTBAR_YPOS = 142;
 
-    private void setup(Inventory playerInv){
+    private void setup(InvWrapper playerInv, IItemHandler handler){
         // Add the players hotbar to the gui - the [xpos, ypos] location of each item
         for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
             int slotNumber = x;
-            addSlot(new Slot(playerInv, slotNumber, HOTBAR_XPOS + SLOT_X_SPACING * x, HOTBAR_YPOS));
+            addSlot(new SlotItemHandler(playerInv, slotNumber, HOTBAR_XPOS + SLOT_X_SPACING * x, HOTBAR_YPOS));
         }
 
         // Add the rest of the player's inventory to the gui
@@ -65,7 +67,7 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
                 int slotNumber = HOTBAR_SLOT_COUNT + y * PLAYER_INVENTORY_COLUMN_COUNT + x;
                 int xpos = PLAYER_INVENTORY_XPOS + x * SLOT_X_SPACING;
                 int ypos = PLAYER_INVENTORY_YPOS + y * SLOT_Y_SPACING;
-                addSlot(new Slot(playerInv, slotNumber, xpos, ypos));
+                addSlot(new SlotItemHandler(playerInv, slotNumber, xpos, ypos));
             }
         }
 
@@ -100,9 +102,53 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
 
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        super.quickMoveStack(playerIn, index);
-        return ItemStack.EMPTY;
+    public ItemStack quickMoveStack(Player playrIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+
+        if (slot != null && slot.hasItem()) {
+            ItemStack currentStack = slot.getItem();
+
+            // Stop our items at the very least :P
+            if (currentStack.getItem() instanceof BurnerGunMK1 || currentStack.getItem() instanceof UpgradeCard || currentStack.getItem() instanceof BurnerGunMK2)
+                return itemstack;
+
+            if (currentStack.isEmpty())
+                return itemstack;
+
+            // Find the first empty slot number
+            int slotNumber = -1;
+            for (int i = 36; i <= 63; i++) {
+                if (this.slots.get(i).getItem().isEmpty()) {
+                    slotNumber = i;
+                    break;
+                } else {
+                    if (this.slots.get(i).getItem().getItem() == currentStack.getItem()) {
+                        break;
+                    }
+                }
+            }
+
+            if (slotNumber == -1)
+                return itemstack;
+
+            this.slots.get(slotNumber).set(currentStack.copy().split(1));
+        }
+
+        return itemstack;
+    }
+
+    @Override
+    public void clicked(int slotId, int dragType, ClickType clickTypeIn, Player player) {
+        if ((slotId < this.slots.size()
+                && slotId >= 0
+                && (this.slots.get(slotId).getItem().getItem() instanceof BurnerGunMK1
+                || this.slots.get(slotId).getItem().getItem() instanceof BurnerGunMK2
+                || this.slots.get(slotId).getItem().getItem() instanceof UpgradeCard))
+                || clickTypeIn == ClickType.SWAP) {
+            return ;
+        }
+        super.clicked(slotId, dragType, clickTypeIn, player);
     }
 
     private static final Logger LOGGER = LogManager.getLogger();

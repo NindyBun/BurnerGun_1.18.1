@@ -38,14 +38,14 @@ public class AutoSmelt extends UpgradeCard {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (world.isClientSide)
-            /*NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider(
+        if (!world.isClientSide)
+            NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider(
                     (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, (AutoSmeltHandler) getHandler(stack)),
-                    new TextComponent("")));*/
-            player.openMenu(new SimpleMenuProvider(
+                    new TextComponent("")));
+            /*player.openMenu(new SimpleMenuProvider(
                     (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, (AutoSmeltHandler) getHandler(stack)),
                     new TextComponent("")
-            ));
+            ));*/
         return InteractionResultHolder.success(stack);
     }
 
