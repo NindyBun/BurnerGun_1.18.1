@@ -1,9 +1,11 @@
 package com.nindybun.burnergun.common.items.upgrades.Auto_Smelt;
 
 import com.nindybun.burnergun.common.containers.AutoSmeltContainer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -15,7 +17,6 @@ import javax.annotation.Nullable;
 
 public class AutoSmeltProvider implements ICapabilitySerializable<CompoundTag> {
     private final AutoSmeltHandler instance = new AutoSmeltHandler(AutoSmeltContainer.MAX_EXPECTED_HANDLER_SLOT_COUNT);
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

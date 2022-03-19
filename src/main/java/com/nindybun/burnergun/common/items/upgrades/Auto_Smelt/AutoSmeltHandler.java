@@ -22,7 +22,8 @@ import java.util.Optional;
 
 public class AutoSmeltHandler extends ItemStackHandler {
     public static final Logger LOGGER = LogManager.getLogger();
-    private static final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
+    private final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
+    private Level level;
 
     public AutoSmeltHandler(int numberOfSlots){
         super(numberOfSlots);
@@ -38,7 +39,7 @@ public class AutoSmeltHandler extends ItemStackHandler {
     public boolean hasSmeltOption(ItemStack stack){
         SimpleContainer inv = new SimpleContainer(1);
         inv.setItem(0, stack);
-        Optional<? extends AbstractCookingRecipe> recipe = Minecraft.getInstance().level.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, Minecraft.getInstance().level);
+        Optional<? extends AbstractCookingRecipe> recipe = level.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, level);
         return recipe.isPresent();
     }
 
