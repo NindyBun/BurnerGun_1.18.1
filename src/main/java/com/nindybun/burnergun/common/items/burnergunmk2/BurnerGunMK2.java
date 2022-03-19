@@ -127,9 +127,9 @@ public class BurnerGunMK2 extends Item {
         Optional<? extends AbstractCookingRecipe> recipe = world.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, world);
         if (recipe.isPresent()){
             ItemStack smelted = recipe.get().getResultItem().copy();
-            if (smeltList.contains(smelted.getItem()) && smeltWhitelist)
+            if (smeltList.contains(drop.getItem()) && smeltWhitelist)
                 return smelted;
-            else if (!smeltList.contains(smelted.getItem()) && !smeltWhitelist)
+            else if (!smeltList.contains(drop.getItem()) && !smeltWhitelist)
                 return smelted;
         }
         return drop;

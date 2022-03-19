@@ -190,9 +190,9 @@ public class BurnerGunMK1 extends Item {
         Optional<? extends AbstractCookingRecipe> recipe = world.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, world);
         if (recipe.isPresent()){
             ItemStack smelted = recipe.get().getResultItem().copy();
-            if (smeltList.contains(smelted.getItem()) && smeltWhitelist)
+            if (smeltList.contains(drop.getItem()) && smeltWhitelist)
                 return smelted;
-            else if (!smeltList.contains(smelted.getItem()) && !smeltWhitelist)
+            else if (!smeltList.contains(drop.getItem()) && !smeltWhitelist)
                 return smelted;
         }
         return drop;
@@ -270,7 +270,7 @@ public class BurnerGunMK1 extends Item {
                     || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
                     || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
                 double fuel = BurnerGunNBT.getFuelValue(gun)+((UpgradeCard)handler.getStackInSlot(0).getItem()).getUpgrade().getExtraValue();
-                if (BurnerGunNBT.getFuelValue(gun)+fuel <= base_use_buffer && world.getMaxLocalRawBrightness((entity.blockPosition())) >= 8)
+                if (world.getMaxLocalRawBrightness((entity.blockPosition())) >= 8)
                     BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)+fuel >= base_use_buffer ? base_use_buffer : BurnerGunNBT.getFuelValue(gun)+fuel);
             }
         }

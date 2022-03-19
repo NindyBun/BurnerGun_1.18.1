@@ -83,7 +83,7 @@ public class TrashContainer extends AbstractContainerMenu {
             int bagCol = bagSlot % HANDLER_SLOTS_PER_ROW;
             int xpos = HANDLER_INVENTORY_XPOS + SLOT_X_SPACING * bagCol;
             int ypos = HANDLER_INVENTORY_YPOS + SLOT_Y_SPACING * bagRow;
-            addSlot(new GhostSlot(handler, slotNumber, xpos, ypos));
+            addSlot(new SlotItemHandler(handler, slotNumber, xpos, ypos));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.common.items.upgrades.Auto_Smelt;
 
+import com.nindybun.burnergun.common.containers.TrashContainer;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -26,21 +28,10 @@ public class AutoSmeltHandler extends ItemStackHandler {
         super(numberOfSlots);
     }
 
+    @NotNull
     @Override
-    public CompoundTag serializeNBT() {
-        super.serializeNBT();
-        return new CompoundTag();
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        super.deserializeNBT(nbt);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        this.setStackInSlot(slot, ItemStack.EMPTY);
         return ItemStack.EMPTY;
     }
 
@@ -57,18 +48,14 @@ public class AutoSmeltHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        if (slot < 0 || slot >= TrashContainer.MAX_EXPECTED_HANDLER_SLOT_COUNT) {
+            throw new IllegalArgumentException("Invalid slot number: " + slot);
+        }
         if (stack.getItem() instanceof BurnerGunMK1 || stack.getItem() instanceof BurnerGunMK2 || stack.getItem() instanceof UpgradeCard)
             return false;
-        if (hasSmeltOption(stack))
+        if (!hasSmeltOption(stack))
             return false;
-        if (this.getStackInSlot(slot).getItem() == Items.AIR){
-            this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
-        }else if (stack.getItem() == Items.AIR){
-            this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
-        }else if (stack.getItem() != Items.AIR){
-            this.setStackInSlot(slot, Items.AIR.getDefaultInstance());
-            this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
-        }
+        this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
         return false;
     }
 
