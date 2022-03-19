@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -23,9 +24,9 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class AutoSmelt extends UpgradeCard {
     Upgrade upgrade;
@@ -39,10 +40,11 @@ public class AutoSmelt extends UpgradeCard {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!world.isClientSide)
-            NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider(
-                    (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, (AutoSmeltHandler) getHandler(stack)),
-                    new TextComponent("")));
+        if (world.isClientSide)
+            PacketHandler.sendToServer(new PacketOpenAutoSmeltGui());
+            /*NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider(
+                    (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, getHandler(stack)),
+                    new TextComponent("")));*/
             /*player.openMenu(new SimpleMenuProvider(
                     (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, (AutoSmeltHandler) getHandler(stack)),
                     new TextComponent("")
@@ -54,11 +56,11 @@ public class AutoSmelt extends UpgradeCard {
         return upgrade;
     }
 
-    @Nonnull
+    /*@Nonnull
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
         return new AutoSmeltProvider();
-    }
+    }*/
 
     public static IItemHandler getHandler(ItemStack itemStack) {
         return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);

@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.apache.logging.log4j.LogManager;
@@ -23,12 +24,12 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
 
     AutoSmeltContainer(int windowId, Inventory playerInv,
                        FriendlyByteBuf buf){
-        this(windowId, playerInv, new AutoSmeltHandler(MAX_EXPECTED_HANDLER_SLOT_COUNT));
+        this(windowId, playerInv, new ItemStackHandler(MAX_EXPECTED_HANDLER_SLOT_COUNT));
     }
 
-    public AutoSmeltContainer(int windowId, Inventory playerInventory, AutoSmeltHandler handler){
+    public AutoSmeltContainer(int windowId, Inventory playerInventory, IItemHandler handler){
         super(ModContainers.AUTO_SMELT_CONTAINER.get(), windowId);
-        this.setup(new InvWrapper(playerInventory), handler);
+        this.setup(new InvWrapper(playerInventory), handler, playerInventory.player.level);
     }
 
 
@@ -55,7 +56,7 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
     private final int HOTBAR_XPOS = 8;
     private final int HOTBAR_YPOS = 142;
 
-    private void setup(InvWrapper playerInv, IItemHandler handler){
+    private void setup(InvWrapper playerInv, IItemHandler handler, Level level){
         // Add the players hotbar to the gui - the [xpos, ypos] location of each item
         for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
             int slotNumber = x;
@@ -85,7 +86,7 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
             int bagCol = bagSlot % HANDLER_SLOTS_PER_ROW;
             int xpos = HANDLER_INVENTORY_XPOS + SLOT_X_SPACING * bagCol;
             int ypos = HANDLER_INVENTORY_YPOS + SLOT_Y_SPACING * bagRow;
-            addSlot(new SlotItemHandler(handler, slotNumber, xpos, ypos));
+            addSlot(new GhostSlot(handler, slotNumber, xpos, ypos, level));
         }
     }
 

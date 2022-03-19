@@ -20,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,15 +59,15 @@ public class PacketUpdateGun {
                 IItemHandler handler = gun.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
                 List<Upgrade> currentUpgrades = new ArrayList<>();
                 IItemHandler trashHandler = null;
-                IItemHandler smeltHandler = null;
+                /*ItemStackHandler smeltHandler = null;*/
 
                 int type = gun.getItem() instanceof BurnerGunMK1 ? 1 : 0;
                 for (int i = type; i < handler.getSlots(); i++) {
                     if (!handler.getStackInSlot(i).getItem().equals(Items.AIR)){
                         if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.TRASH))
                             trashHandler = Trash.getHandler(handler.getStackInSlot(i));
-                        if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.AUTO_SMELT))
-                            smeltHandler = AutoSmelt.getHandler(handler.getStackInSlot(i));
+                        /*if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.AUTO_SMELT))
+                            smeltHandler = AutoSmelt.getHandler(handler.getStackInSlot(i));*/
                         currentUpgrades.add(((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade());
                     }
                 }
@@ -77,19 +78,27 @@ public class PacketUpdateGun {
                         if (!trashHandler.getStackInSlot(i).getItem().equals(Items.AIR))
                             trashFilter.add(trashHandler.getStackInSlot(i).getItem());
                     }
+
                     BurnerGunNBT.setTrashFilter(gun, trashFilter);
                 }else if (!UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.TRASH)){
                     BurnerGunNBT.setTrashFilter(gun, new ArrayList<>());
                 }
 
-                if (UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
+                /*if (UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
+                    ItemStackHandler smeltHandler = new ItemStackHandler(27){
+                        @Override
+                        protected void onContentsChanged(int slot) {
+                            gun.getOrCreateTag().put(BurnerGunNBT.SMELTING_FILTER, serializeNBT());
+                        }
+                    };
+                    smeltHandler.deserializeNBT(gun.getOrCreateTagElement(BurnerGunNBT.SMELTING_FILTER));
                     List<Item> smeltFilter = new ArrayList<>();
                     for (int i = 0; i < smeltHandler.getSlots(); i++){
                         if (!smeltHandler.getStackInSlot(i).getItem().equals(Items.AIR))
                             smeltFilter.add(smeltHandler.getStackInSlot(i).getItem());
                     }
                     BurnerGunNBT.setSmeltFilter(gun, smeltFilter);
-                }else if (!UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
+                }else*/ if (!UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
                     BurnerGunNBT.setSmeltFilter(gun, new ArrayList<>());
                 }
 

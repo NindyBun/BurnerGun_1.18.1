@@ -15,6 +15,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -52,10 +53,21 @@ public class PacketOpenAutoSmeltGui {
                 if (!(smelt.getItem() instanceof AutoSmelt))
                     return;
 
-                IItemHandler handler = smelt.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+                /*IItemHandler handler = smelt.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
                 player.openMenu(new SimpleMenuProvider(
                         (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, (AutoSmeltHandler) handler),
                         new TextComponent("")
+                ));*/
+                ItemStackHandler ghostInventory = new ItemStackHandler(27) {
+                    @Override
+                    protected void onContentsChanged(int slot) {
+                        gun.getOrCreateTag().put(BurnerGunNBT.SMELTING_FILTER, serializeNBT());
+                    }
+                };
+
+                ghostInventory.deserializeNBT(gun.getOrCreateTagElement(BurnerGunNBT.SMELTING_FILTER));
+                player.openMenu(new SimpleMenuProvider(
+                        (windowId, playerInventory, playerEntity) -> new AutoSmeltContainer(windowId, playerInventory, ghostInventory), new TextComponent("")
                 ));
 
             });

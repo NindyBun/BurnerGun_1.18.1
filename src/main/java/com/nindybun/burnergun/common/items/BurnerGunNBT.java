@@ -18,7 +18,7 @@ public class BurnerGunNBT {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String SMELTING_WHITELIST = "burnergun.tag.smelt_whitelist";
-    private static final String SMELTING_FILTER = "burnergun.tag.smelt_filter";
+    public static final String SMELTING_FILTER = "burnergun.tag.smelt_filter";
     private static final String TRASH_WHITELIST = "burnergun.tag.trash_whitelist";
     private static final String TRASH_FILTER = "burnergun.tag.trash_filter";
     private static final String FUEL_VALUE = "burnergun.tag.fuel_value";
