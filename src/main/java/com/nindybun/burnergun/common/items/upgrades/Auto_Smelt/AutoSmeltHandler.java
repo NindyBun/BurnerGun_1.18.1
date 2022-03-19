@@ -39,9 +39,7 @@ public class AutoSmeltHandler extends ItemStackHandler {
         SimpleContainer inv = new SimpleContainer(1);
         inv.setItem(0, stack);
         Optional<? extends AbstractCookingRecipe> recipe = Minecraft.getInstance().level.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, Minecraft.getInstance().level);
-        if (!recipe.isPresent())
-            return false;
-        return true;
+        return recipe.isPresent();
     }
 
 
