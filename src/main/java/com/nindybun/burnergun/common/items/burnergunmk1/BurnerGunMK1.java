@@ -271,7 +271,7 @@ public class BurnerGunMK1 extends Item {
                     || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
                 double fuel = BurnerGunNBT.getFuelValue(gun)+((UpgradeCard)handler.getStackInSlot(0).getItem()).getUpgrade().getExtraValue();
                 if (world.getMaxLocalRawBrightness((entity.blockPosition())) >= 8)
-                    BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)+fuel >= base_use_buffer ? base_use_buffer : BurnerGunNBT.getFuelValue(gun)+fuel);
+                    BurnerGunNBT.setFuelValue(gun, fuel >= base_use_buffer ? base_use_buffer : fuel);
             }
         }
     }
