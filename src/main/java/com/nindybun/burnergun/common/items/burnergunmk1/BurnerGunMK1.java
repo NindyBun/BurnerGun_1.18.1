@@ -292,5 +292,4 @@ public class BurnerGunMK1 extends Item {
         return InteractionResultHolder.consume(gun);
     }
 
-
 }
