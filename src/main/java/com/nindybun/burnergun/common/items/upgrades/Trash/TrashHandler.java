@@ -21,7 +21,7 @@ public class TrashHandler extends ItemStackHandler {
     public TrashHandler(int numberOfSlots){
         super(numberOfSlots);
     }
-
+/*
     @NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -38,7 +38,7 @@ public class TrashHandler extends ItemStackHandler {
             return false;
         this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
         return false;
-    }
+    }*/
 
     protected void onContentsChanged(int slot) {
         this.validateSlotIndex(slot);

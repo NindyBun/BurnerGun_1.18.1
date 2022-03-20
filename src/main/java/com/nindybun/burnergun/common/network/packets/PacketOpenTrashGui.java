@@ -52,7 +52,6 @@ public class PacketOpenTrashGui {
                     return;
 
                 IItemHandler handler = trash.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
-
                 player.openMenu(new SimpleMenuProvider(
                         (windowId, playerInv, playerEntity) -> new TrashContainer(windowId, playerInv, (TrashHandler) handler),
                         new TextComponent("")

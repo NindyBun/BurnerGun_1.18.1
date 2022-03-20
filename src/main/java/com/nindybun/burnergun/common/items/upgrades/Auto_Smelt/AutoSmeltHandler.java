@@ -12,6 +12,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.LevelResource;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.data.ForgeLootTableProvider;
+import net.minecraftforge.common.data.ForgeRecipeProvider;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +33,7 @@ public class AutoSmeltHandler extends ItemStackHandler {
         super(numberOfSlots);
     }
 
-    @NotNull
+    /*@NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         this.setStackInSlot(slot, ItemStack.EMPTY);
@@ -46,17 +50,18 @@ public class AutoSmeltHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        LOGGER.info("AUTOSMELTHANDLER");
         if (slot < 0 || slot >= TrashContainer.MAX_EXPECTED_HANDLER_SLOT_COUNT) {
             throw new IllegalArgumentException("Invalid slot number: " + slot);
         }
         if (stack.getItem() instanceof BurnerGunMK1 || stack.getItem() instanceof BurnerGunMK2 || stack.getItem() instanceof UpgradeCard)
             return false;
-        if (!hasSmeltOption(stack))
+        *//*if (!hasSmeltOption(stack))
             return false;
-        this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
+        this.setStackInSlot(slot, stack.getItem().getDefaultInstance());*//*
         return false;
     }
-
+*/
     protected void onContentsChanged(int slot) {
         this.validateSlotIndex(slot);
     }

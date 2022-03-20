@@ -28,6 +28,7 @@ public class UpgradeCard extends Item {
                     .append(this.getUpgrade().getBaseName().equals(Upgrade.HORIZONTAL_EXPANSION_1.getBaseName()) ||
                             this.getUpgrade().getBaseName().equals(Upgrade.VERTICAL_EXPANSION_1.getBaseName()) ? this.upgrade.getTier()*2+1 + "" : "")
                     .withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TextComponent("Type: ").append(new TranslatableComponent(this.getUpgrade().getType()).withStyle(ChatFormatting.AQUA)));
         }
     }
 

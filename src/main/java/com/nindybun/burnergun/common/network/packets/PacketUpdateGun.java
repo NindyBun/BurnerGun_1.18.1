@@ -1,7 +1,5 @@
 package com.nindybun.burnergun.common.network.packets;
 
-import com.nindybun.burnergun.client.screens.ModScreens;
-import com.nindybun.burnergun.client.screens.burnergunSettingsScreen;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
@@ -11,23 +9,19 @@ import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
 import com.nindybun.burnergun.common.network.PacketHandler;
 import com.nindybun.burnergun.util.UpgradeUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class PacketUpdateGun {
@@ -59,15 +53,15 @@ public class PacketUpdateGun {
                 IItemHandler handler = gun.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
                 List<Upgrade> currentUpgrades = new ArrayList<>();
                 IItemHandler trashHandler = null;
-                /*ItemStackHandler smeltHandler = null;*/
+                IItemHandler smeltHandler = null;
 
                 int type = gun.getItem() instanceof BurnerGunMK1 ? 1 : 0;
                 for (int i = type; i < handler.getSlots(); i++) {
                     if (!handler.getStackInSlot(i).getItem().equals(Items.AIR)){
                         if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.TRASH))
                             trashHandler = Trash.getHandler(handler.getStackInSlot(i));
-                        /*if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.AUTO_SMELT))
-                            smeltHandler = AutoSmelt.getHandler(handler.getStackInSlot(i));*/
+                        if (((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade().equals(Upgrade.AUTO_SMELT))
+                            smeltHandler = AutoSmelt.getHandler(handler.getStackInSlot(i));
                         currentUpgrades.add(((UpgradeCard)handler.getStackInSlot(i).getItem()).getUpgrade());
                     }
                 }
@@ -84,21 +78,14 @@ public class PacketUpdateGun {
                     BurnerGunNBT.setTrashFilter(gun, new ArrayList<>());
                 }
 
-                /*if (UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
-                    ItemStackHandler smeltHandler = new ItemStackHandler(27){
-                        @Override
-                        protected void onContentsChanged(int slot) {
-                            gun.getOrCreateTag().put(BurnerGunNBT.SMELTING_FILTER, serializeNBT());
-                        }
-                    };
-                    smeltHandler.deserializeNBT(gun.getOrCreateTagElement(BurnerGunNBT.SMELTING_FILTER));
+                if (UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
                     List<Item> smeltFilter = new ArrayList<>();
                     for (int i = 0; i < smeltHandler.getSlots(); i++){
                         if (!smeltHandler.getStackInSlot(i).getItem().equals(Items.AIR))
                             smeltFilter.add(smeltHandler.getStackInSlot(i).getItem());
                     }
                     BurnerGunNBT.setSmeltFilter(gun, smeltFilter);
-                }else*/ if (!UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
+                }else if (!UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.AUTO_SMELT)){
                     BurnerGunNBT.setSmeltFilter(gun, new ArrayList<>());
                 }
 
@@ -142,7 +129,7 @@ public class PacketUpdateGun {
                 });
                 BurnerGunNBT.setUprades(gun, currentUpgrades);
                 if (msg.open)
-                    PacketHandler.sendTo(new PacketClientUpdateGun(gun), player);
+                    PacketHandler.sendTo(new PacketClientOpenGunSettings(gun), player);
             });
             ctx.get().setPacketHandled(true);
         }

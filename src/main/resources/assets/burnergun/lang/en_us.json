@@ -62,6 +62,15 @@
   "tooltip.burnergun.ambience": "Absorbs heat from nearby light sources.",
   "tooltip.burnergun.reactor": "By slamming Hydrogen atoms together you get energy! And a lot of heat!",
 
+  "tooltip.burnergun.type.base": "BASE",
+  "tooltip.burnergun.type.util": "UTILITY",
+  "tooltip.burnergun.type.tool": "TOOL",
+  "tooltip.burnergun.type.pickaxe": "PICKAXE",
+  "tooltip.burnergun.type.sword": "SWORD",
+  "tooltip.burnergun.type.axe": "AXE",
+  "tooltip.burnergun.type.hoe": "HOE",
+  "tooltip.burnergun.type.burnergun": "BURNER GUN",
+
   "tooltip.burnergun.magnet": "Transports block drops to your inventory.",
   "tooltip.burnergun.light": "Solidifies heat into a light source.",
   "tooltip.burnergun.focal_point": "Increases max reach to ",

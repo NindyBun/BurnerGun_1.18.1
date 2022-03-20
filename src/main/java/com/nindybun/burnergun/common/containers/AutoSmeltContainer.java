@@ -6,28 +6,33 @@ import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmeltHandler;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class AutoSmeltContainer extends AbstractContainerMenu {
+    private final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
 
     AutoSmeltContainer(int windowId, Inventory playerInv,
                        FriendlyByteBuf buf){
-        this(windowId, playerInv, new ItemStackHandler(MAX_EXPECTED_HANDLER_SLOT_COUNT));
+        this(windowId, playerInv, new AutoSmeltHandler(MAX_EXPECTED_HANDLER_SLOT_COUNT));
     }
 
-    public AutoSmeltContainer(int windowId, Inventory playerInventory, IItemHandler handler){
+    public AutoSmeltContainer(int windowId, Inventory playerInventory, AutoSmeltHandler handler){
         super(ModContainers.AUTO_SMELT_CONTAINER.get(), windowId);
         this.setup(new InvWrapper(playerInventory), handler, playerInventory.player.level);
     }
@@ -86,7 +91,7 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
             int bagCol = bagSlot % HANDLER_SLOTS_PER_ROW;
             int xpos = HANDLER_INVENTORY_XPOS + SLOT_X_SPACING * bagCol;
             int ypos = HANDLER_INVENTORY_YPOS + SLOT_Y_SPACING * bagRow;
-            addSlot(new GhostSlot(handler, slotNumber, xpos, ypos, level));
+            addSlot(new AutoSmeltGhostSlot(handler, slotNumber, xpos, ypos, level));
         }
     }
 
@@ -102,6 +107,12 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
                 (!off.isEmpty() && off.getItem() instanceof BurnerGunMK2);
     }
 
+    public boolean hasSmeltOption(ItemStack stack, Level level){
+        SimpleContainer inv = new SimpleContainer(1);
+        inv.setItem(0, stack);
+        Optional<? extends AbstractCookingRecipe> recipe = level.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, level);
+        return recipe.isPresent();
+    }
 
     @Override
     public ItemStack quickMoveStack(Player playrIn, int index) {
@@ -134,7 +145,8 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
             if (slotNumber == -1)
                 return itemstack;
 
-            this.slots.get(slotNumber).set(currentStack.copy().split(1));
+            if (hasSmeltOption(currentStack, playrIn.level))
+                this.slots.get(slotNumber).set(currentStack.copy().split(1));
         }
 
         return itemstack;

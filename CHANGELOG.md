@@ -51,3 +51,8 @@
 ### v1.18.1-4.0.1
 - Changed max fuel to 20,000 to use lava buckets
 - BurnerGunMk2 uses Blaze Nebula instead of Blaze Singularity
+### v1.18.1-4.1.0
+- Updated Forge to 1.18.1-39.1.0
+- Uses JEI 1.18.1-9.4.1.112
+- Fixed AutoSmelt and Trash gui not working properly on a Server
+- Fixed code to work on a Server and the Client

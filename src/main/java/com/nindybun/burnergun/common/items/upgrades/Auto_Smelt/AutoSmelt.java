@@ -40,15 +40,15 @@ public class AutoSmelt extends UpgradeCard {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (world.isClientSide)
-            PacketHandler.sendToServer(new PacketOpenAutoSmeltGui());
+        if (!world.isClientSide)
+            //PacketHandler.sendToServer(new PacketOpenAutoSmeltGui());
             /*NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider(
                     (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, getHandler(stack)),
                     new TextComponent("")));*/
-            /*player.openMenu(new SimpleMenuProvider(
+            player.openMenu(new SimpleMenuProvider(
                     (windowId, playerInv, playerEntity) -> new AutoSmeltContainer(windowId, playerInv, (AutoSmeltHandler) getHandler(stack)),
                     new TextComponent("")
-            ));*/
+            ));
         return InteractionResultHolder.success(stack);
     }
 
@@ -56,11 +56,11 @@ public class AutoSmelt extends UpgradeCard {
         return upgrade;
     }
 
-    /*@Nonnull
+    @Nonnull
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
         return new AutoSmeltProvider();
-    }*/
+    }
 
     public static IItemHandler getHandler(ItemStack itemStack) {
         return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
