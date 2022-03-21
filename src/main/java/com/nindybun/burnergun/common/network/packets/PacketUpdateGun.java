@@ -122,9 +122,9 @@ public class PacketUpdateGun {
                 }
 
                 currentUpgrades.forEach(upgrade -> {
-                    if ((upgrade.lazyIs(Upgrade.FORTUNE_1) && upgrade.isActive() && currentUpgrades.contains(Upgrade.SILK_TOUCH))
-                            || (upgrade.lazyIs(Upgrade.SILK_TOUCH) && upgrade.isActive() && UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.FORTUNE_1))){
-                        upgrade.setActive(!upgrade.isActive());
+                    if ((upgrade.lazyIs(Upgrade.FORTUNE_1) && upgrade.isActive() && currentUpgrades.contains(Upgrade.SILK_TOUCH) && UpgradeUtil.getUpgradeFromListByUpgrade(currentUpgrades, Upgrade.SILK_TOUCH).isActive())
+                            || (upgrade.lazyIs(Upgrade.SILK_TOUCH) && upgrade.isActive() && UpgradeUtil.containsUpgradeFromList(currentUpgrades, Upgrade.FORTUNE_1) && UpgradeUtil.getUpgradeFromListByUpgrade(currentUpgrades, Upgrade.FORTUNE_1).isActive())){
+                        upgrade.setActive(false);
                     }
                 });
                 BurnerGunNBT.setUprades(gun, currentUpgrades);

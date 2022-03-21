@@ -36,27 +36,16 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
             throw new IllegalArgumentException("Invalid slot number: " + slot);
         }
         if (slot == 0 ) {
-            if (stack.getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                    || stack.getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                    || stack.getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                    || stack.getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                    || stack.getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem()))
-                return true;
-            else if (isFuel(stack) || stack.getItem().equals(Items.BUCKET)){
-                //PacketHandler.sendToServer(new PacketRefuel());
+            if (    Upgrade.AMBIENCE_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade())
+                    || isFuel(stack)
+                    || stack.getItem().equals(Items.BUCKET)){
                 return true;
             }
         }
         if (slot != 0 && stack.getItem() instanceof UpgradeCard
-                && !stack.getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                && !stack.getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                && !stack.getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                && !stack.getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                && !stack.getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
-            if (getUpgradeByUpgrade(((UpgradeCard) stack.getItem()).getUpgrade()) != null){
-                return false;
-            }
-            return canInsert(stack);
+                && !(Upgrade.AMBIENCE_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade()))
+                && getUpgradeByUpgrade(((UpgradeCard) stack.getItem()).getUpgrade()) == null){
+            return true;
         }
         return false;
     }

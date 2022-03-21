@@ -15,30 +15,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 
 public class TrashHandler extends ItemStackHandler {
-    private boolean isDirty = true;
     public static final Logger LOGGER = LogManager.getLogger();
 
     public TrashHandler(int numberOfSlots){
         super(numberOfSlots);
     }
-/*
-    @NotNull
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        this.setStackInSlot(slot, ItemStack.EMPTY);
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        if (slot < 0 || slot >= TrashContainer.MAX_EXPECTED_HANDLER_SLOT_COUNT) {
-            throw new IllegalArgumentException("Invalid slot number: " + slot);
-        }
-        if (stack.getItem() instanceof BurnerGunMK1 || stack.getItem() instanceof BurnerGunMK2 || stack.getItem() instanceof UpgradeCard)
-            return false;
-        this.setStackInSlot(slot, stack.getItem().getDefaultInstance());
-        return false;
-    }*/
 
     protected void onContentsChanged(int slot) {
         this.validateSlotIndex(slot);

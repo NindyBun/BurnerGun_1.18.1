@@ -47,9 +47,6 @@ public class Trash extends UpgradeCard {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!world.isClientSide)
-            /*NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider(
-                    (windowId, playerInv, playerEntity) -> new TrashContainer(windowId, playerInv, (TrashHandler) getHandler(stack)),
-                    new TextComponent("")));*/
             player.openMenu(new SimpleMenuProvider(
                     (windowId, playerInv, playerEntity) -> new TrashContainer(windowId, playerInv, (TrashHandler) getHandler(stack)),
                     new TextComponent("")

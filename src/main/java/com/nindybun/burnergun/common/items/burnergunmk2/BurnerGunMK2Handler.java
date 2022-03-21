@@ -18,14 +18,12 @@ public class BurnerGunMK2Handler extends ItemStackHandler {
     }
 
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        if (slot < 0 || slot >= MAX_SLOTS || !(stack.getItem() instanceof UpgradeCard)
-                || stack.getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                || stack.getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                || stack.getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                || stack.getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                || stack.getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())) {
+        if (slot < 0 || slot >= MAX_SLOTS) {
             throw new IllegalArgumentException("Invalid slot number: " + slot);
         }
+        if (    !(stack.getItem() instanceof UpgradeCard)
+                || (Upgrade.AMBIENCE_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade())))
+            return false;
         return true;
     }
 

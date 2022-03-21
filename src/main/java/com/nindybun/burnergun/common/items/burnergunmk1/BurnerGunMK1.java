@@ -65,17 +65,9 @@ public class BurnerGunMK1 extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         IItemHandler handler = getHandler(stack);
-        if (       !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                && !handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
+        if (!(handler.getStackInSlot(0).getItem() instanceof UpgradeCard)){
             tooltip.add(new TranslatableComponent("Feed me fuel!").withStyle(ChatFormatting.YELLOW));
-        }else if (  handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
+        }else if (handler.getStackInSlot(0).getItem() instanceof UpgradeCard){
             tooltip.add(new TranslatableComponent("Collecting heat from nearby sources!").withStyle(ChatFormatting.YELLOW));
         }
         tooltip.add(new TranslatableComponent("Press " + GLFW.glfwGetKeyName(Keybinds.burnergun_gui_key.getKey().getValue(), GLFW.glfwGetKeyScancode(Keybinds.burnergun_gui_key.getKey().getValue())).toUpperCase() + " to open GUI").withStyle(ChatFormatting.GRAY));
@@ -255,11 +247,7 @@ public class BurnerGunMK1 extends Item {
         boolean heldgun = ((Player)entity).getMainHandItem().getItem() instanceof BurnerGunMK1 || ((Player)entity).getOffhandItem().getItem() instanceof BurnerGunMK1 ? true : false;
         if (heldgun && entity instanceof Player && gun.getItem() instanceof BurnerGunMK1){
             IItemHandler handler = getHandler(gun);
-            if (handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_1.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_2.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_3.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_4.getCard().asItem())
-                    || handler.getStackInSlot(0).getItem().equals(Upgrade.AMBIENCE_5.getCard().asItem())){
+            if (handler.getStackInSlot(0).getItem() instanceof UpgradeCard){
                 double fuel = BurnerGunNBT.getFuelValue(gun)+((UpgradeCard)handler.getStackInSlot(0).getItem()).getUpgrade().getExtraValue();
                 if (world.getMaxLocalRawBrightness((entity.blockPosition())) >= 8)
                     BurnerGunNBT.setFuelValue(gun, fuel >= base_use_buffer ? base_use_buffer : fuel);

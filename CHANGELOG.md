@@ -56,3 +56,7 @@
 - Uses JEI 1.18.1-9.4.1.112
 - Fixed AutoSmelt and Trash gui not working properly on a Server
 - Fixed code to work on a Server and the Client
+### v1.18.1-4.1.1
+- Fixed AutoSmelt and Trash GUI not working
+- Fixed upgrade toggling
+- Reworked minor code

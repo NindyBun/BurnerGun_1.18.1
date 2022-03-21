@@ -160,6 +160,15 @@ public class UpgradeUtil {
 
     public static void updateUpgrade(ItemStack stack, Upgrade upgrade){
         ListTag upgrades = stack.getOrCreateTag().getList(BurnerGunNBT.UPGRADES, Tag.TAG_COMPOUND);
+        List<Upgrade> upgradeList = getUpgrades(stack);
+        upgradeList.forEach(indexUpgrade -> {
+            if ( (indexUpgrade.lazyIs(Upgrade.FORTUNE_1) && indexUpgrade.isActive() && upgrade.lazyIs(Upgrade.SILK_TOUCH))
+                    || (indexUpgrade.lazyIs(Upgrade.SILK_TOUCH) && indexUpgrade.isActive() && upgrade.lazyIs(Upgrade.FORTUNE_1)) )
+                indexUpgrade.setActive(false);
+            if (upgrade.lazyIs(indexUpgrade)){
+                indexUpgrade.setActive(!indexUpgrade.isActive());
+            }
+        });
         upgrades.forEach(e -> {
             CompoundTag compound = (CompoundTag) e;
             String name = compound.getString(KEY_UPGRADE);
