@@ -55,7 +55,6 @@ public class BurnerGunMK1 extends Item {
     private static final double base_use = 100;
     public static final double base_use_buffer = 20_000;
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
 
     public BurnerGunMK1() {
         super(new Properties().stacksTo(1).setNoRepair().tab(com.nindybun.burnergun.common.BurnerGun.itemGroup));
@@ -70,9 +69,6 @@ public class BurnerGunMK1 extends Item {
         }else if (handler.getStackInSlot(0).getItem() instanceof UpgradeCard){
             tooltip.add(new TranslatableComponent("Collecting heat from nearby sources!").withStyle(ChatFormatting.YELLOW));
         }
-        tooltip.add(new TranslatableComponent("Press " + GLFW.glfwGetKeyName(Keybinds.burnergun_gui_key.getKey().getValue(), GLFW.glfwGetKeyScancode(Keybinds.burnergun_gui_key.getKey().getValue())).toUpperCase() + " to open GUI").withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TranslatableComponent("Press " + GLFW.glfwGetKeyName(Keybinds.burnergun_light_key.getKey().getValue(), GLFW.glfwGetKeyScancode(Keybinds.burnergun_light_key.getKey().getValue())).toUpperCase() + " to shoot light!").withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TranslatableComponent("Press " + GLFW.glfwGetKeyName(Keybinds.burnergun_lightPlayer_key.getKey().getValue(), GLFW.glfwGetKeyScancode(Keybinds.burnergun_lightPlayer_key.getKey().getValue())).toUpperCase() + " to place light at your head!").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
@@ -117,7 +113,6 @@ public class BurnerGunMK1 extends Item {
         return heldItem;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void refuel(ItemStack gun, Player player){
         IItemHandler handler = getHandler(gun);
         while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > 0){
@@ -159,35 +154,6 @@ public class BurnerGunMK1 extends Item {
         return true;
     }
 
-    public ItemStack trashItem(List<Item> trashList, ItemStack drop, Boolean trashWhitelist){
-        if (trashList.contains(drop.getItem()) && !trashWhitelist)
-            return drop;
-        else if (!trashList.contains(drop.getItem()) && trashWhitelist)
-            return drop;
-        return ItemStack.EMPTY;
-    }
-
-    public ItemStack smeltItem(Level world, List<Item> smeltList, ItemStack drop, Boolean smeltWhitelist){
-        SimpleContainer inv = new SimpleContainer(1);
-        inv.setItem(0, drop);
-        Optional<? extends AbstractCookingRecipe> recipe = world.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, world);
-        if (recipe.isPresent()){
-            ItemStack smelted = recipe.get().getResultItem().copy();
-            if (smeltList.contains(drop.getItem()) && smeltWhitelist)
-                return smelted;
-            else if (!smeltList.contains(drop.getItem()) && !smeltWhitelist)
-                return smelted;
-        }
-        return drop;
-    }
-
-    public void spawnLight(Level world, BlockHitResult ray, ItemStack gun){
-        if (world.getBrightness(LightLayer.BLOCK, ray.getBlockPos().relative(ray.getDirection())) < 8 && ray.getType() == BlockHitResult.Type.BLOCK && BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost()){
-            BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
-            world.setBlockAndUpdate(ray.getBlockPos(), ModBlocks.LIGHT.get().defaultBlockState());
-        }
-    }
-
     public void mineBlock(Level world, BlockHitResult ray, ItemStack gun, List<Upgrade> activeUpgrades, List<Item> smeltFilter, List<Item> trashFilter, BlockPos blockPos, BlockState blockState, Player player){
         if (canMine(gun, world, blockPos, blockState, player, activeUpgrades)){
             useFuel(gun, activeUpgrades, player);
@@ -201,9 +167,9 @@ public class BurnerGunMK1 extends Item {
             if (!blockDrops.isEmpty()){
                 blockDrops.forEach(drop -> {
                     if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.AUTO_SMELT))
-                        drop = smeltItem(world, smeltFilter, drop.copy(), BurnerGunNBT.getSmeltWhitelist(gun));
+                        drop = UpgradeUtil.smeltItem(world, smeltFilter, drop.copy(), BurnerGunNBT.getSmeltWhitelist(gun));
                     if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.TRASH))
-                        drop = trashItem(trashFilter, drop.copy(), BurnerGunNBT.getTrashWhitelist(gun));
+                        drop = UpgradeUtil.trashItem(trashFilter, drop.copy(), BurnerGunNBT.getTrashWhitelist(gun));
                     if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.MAGNET)){
                         if (!player.getInventory().add(drop.copy()))
                             player.drop(drop.copy(), true);
@@ -217,7 +183,7 @@ public class BurnerGunMK1 extends Item {
             else
                 blockState.getBlock().popExperience((ServerLevel) world, blockPos, blockXP);
             if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.LIGHT)){
-                spawnLight(world, ray, gun);
+                UpgradeUtil.spawnLight(world, ray, gun);
             }
 
         }

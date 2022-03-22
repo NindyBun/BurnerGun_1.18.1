@@ -1,31 +1,41 @@
 package com.nindybun.burnergun.util;
 
+import com.nindybun.burnergun.common.blocks.ModBlocks;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UpgradeUtil {
     private static final String KEY_FILTER = "filter";
     private static final String KEY_UPGRADE = "upgrade";
     private static final String KEY_ENABLED = "enabled";
+    private static final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
 
     public static ListTag setUpgradesNBT(List<Upgrade> upgrades) {
         ListTag list = new ListTag();
@@ -180,6 +190,36 @@ public class UpgradeUtil {
             if( name.equals(upgrade.getName()) )
                 compound.putBoolean(KEY_ENABLED, !compound.getBoolean(KEY_ENABLED));
         });
+    }
+
+    public static ItemStack trashItem(List<Item> trashList, ItemStack drop, Boolean trashWhitelist){
+        if (trashList.contains(drop.getItem()) && !trashWhitelist)
+            return drop;
+        else if (!trashList.contains(drop.getItem()) && trashWhitelist)
+            return drop;
+        return ItemStack.EMPTY;
+    }
+
+    public static ItemStack smeltItem(Level world, List<Item> smeltList, ItemStack drop, Boolean smeltWhitelist){
+        SimpleContainer inv = new SimpleContainer(1);
+        inv.setItem(0, drop);
+        Optional<? extends AbstractCookingRecipe> recipe = world.getRecipeManager().getRecipeFor(RECIPE_TYPE, inv, world);
+        if (recipe.isPresent()){
+            ItemStack smelted = recipe.get().getResultItem().copy();
+            if (smeltList.contains(drop.getItem()) && smeltWhitelist)
+                return smelted;
+            else if (!smeltList.contains(drop.getItem()) && !smeltWhitelist)
+                return smelted;
+        }
+        return drop;
+    }
+
+    public static void spawnLight(Level world, BlockHitResult ray, ItemStack gun){
+        if (world.getBrightness(LightLayer.BLOCK, ray.getBlockPos().relative(ray.getDirection())) < 8 && ray.getType() == BlockHitResult.Type.BLOCK && BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost()){
+            if (gun.getItem() instanceof BurnerGunMK1)
+                BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
+            world.setBlockAndUpdate(ray.getBlockPos(), ModBlocks.LIGHT.get().defaultBlockState());
+        }
     }
 
 }
