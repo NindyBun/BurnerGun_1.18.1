@@ -7,6 +7,7 @@ import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
 import com.nindybun.burnergun.common.items.upgrades.Trash.Trash;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
+import com.nindybun.burnergun.common.items.upgrades.Vein_Miner.VeinMiner;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,6 +45,7 @@ public class ModItems {
     public static final RegistryObject<Item> BASE_TIER_4 = UPGRADE_ITEMS.register("base_tier_4", Upgrade.TIER_4::getCard);
     public static final RegistryObject<Item> BASE_TIER_5 = UPGRADE_ITEMS.register("base_tier_5", Upgrade.TIER_5::getCard);
 
+    public static final RegistryObject<Item> VEIN_MINER = UPGRADE_ITEMS.register("vein_miner_upgrade", () -> new VeinMiner(Upgrade.VEIN_MINER));
     public static final RegistryObject<Item> MAGNET = UPGRADE_ITEMS.register("magnet_upgrade", Upgrade.MAGNET::getCard);
     public static final RegistryObject<Item> SILK_TOUCH = UPGRADE_ITEMS.register("silk_touch_upgrade", Upgrade.SILK_TOUCH::getCard);
     public static final RegistryObject<Item> LIGHT = UPGRADE_ITEMS.register("light_upgrade", Upgrade.LIGHT::getCard);

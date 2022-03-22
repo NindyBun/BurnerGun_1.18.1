@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "iui",
+    "ufu",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "u": {
+      "item": "minecraft:ender_pearl"
+    },
+    "f": {
+      "item": "burnergun:base_tier_2"
+    },
+    "g": {
+      "item": "minecraft:diamond_pickaxe"
+    }
+  },
+  "result":
+  {
+    "item": "burnergun:vein_miner_upgrade",
+    "count": 1
+  }
+}

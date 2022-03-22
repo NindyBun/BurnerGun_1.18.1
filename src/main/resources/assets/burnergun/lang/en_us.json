@@ -1,5 +1,6 @@
 {
   "item.burnergun.magnet_upgrade": "Magnet Upgrade",
+  "item.burnergun.vein_miner_upgrade": "Vein Miner Upgrade",
   "item.burnergun.silk_touch_upgrade":  "Silk Touch Upgrade",
   "item.burnergun.light_upgrade": "Light Upgrade",
   "item.burnergun.light": "Light",
@@ -72,6 +73,7 @@
   "tooltip.burnergun.type.burnergun": "BURNER GUN",
 
   "tooltip.burnergun.magnet": "Transports block drops to your inventory.",
+  "tooltip.burnergun.vein_miner": "Mines veins of blocks.",
   "tooltip.burnergun.light": "Solidifies heat into a light source.",
   "tooltip.burnergun.focal_point": "Increases max reach to ",
   "tooltip.burnergun.horizontal_expansion": "Increases mining width to ",
