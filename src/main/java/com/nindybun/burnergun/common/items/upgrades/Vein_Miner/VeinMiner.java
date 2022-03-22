@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,6 +28,9 @@ public class VeinMiner extends UpgradeCard {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide){
+            List<Blocks> blockList = ForgeRegistries.BLOCKS.getValues().stream().flatMap(block -> {
+
+            });
             ModScreens.openFilterListScreen(stack);
         }
         return InteractionResultHolder.success(stack);
