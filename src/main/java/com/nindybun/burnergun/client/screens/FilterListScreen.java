@@ -29,6 +29,11 @@ public class FilterListScreen extends Screen implements Scrollable {
     }
 
     @Override
+    public boolean mouseScrolled(double p_94686_, double p_94687_, double p_94688_) {
+        return super.mouseScrolled(p_94686_, p_94687_, p_94688_);
+    }
+
+    @Override
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
         InputConstants.Key key = InputConstants.getKey(p_231046_1_, p_231046_2_);
         if (p_231046_1_ == 256 || minecraft.options.keyInventory.isActiveAndMatches(key)) {
