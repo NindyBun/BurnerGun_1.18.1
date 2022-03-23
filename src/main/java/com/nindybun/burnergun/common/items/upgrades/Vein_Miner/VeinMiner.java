@@ -59,7 +59,7 @@ public class VeinMiner extends UpgradeCard {
                     oldTag.forEach(oTag -> {
                         CompoundTag ooTag = (CompoundTag) oTag;
                         LOGGER.info(ooTag.getString(BLOCK) + " >> "+ tag.getString(BLOCK) + " >> " + ooTag.equals(tag));
-                        if (ooTag.getString(BLOCK).equals(tag.getString(BLOCK))){
+                        if (ooTag.equals(tag)){
                             tag.putBoolean(WHITELIST, ooTag.getBoolean(WHITELIST));
                             return;
                         }
