@@ -19,7 +19,7 @@ public class PacketClientOpenGunSettings {
     }
 
     public static void encode(PacketClientOpenGunSettings msg, FriendlyByteBuf buffer) {
-    buffer.writeItemStack(msg.gun, false);
+        buffer.writeItemStack(msg.gun, false);
     }
 
     public static PacketClientOpenGunSettings decode(FriendlyByteBuf buffer) {

@@ -11,12 +11,18 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class FilterListScreen extends Screen {
+public class FilterListScreen extends Screen implements Scrollable {
     protected FilterListScreen(ItemStack stack) {
         super(new TextComponent("Title"));
     }
+
+    @Override
+    protected void init() {
+    }
+
     @Override
     public boolean isPauseScreen() {
         return false;
@@ -40,4 +46,29 @@ public class FilterListScreen extends Screen {
         TranslatableComponent string = new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.filter");
         drawString(matrixStack, Minecraft.getInstance().font, string, (width/2)- StringUtil.getStringPixelLength(string.getString())/2, 20, Color.WHITE.getRGB());
         }
+
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        return null;
+    }
+
+    @Override
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+        return 0;
+    }
+
+    @Override
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+        return 0;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+        return false;
+    }
 }
