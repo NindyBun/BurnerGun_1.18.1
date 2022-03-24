@@ -175,7 +175,7 @@ public class BurnerGunNBT {
         return collect;
     }
     public static int getCollectedBlocks(ItemStack gun){
-        CompoundTag tag = new CompoundTag();
+        CompoundTag tag = gun.getOrCreateTag();
         return !tag.contains(BLOCKS_COLLECTED) ? setCollectedBlocks(gun, 1) : tag.getInt(BLOCKS_COLLECTED);
     }
 
@@ -184,7 +184,7 @@ public class BurnerGunNBT {
         return collect;
     }
     public static int getMaxCollectedBlocks(ItemStack gun){
-        CompoundTag tag = new CompoundTag();
+        CompoundTag tag = gun.getOrCreateTag();
         return !tag.contains(MAX_BLOCKS_COLLECTED) ? setMaxCollectedBlocks(gun, 1) : tag.getInt(MAX_BLOCKS_COLLECTED);
     }
 }

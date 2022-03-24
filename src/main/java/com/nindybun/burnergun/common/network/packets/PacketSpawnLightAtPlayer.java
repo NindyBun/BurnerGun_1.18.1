@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
@@ -46,8 +47,14 @@ public class PacketSpawnLightAtPlayer {
                     return;
                 List<Upgrade> upgrades = BurnerGunNBT.getUpgrades(gun);
                 BlockState state = player.level.getBlockState(new BlockPos(player.position().add(new Vec3(0, 1, 0))));
+                if (!player.level.mayInteract(player, player.blockPosition())
+                        || !player.getAbilities().mayBuild)
+                    return;
                 if (UpgradeUtil.containsUpgradeFromList(upgrades, Upgrade.LIGHT)){
-                    if (state == Blocks.AIR.defaultBlockState() || state == Blocks.CAVE_AIR.defaultBlockState()){
+                    if (state == Blocks.AIR.defaultBlockState()
+                            || state == Blocks.CAVE_AIR.defaultBlockState()
+                            || (state.getFluidState().isSource() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                            || (state.getFluidState().getAmount() > 0 && !state.hasProperty(BlockStateProperties.WATERLOGGED))){
                         if (gun.getItem() instanceof BurnerGunMK1){
                             if (BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost())
                                 BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());

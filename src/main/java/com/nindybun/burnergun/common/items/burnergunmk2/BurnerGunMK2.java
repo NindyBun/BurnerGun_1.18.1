@@ -102,9 +102,11 @@ public class BurnerGunMK2 extends Item {
         if (    state.getDestroySpeed(world, pos) < 0
                 || state.getBlock() instanceof Light
                 || !world.mayInteract(player, pos)
+                || !player.getAbilities().mayBuild
                 || state.getBlock().equals(Blocks.AIR.defaultBlockState())
                 || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState())
-                || (!state.getFluidState().isEmpty() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || (state.getFluidState().isSource() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || (state.getFluidState().getAmount() > 0 && !state.hasProperty(BlockStateProperties.WATERLOGGED))
                 || world.isEmptyBlock(pos))
             return false;
         return true;

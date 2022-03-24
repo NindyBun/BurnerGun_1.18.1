@@ -15,7 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,13 +48,17 @@ public class PacketSpawnLightAtRaycast {
                 ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
                 if (gun.isEmpty())
                     return;
+
                 List<Upgrade> upgrades = BurnerGunNBT.getUpgrades(gun);
                 if (UpgradeUtil.containsUpgradeFromList(upgrades, Upgrade.LIGHT)){
                     if (gun.getItem() instanceof BurnerGunMK1 && BurnerGunNBT.getFuelValue(gun) < Upgrade.LIGHT.getCost())
                         return;
                     BlockHitResult ray = WorldUtil.getLookingAt(player.level, player, ClipContext.Fluid.NONE, BurnerGunNBT.getRaycast(gun));
-                    BlockState state = player.level.getBlockState(ray.getBlockPos());
-                    if (state == Blocks.AIR.defaultBlockState() || state == Blocks.CAVE_AIR.defaultBlockState()) {
+                    BlockState state = player.level.getBlockState(ray.getBlockPos().relative(ray.getDirection()));
+                    if (!player.level.mayInteract(player, ray.getBlockPos())
+                            || !player.getAbilities().mayBuild)
+                        return;
+                    if (ray.getType() == HitResult.Type.MISS) {
                         if (gun.getItem() instanceof BurnerGunMK1){
                             if (BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost())
                                 BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
@@ -63,7 +69,12 @@ public class PacketSpawnLightAtRaycast {
                         player.level.setBlockAndUpdate(ray.getBlockPos(), ModBlocks.LIGHT.get().defaultBlockState());
                         return;
                     }
-                    if ((state != Blocks.AIR.defaultBlockState() || state != Blocks.CAVE_AIR.defaultBlockState()) && (player.level.getBlockState(ray.getBlockPos().relative(ray.getDirection())) == Blocks.AIR.defaultBlockState() || player.level.getBlockState(ray.getBlockPos().relative(ray.getDirection())) == Blocks.CAVE_AIR.defaultBlockState())){
+                    if ((ray.getType() == HitResult.Type.BLOCK)
+                            && (state == Blocks.AIR.defaultBlockState()
+                            || state == Blocks.CAVE_AIR.defaultBlockState()
+                            || (state.getFluidState().isSource() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                            || (state.getFluidState().getAmount() > 0 && !state.hasProperty(BlockStateProperties.WATERLOGGED)))
+                            ){
                         if (gun.getItem() instanceof BurnerGunMK1){
                             if (BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost())
                                 BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());

@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -82,12 +83,12 @@ public class BlockRenderer {
 
     public static void drawArea(ItemStack gun, Player player, PoseStack matrixStack){
         BlockHitResult ray = WorldUtil.getLookingAt(player.level, player, ClipContext.Fluid.NONE, BurnerGunNBT.getRaycast(gun));
-        if (player.level.getBlockState(ray.getBlockPos()) == Blocks.AIR.defaultBlockState())
-            return;
+//        if (player.level.getBlockState(ray.getBlockPos()) == Blocks.AIR.defaultBlockState())
+//            return;
         int xRad = BurnerGunNBT.getHorizontal(gun);
         int yRad = BurnerGunNBT.getVertical(gun);
         BlockPos aimedPos = ray.getBlockPos();
-        if (!BurnerGunMK2.canMine(player.level, aimedPos, player.level.getBlockState(aimedPos), player))
+        if (ray.getType() == HitResult.Type.MISS)
             return;
         Vec3 size = WorldUtil.getDim(ray, xRad, yRad, player);
         float[] color = BurnerGunNBT.getColor(gun);

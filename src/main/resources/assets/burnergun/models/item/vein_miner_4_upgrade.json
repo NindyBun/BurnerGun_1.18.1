@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures":
+  {
+    "layer0": "burnergun:items/vein_miner_4_upgrade"
+  }
+}

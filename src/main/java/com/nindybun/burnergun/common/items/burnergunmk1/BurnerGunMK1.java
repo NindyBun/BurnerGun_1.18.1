@@ -149,10 +149,12 @@ public class BurnerGunMK1 extends Item {
         if (    state.getDestroySpeed(world, pos) < 0
                 || state.getBlock() instanceof Light
                 || !world.mayInteract(player, pos)
+                || !player.getAbilities().mayBuild
                 || BurnerGunNBT.getFuelValue(gun) < getUseValue(upgrades)
                 || state.getBlock().equals(Blocks.AIR.defaultBlockState())
                 || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState())
-                || (!state.getFluidState().isEmpty() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || (state.getFluidState().isSource() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || (state.getFluidState().getAmount() > 0 && !state.hasProperty(BlockStateProperties.WATERLOGGED))
                 || world.isEmptyBlock(pos))
             return false;
         return true;
@@ -174,7 +176,7 @@ public class BurnerGunMK1 extends Item {
         return blockPosList;
     }
 
-    public void mineVein(Level world, List<BlockPos> blockPosList, List<BlockPos> minedBlockList, int count, ItemStack gun, List<Upgrade> activeUpgrades, List<Item> smeltFilter, List<Item> trashFilter, Player player){
+    public void mineVein(Level world, BlockHitResult ray, List<BlockPos> blockPosList, List<BlockPos> minedBlockList, int count, ItemStack gun, List<Upgrade> activeUpgrades, List<Item> smeltFilter, List<Item> trashFilter, Player player){
         if (blockPosList.isEmpty())
             return;
         BlockState blockState = world.getBlockState(blockPosList.get(0));
@@ -184,39 +186,14 @@ public class BurnerGunMK1 extends Item {
 
         if (canMine(gun, world, blockPos, blockState, player, activeUpgrades)){
             blockPosList = collectBlocks(minedBlockList, blockPosList, blockPos, blockState, world, gun, player, activeUpgrades);
-            useFuel(gun, activeUpgrades, player);
-            List<ItemStack> blockDrops = blockState.getDrops(new LootContext.Builder((ServerLevel) world)
-                    .withParameter(LootContextParams.TOOL, gun)
-                    .withParameter(LootContextParams.ORIGIN, new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
-                    .withParameter(LootContextParams.BLOCK_STATE, blockState)
-            );
-            world.destroyBlock(blockPos, false);
-            int blockXP = blockState.getExpDrop(world, blockPos, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.FORTUNE_1) ? UpgradeUtil.getUpgradeFromListByUpgrade(activeUpgrades, Upgrade.FORTUNE_1).getTier() : 0, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.SILK_TOUCH) ? 1 : 0);
-            if (!blockDrops.isEmpty()){
-                blockDrops.forEach(drop -> {
-                    if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.AUTO_SMELT))
-                        drop = UpgradeUtil.smeltItem(world, smeltFilter, drop.copy(), BurnerGunNBT.getSmeltWhitelist(gun));
-                    if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.TRASH))
-                        drop = UpgradeUtil.trashItem(trashFilter, drop.copy(), BurnerGunNBT.getTrashWhitelist(gun));
-                    if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.MAGNET)){
-                        if (!player.getInventory().add(drop.copy()))
-                            player.drop(drop.copy(), true);
-                    }else{
-                        world.addFreshEntity(new ItemEntity(world, blockPos.getX()+0.5, blockPos.getY()+0.5, blockPos.getZ()+0.5, drop.copy()));
-                    }
-                });
-            }
-            if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.MAGNET))
-                player.giveExperiencePoints(blockXP);
-            else
-                blockState.getBlock().popExperience((ServerLevel) world, blockPos, blockXP);
+            mineBlock(world, ray, gun, activeUpgrades, smeltFilter, trashFilter, blockPos, blockState, player);
         }
 
         count -= 1;
         if (count <= 0)
             return;
 
-        mineVein(world, blockPosList, minedBlockList, count, gun, activeUpgrades, smeltFilter, trashFilter, player);
+        mineVein(world, ray, blockPosList, minedBlockList, count, gun, activeUpgrades, smeltFilter, trashFilter, player);
     }
 
     public void mineBlock(Level world, BlockHitResult ray, ItemStack gun, List<Upgrade> activeUpgrades, List<Item> smeltFilter, List<Item> trashFilter, BlockPos blockPos, BlockState blockState, Player player){
@@ -303,7 +280,7 @@ public class BurnerGunMK1 extends Item {
                 gun.enchant(Enchantments.SILK_TOUCH, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.SILK_TOUCH) ? 1 : 0);
                 if (UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.VEIN_MINER_1) && Keybinds.burnergun_veinMiner_key.isDown()){
                     blocks.add(blockPos);
-                    mineVein(world, blocks, new ArrayList<>(), BurnerGunNBT.getCollectedBlocks(gun), gun, activeUpgrades, BurnerGunNBT.getSmeltFilter(gun), BurnerGunNBT.getTrashFilter(gun), player);
+                    mineVein(world, blockRayTraceResult, blocks, new ArrayList<>(), BurnerGunNBT.getCollectedBlocks(gun), gun, activeUpgrades, BurnerGunNBT.getSmeltFilter(gun), BurnerGunNBT.getTrashFilter(gun), player);
                 }else if (player.isCrouching())
                     mineBlock(world, blockRayTraceResult, gun, activeUpgrades, BurnerGunNBT.getSmeltFilter(gun), BurnerGunNBT.getTrashFilter(gun), blockPos, blockState, player);
                 else

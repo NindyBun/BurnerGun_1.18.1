@@ -45,7 +45,12 @@ public class ModItems {
     public static final RegistryObject<Item> BASE_TIER_4 = UPGRADE_ITEMS.register("base_tier_4", Upgrade.TIER_4::getCard);
     public static final RegistryObject<Item> BASE_TIER_5 = UPGRADE_ITEMS.register("base_tier_5", Upgrade.TIER_5::getCard);
 
-    public static final RegistryObject<Item> VEIN_MINER_1 = UPGRADE_ITEMS.register("vein_miner_upgrade_1", Upgrade.VEIN_MINER_1::getCard);
+    public static final RegistryObject<Item> VEIN_MINER_1 = UPGRADE_ITEMS.register("vein_miner_1_upgrade", Upgrade.VEIN_MINER_1::getCard);
+    public static final RegistryObject<Item> VEIN_MINER_2 = UPGRADE_ITEMS.register("vein_miner_2_upgrade", Upgrade.VEIN_MINER_2::getCard);
+    public static final RegistryObject<Item> VEIN_MINER_3 = UPGRADE_ITEMS.register("vein_miner_3_upgrade", Upgrade.VEIN_MINER_3::getCard);
+    public static final RegistryObject<Item> VEIN_MINER_4 = UPGRADE_ITEMS.register("vein_miner_4_upgrade", Upgrade.VEIN_MINER_4::getCard);
+    public static final RegistryObject<Item> VEIN_MINER_5 = UPGRADE_ITEMS.register("vein_miner_5_upgrade", Upgrade.VEIN_MINER_5::getCard);
+
     public static final RegistryObject<Item> MAGNET = UPGRADE_ITEMS.register("magnet_upgrade", Upgrade.MAGNET::getCard);
     public static final RegistryObject<Item> SILK_TOUCH = UPGRADE_ITEMS.register("silk_touch_upgrade", Upgrade.SILK_TOUCH::getCard);
     public static final RegistryObject<Item> LIGHT = UPGRADE_ITEMS.register("light_upgrade", Upgrade.LIGHT::getCard);

@@ -168,7 +168,7 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         }, this));
         settings.add(horizontalSlider = new Slider(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.horizontal"), new TextComponent(""), 0, maxHorizontal, horizontal, false, true, slider -> {
         }, this));
-        settings.add(collectedBlocksSlider = new Slider(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.maxCollectedBlocks"), new TextComponent(""), 1, maxCollectedBlocks, collectedBlocks, false, true, slider -> {
+        settings.add(collectedBlocksSlider = new Slider(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.collectedBlocks"), new TextComponent(""), 0, maxCollectedBlocks, collectedBlocks, false, true, slider -> {
         }, this));
         settings.add(colorButton = new Button(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.color"), button -> {
             ModScreens.openColorScreen(gun);
@@ -298,6 +298,11 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
             super(widthIn, heightIn, width, height, new TextComponent(""), onPress);
             this.isEnabled = isEnabled;
             this.texture = texture;
+        }
+
+        @Override
+        public boolean isHoveredOrFocused() {
+            return super.isHoveredOrFocused();
         }
 
         @Override
