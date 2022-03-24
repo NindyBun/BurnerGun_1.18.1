@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.common.items.upgrades.Vein_Miner;
 
+import com.nindybun.burnergun.client.Keybinds;
 import com.nindybun.burnergun.client.screens.ModScreens;
 import com.nindybun.burnergun.common.containers.ModContainers;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
@@ -40,7 +41,11 @@ public class VeinMiner extends UpgradeCard {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide){
-            ListTag oldTag = stack.getOrCreateTag().getList(VEIN_MINER_FILTER, Tag.TAG_COMPOUND);
+            if (Keybinds.burnergun_veinMiner_key.isDown()){
+                LOGGER.info("VEIN MINE");
+            }
+        }
+            /*ListTag oldTag = stack.getOrCreateTag().getList(VEIN_MINER_FILTER, Tag.TAG_COMPOUND);
             ListTag oldTagString = new ListTag();
             oldTag.forEach(tag -> {
                 CompoundTag tTag = (CompoundTag) tag;
@@ -67,7 +72,7 @@ public class VeinMiner extends UpgradeCard {
             stack.getOrCreateTag().put(VEIN_MINER_FILTER, newTag);
         }
         if (level.isClientSide)
-            ModScreens.openFilterListScreen(stack);
+            ModScreens.openFilterListScreen(stack);*/
 
         return InteractionResultHolder.success(stack);
     }

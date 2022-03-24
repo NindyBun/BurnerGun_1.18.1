@@ -42,14 +42,17 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
             vertical,
             maxVertical,
             horizontal,
-            maxHorizontal;
+            maxHorizontal,
+            collectedBlocks,
+            maxCollectedBlocks;
     private float volume;
     private boolean trashFilterWhitelist, containsTrash;
     private boolean smeltFilterWhitelist, containsSmelt;
     private Slider raycastSlider,
             volumeSlider,
             verticalSlider,
-            horizontalSlider;
+            horizontalSlider,
+            collectedBlocksSlider;
     private Button colorButton;
 
     protected burnergunSettingsScreen(ItemStack gun) {
@@ -64,6 +67,8 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         this.maxRaycastRange = BurnerGunNBT.getMaxRaycast(gun);
         this.trashFilterWhitelist = BurnerGunNBT.getTrashWhitelist(gun);
         this.smeltFilterWhitelist = BurnerGunNBT.getSmeltWhitelist(gun);
+        this.collectedBlocks = BurnerGunNBT.getCollectedBlocks(gun);
+        this.maxCollectedBlocks = BurnerGunNBT.getMaxCollectedBlocks(gun);
 
         toggleableList.clear();
         toggleableList = UpgradeUtil.getToggleableUpgrades(gun);
@@ -163,6 +168,8 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         }, this));
         settings.add(horizontalSlider = new Slider(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.horizontal"), new TextComponent(""), 0, maxHorizontal, horizontal, false, true, slider -> {
         }, this));
+        settings.add(collectedBlocksSlider = new Slider(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.maxCollectedBlocks"), new TextComponent(""), 1, maxCollectedBlocks, collectedBlocks, false, true, slider -> {
+        }, this));
         settings.add(colorButton = new Button(midX - 140, 0, 125, 20, new TranslatableComponent("tooltip." + BurnerGun.MOD_ID + ".screen.color"), button -> {
             ModScreens.openColorScreen(gun);
         }));
@@ -186,6 +193,7 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         nbt.putInt("Raycast", raycastRange);
         nbt.putInt("Vertical", vertical);
         nbt.putInt("Horizontal", horizontal);
+        nbt.putInt("Collected_Blocks", collectedBlocks);
         PacketHandler.sendToServer(new PacketChangeSettings(nbt));
         super.removed();
     }
@@ -196,6 +204,7 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         raycastSlider.dragging = false;
         verticalSlider.dragging = false;
         horizontalSlider.dragging = false;
+        collectedBlocksSlider.dragging = false;
         return false;
     }
 
@@ -216,6 +225,10 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         if (horizontalSlider.isMouseOver(mouseX, mouseY)) {
             horizontalSlider.sliderValue += (delta > 0 ? 1 : -1);
             horizontalSlider.updateSlider();
+        }
+        if (collectedBlocksSlider.isMouseOver(mouseX, mouseY)) {
+            collectedBlocksSlider.sliderValue += (delta > 0 ? 1 : -1);
+            collectedBlocksSlider.updateSlider();
         }
         return false;
     }
@@ -252,6 +265,9 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         }
         if (slider.equals(horizontalSlider)) {
             this.horizontal = slider.getValueInt();
+        }
+        if (slider.equals(collectedBlocksSlider)) {
+            this.collectedBlocks = slider.getValueInt();
         }
     }
 

@@ -31,6 +31,8 @@ public class BurnerGunNBT {
     private static final String MAX_RAYCAST = "burnergun.tag.max_raycast";
     public static final String UPGRADES = "burnergun.tag.upgrades";
     private static final String COLOR = "burnergun.tag.color";
+    private static final String BLOCKS_COLLECTED = "burnergun.tag.blocks_collected";
+    private static final String MAX_BLOCKS_COLLECTED = "burnergun.tag.max_blocks_collected";
 
     public static final int MIN_RAYCAST = 5;
 
@@ -168,5 +170,21 @@ public class BurnerGunNBT {
         };
     }
 
+    public static int setCollectedBlocks(ItemStack gun, int collect){
+        gun.getOrCreateTag().putInt(BLOCKS_COLLECTED, collect);
+        return collect;
+    }
+    public static int getCollectedBlocks(ItemStack gun){
+        CompoundTag tag = new CompoundTag();
+        return !tag.contains(BLOCKS_COLLECTED) ? setCollectedBlocks(gun, 1) : tag.getInt(BLOCKS_COLLECTED);
+    }
 
+    public static int setMaxCollectedBlocks(ItemStack gun, int collect){
+        gun.getOrCreateTag().putInt(MAX_BLOCKS_COLLECTED, collect);
+        return collect;
+    }
+    public static int getMaxCollectedBlocks(ItemStack gun){
+        CompoundTag tag = new CompoundTag();
+        return !tag.contains(MAX_BLOCKS_COLLECTED) ? setMaxCollectedBlocks(gun, 1) : tag.getInt(MAX_BLOCKS_COLLECTED);
+    }
 }

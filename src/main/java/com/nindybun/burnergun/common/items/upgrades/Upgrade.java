@@ -33,7 +33,7 @@ public enum Upgrade {
     AMBIENCE_4("ambience_4", 1, 0, 1, 24, false, "type.util"),
     AMBIENCE_5("ambience_5", 1, 0, 1, 120, false, "type.util"),
 
-    VEIN_MINER("vein_miner", -1, 0, 1, 0, true, "type.tool"),
+    VEIN_MINER_1("vein_miner_1", 1, 0, 1, 64, true, "type.tool"),
     MAGNET("magnet", -1, 75, 1, 0, true, "type.util"),
     SILK_TOUCH("silk_touch", -1, 150, 1, 0, true, "type.tool"),
     LIGHT("light", -1, 50, 1, 0, true, "type.burnergun"),

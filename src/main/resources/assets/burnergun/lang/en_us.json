@@ -1,6 +1,5 @@
 {
   "item.burnergun.magnet_upgrade": "Magnet Upgrade",
-  "item.burnergun.vein_miner_upgrade": "Vein Miner Upgrade",
   "item.burnergun.silk_touch_upgrade":  "Silk Touch Upgrade",
   "item.burnergun.light_upgrade": "Light Upgrade",
   "item.burnergun.light": "Light",
@@ -21,6 +20,11 @@
   "item.burnergun.base_tier_4": "Base Tier 4",
   "item.burnergun.base_tier_5": "Base Tier 5",
 
+  "item.burnergun.vein_miner_upgrade_1": "Vein Miner 1x64",
+  "item.burnergun.vein_miner_upgrade_2": "Vein Miner 2x64",
+  "item.burnergun.vein_miner_upgrade_3": "Vein Miner 3x64",
+  "item.burnergun.vein_miner_upgrade_4": "Vein Miner 4x64",
+  "item.burnergun.vein_miner_upgrade_5": "Vein Miner 5x64",
   "item.burnergun.ambience_1": "Ambientic Generator 1",
   "item.burnergun.ambience_2": "Ambientic Generator 2",
   "item.burnergun.ambience_3": "Ambientic Generator 3",

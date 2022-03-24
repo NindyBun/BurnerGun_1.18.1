@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.BufferVertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
+import com.nindybun.burnergun.client.Keybinds;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.blocks.Light;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
@@ -93,7 +94,7 @@ public class BlockRenderer {
         AABB test = player.level.getBlockState(aimedPos).getShape(player.getLevel(), aimedPos, CollisionContext.of(player)).bounds();
         drawBoundingBoxAtBlockPos(matrixStack, test, color[0], color[1], color[2], 1.0F, aimedPos.relative(ray.getDirection()), aimedPos.relative(ray.getDirection()));
         drawBoundingBoxAtBlockPos(matrixStack, test, color[0], color[1], color[2], 1.0F, aimedPos, aimedPos.relative(ray.getDirection()));
-        if (player.isCrouching())
+        if (player.isCrouching() || Keybinds.burnergun_veinMiner_key.isDown())
             return;
         for (int xPos = aimedPos.getX() - (int)size.x(); xPos <= aimedPos.getX() + (int)size.x(); ++xPos){
             for (int yPos = aimedPos.getY() - (int)size.y(); yPos <= aimedPos.getY() + (int)size.y(); ++yPos){
