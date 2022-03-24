@@ -126,6 +126,7 @@
   "key.burnergun_gui_key": "Burner Gun Gui",
   "key.burnergun_light_key": "Shoot Light",
   "key.burnergun_lightplayer_key": "Spawn Light At Head",
-  "key.categories.burnergun": "Burner Gun"
+  "key.categories.burnergun": "Burner Gun",
+  "key.burnergun_veinminer_key": "Vein Miner"
 
 }

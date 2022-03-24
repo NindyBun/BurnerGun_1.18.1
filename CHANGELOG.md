@@ -60,3 +60,6 @@
 - Fixed AutoSmelt and Trash GUI not working
 - Fixed upgrade toggling
 - Reworked minor code
+### v1.18.1-4.2.0
+- Added 5 tiers of vein mining from a stack to 5 stacks
+- Fixed a bit of code
