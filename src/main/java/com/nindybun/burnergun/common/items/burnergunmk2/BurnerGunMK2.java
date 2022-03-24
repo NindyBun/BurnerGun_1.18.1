@@ -154,7 +154,7 @@ public class BurnerGunMK2 extends Item {
         minedBlockList.add(blockPos);
 
         if (canMine(world, blockPos, blockState, player)){
-            blockPosList = UpgradeUtil.collectBlocks(minedBlockList, blockPosList, blockPos, blockState, world, gun, player, activeUpgrades);
+            blockPosList = UpgradeUtil.collectBlocks(minedBlockList, blockPosList, blockPos, blockState.getBlock().defaultBlockState(), world);
             mineBlock(world, ray, gun, activeUpgrades, smeltFilter, trashFilter, blockPos, blockState, player, true);
         }
 

@@ -231,14 +231,14 @@ public class UpgradeUtil {
         }
     }
 
-    public static List<BlockPos> collectBlocks(List<BlockPos> minedBlocks, List<BlockPos> blockPosList, BlockPos targetedBlock, BlockState targetedState, Level level, ItemStack gun, Player player, List<Upgrade> upgrades){
+    public static List<BlockPos> collectBlocks(List<BlockPos> minedBlocks, List<BlockPos> blockPosList, BlockPos targetedBlock, BlockState targetedState, Level level){
         for (int y = targetedBlock.getY()-1; y <= targetedBlock.getY()+1; y++){
             for (int x = targetedBlock.getX()-1; x <= targetedBlock.getX()+1; x++){
                 for (int z = targetedBlock.getZ()-1; z <= targetedBlock.getZ()+1; z++){
                     BlockPos newPos = new BlockPos(x, y, z);
                     if (minedBlocks.contains(newPos) || blockPosList.contains(newPos))
                         continue;
-                    BlockState newState = level.getBlockState(newPos);
+                    BlockState newState = level.getBlockState(newPos).getBlock().defaultBlockState();
                     if (newState.equals(targetedState))
                         blockPosList.add(newPos);
                 }
