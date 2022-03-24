@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -228,6 +229,22 @@ public class UpgradeUtil {
                 BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
             world.setBlockAndUpdate(ray.getBlockPos(), ModBlocks.LIGHT.get().defaultBlockState());
         }
+    }
+
+    public static List<BlockPos> collectBlocks(List<BlockPos> minedBlocks, List<BlockPos> blockPosList, BlockPos targetedBlock, BlockState targetedState, Level level, ItemStack gun, Player player, List<Upgrade> upgrades){
+        for (int y = targetedBlock.getY()-1; y <= targetedBlock.getY()+1; y++){
+            for (int x = targetedBlock.getX()-1; x <= targetedBlock.getX()+1; x++){
+                for (int z = targetedBlock.getZ()-1; z <= targetedBlock.getZ()+1; z++){
+                    BlockPos newPos = new BlockPos(x, y, z);
+                    if (minedBlocks.contains(newPos) || blockPosList.contains(newPos))
+                        continue;
+                    BlockState newState = level.getBlockState(newPos);
+                    if (newState.equals(targetedState))
+                        blockPosList.add(newPos);
+                }
+            }
+        }
+        return blockPosList;
     }
 
 }
