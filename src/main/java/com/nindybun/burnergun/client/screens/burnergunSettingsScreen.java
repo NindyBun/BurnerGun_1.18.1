@@ -211,23 +211,23 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
         if (volumeSlider.isMouseOver(mouseX, mouseY)) {
-            volumeSlider.sliderValue += (.01f * (delta > 0 ? 1 : -1));
+            volumeSlider.sliderValue += (1f/100 * (delta > 0 ? 1 : -1));
             volumeSlider.updateSlider();
         }
         if (raycastSlider.isMouseOver(mouseX, mouseY)) {
-            raycastSlider.sliderValue += (delta > 0 ? 1 : -1);
+            raycastSlider.sliderValue += (1f/(maxRaycastRange-1) * (delta > 0 ? 1 : -1));
             raycastSlider.updateSlider();
         }
         if (verticalSlider.isMouseOver(mouseX, mouseY)) {
-            verticalSlider.sliderValue += (delta > 0 ? 1 : -1);
+            verticalSlider.sliderValue += (1f/maxVertical * (delta > 0 ? 1 : -1));
             verticalSlider.updateSlider();
         }
         if (horizontalSlider.isMouseOver(mouseX, mouseY)) {
-            horizontalSlider.sliderValue += (delta > 0 ? 1 : -1);
+            horizontalSlider.sliderValue += (1f/maxHorizontal * (delta > 0 ? 1 : -1));
             horizontalSlider.updateSlider();
         }
         if (collectedBlocksSlider.isMouseOver(mouseX, mouseY)) {
-            collectedBlocksSlider.sliderValue += (delta > 0 ? 1 : -1);
+            collectedBlocksSlider.sliderValue += (1f/maxCollectedBlocks * (delta > 0 ? 1 : -1));
             collectedBlocksSlider.updateSlider();
         }
         return false;
