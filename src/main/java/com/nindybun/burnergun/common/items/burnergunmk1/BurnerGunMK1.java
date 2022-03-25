@@ -117,7 +117,7 @@ public class BurnerGunMK1 extends Item {
         return heldItem;
     }
 
-    public void refuel(ItemStack gun, Player player){
+    public void refuel(ItemStack gun){
         IItemHandler handler = getHandler(gun);
         while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > 0){
             if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > base_use_buffer)
@@ -133,7 +133,7 @@ public class BurnerGunMK1 extends Item {
 
     public void useFuel(ItemStack gun, List<Upgrade> upgrades, Player player){
         if (ForgeHooks.getBurnTime(getHandler(gun).getStackInSlot(0), RecipeType.SMELTING) > 0)
-            refuel(gun, player);
+            refuel(gun);
         BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun) - getUseValue(upgrades));
     }
 
@@ -258,7 +258,7 @@ public class BurnerGunMK1 extends Item {
         if (world.isClientSide)
             player.playSound(SoundEvents.FIRECHARGE_USE, BurnerGunNBT.getVolume(gun)*0.5f, 1.0f);
         if (!world.isClientSide){
-            refuel(gun, player);
+            refuel(gun);
             if (canMine(gun, world, blockPos, blockState, player, activeUpgrades)){
                 gun.enchant(Enchantments.BLOCK_FORTUNE, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.FORTUNE_1) ? UpgradeUtil.getUpgradeFromListByUpgrade(activeUpgrades, Upgrade.FORTUNE_1).getTier() : 0);
                 gun.enchant(Enchantments.SILK_TOUCH, UpgradeUtil.containsUpgradeFromList(activeUpgrades, Upgrade.SILK_TOUCH) ? 1 : 0);
