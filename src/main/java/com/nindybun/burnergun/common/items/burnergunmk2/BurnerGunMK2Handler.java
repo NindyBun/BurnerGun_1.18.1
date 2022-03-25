@@ -26,6 +26,7 @@ public class BurnerGunMK2Handler extends ItemStackHandler {
         }
         if (stack.getItem() instanceof UpgradeCard
                 && !(Upgrade.AMBIENCE_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade()))
+                && !(Upgrade.FUEL_EFFICIENCY_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade()))
                 && getUpgradeByUpgrade(((UpgradeCard) stack.getItem()).getUpgrade()) == null){
             return true;
         }
