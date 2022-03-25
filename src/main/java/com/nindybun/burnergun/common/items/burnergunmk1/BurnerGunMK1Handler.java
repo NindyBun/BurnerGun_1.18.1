@@ -71,24 +71,6 @@ public class BurnerGunMK1Handler extends ItemStackHandler {
         return null;
     }
 
-
-    public boolean canInsert(ItemStack item){
-        List<UpgradeCard> upgradeCards = getUpgrades();
-
-        if (!upgradeCards.isEmpty()){
-            for (UpgradeCard upgrade : upgradeCards) {
-                UpgradeCard upgradeItem = (UpgradeCard) item.getItem();
-                //Checks if the holding upgrade is Silk and if there is a fortune upgrade
-                //Checks if the holding upgrade is fortune and if there is a silk upgrade
-                if ((upgradeItem.getUpgrade().equals(Upgrade.SILK_TOUCH) && upgrade.getUpgrade().getBaseName().equals(Upgrade.FORTUNE_1.getBaseName())) ||
-                        (upgradeItem.getUpgrade().getBaseName().equals(Upgrade.FORTUNE_1.getBaseName()) && upgrade.getUpgrade().equals(Upgrade.SILK_TOUCH)) ){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     @Override
     protected void onContentsChanged(int slot) {
         this.validateSlotIndex(slot);
