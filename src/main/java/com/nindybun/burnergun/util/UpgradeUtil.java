@@ -224,8 +224,8 @@ public class UpgradeUtil {
     }
 
     public static void spawnLight(Level world, BlockHitResult ray, ItemStack gun){
-        if (world.getBrightness(LightLayer.BLOCK, ray.getBlockPos().relative(ray.getDirection())) < 8 && ray.getType() == BlockHitResult.Type.BLOCK && BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost()){
-            if (gun.getItem() instanceof BurnerGunMK1)
+        if (world.getBrightness(LightLayer.BLOCK, ray.getBlockPos().relative(ray.getDirection())) < 8 && ray.getType() == BlockHitResult.Type.BLOCK){
+            if (gun.getItem() instanceof BurnerGunMK1 && BurnerGunNBT.getFuelValue(gun) >= Upgrade.LIGHT.getCost())
                 BurnerGunNBT.setFuelValue(gun, BurnerGunNBT.getFuelValue(gun)-Upgrade.LIGHT.getCost());
             world.setBlockAndUpdate(ray.getBlockPos(), ModBlocks.LIGHT.get().defaultBlockState());
         }
