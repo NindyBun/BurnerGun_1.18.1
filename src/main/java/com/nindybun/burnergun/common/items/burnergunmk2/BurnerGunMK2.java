@@ -199,7 +199,7 @@ public class BurnerGunMK2 extends Item {
                    List<BlockPos> blocks = new ArrayList<>();
                    blocks.add(blockPos);
                    mineVein(world, blockRayTraceResult, blocks, new ArrayList<>(), BurnerGunNBT.getCollectedBlocks(gun), gun, activeUpgrades, BurnerGunNBT.getSmeltFilter(gun), BurnerGunNBT.getTrashFilter(gun), player);
-               }if (player.isCrouching())
+               }else if (player.isCrouching())
                     mineBlock(world, blockRayTraceResult, gun, activeUpgrades, smeltFilter, trashFilter, blockPos, blockState, player, false);
                 else
                     mineArea(world, blockRayTraceResult, gun, activeUpgrades, smeltFilter, trashFilter, blockPos, blockState, player);
