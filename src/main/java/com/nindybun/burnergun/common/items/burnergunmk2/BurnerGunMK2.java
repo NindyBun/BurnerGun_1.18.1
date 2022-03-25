@@ -146,8 +146,9 @@ public class BurnerGunMK2 extends Item {
     }
 
     public void mineVein(Level world, BlockHitResult ray, List<BlockPos> blockPosList, List<BlockPos> minedBlockList, int count, ItemStack gun, List<Upgrade> activeUpgrades, List<Item> smeltFilter, List<Item> trashFilter, Player player){
-        if (blockPosList.isEmpty())
+        if (blockPosList.isEmpty() || count <= 0)
             return;
+
         BlockState blockState = world.getBlockState(blockPosList.get(0));
         BlockPos blockPos = blockPosList.get(0);
         blockPosList.remove(0);
@@ -159,9 +160,6 @@ public class BurnerGunMK2 extends Item {
         }
 
         count -= 1;
-        if (count <= 0)
-            return;
-
         mineVein(world, ray, blockPosList, minedBlockList, count, gun, activeUpgrades, smeltFilter, trashFilter, player);
     }
 
