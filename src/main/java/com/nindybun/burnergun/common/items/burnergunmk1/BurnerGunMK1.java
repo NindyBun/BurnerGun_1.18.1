@@ -1,60 +1,21 @@
 package com.nindybun.burnergun.common.items.burnergunmk1;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.nindybun.burnergun.client.Keybinds;
-import com.nindybun.burnergun.common.blocks.Light;
-import com.nindybun.burnergun.common.blocks.ModBlocks;
-import com.nindybun.burnergun.common.items.AbstractBurnerGun;
-import com.nindybun.burnergun.common.items.BurnerGunNBT;
-import com.nindybun.burnergun.common.items.upgrades.Upgrade;
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
-import com.nindybun.burnergun.util.UpgradeUtil;
-import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class BurnerGunMK1 extends AbstractBurnerGun {
     /*private static final double base_use = 100;
@@ -107,7 +68,7 @@ public class BurnerGunMK1 extends AbstractBurnerGun {
         return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
     }*/
 
-    public static ItemStack getGun(Player player) {
+    /*public static ItemStack getGun(Player player) {
         ItemStack heldItem = player.getMainHandItem();
         if (!(heldItem.getItem() instanceof BurnerGunMK1)) {
             heldItem = player.getOffhandItem();
@@ -116,7 +77,7 @@ public class BurnerGunMK1 extends AbstractBurnerGun {
             }
         }
         return heldItem;
-    }
+    }*/
 
     /*public void refuel(ItemStack gun){
         IItemHandler handler = getHandler(gun);

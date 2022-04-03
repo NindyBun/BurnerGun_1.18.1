@@ -1,17 +1,14 @@
-package com.nindybun.burnergun.common.items;
+package com.nindybun.burnergun.common.items.abstractItems;
 
 import com.nindybun.burnergun.client.Keybinds;
-import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.blocks.Light;
+import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
 import com.nindybun.burnergun.util.UpgradeUtil;
 import com.nindybun.burnergun.util.WorldUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -32,18 +29,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class AbstractBurnerGun extends Item {
     private static final double base_use = 100;
@@ -72,6 +65,17 @@ public class AbstractBurnerGun extends Item {
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
+    }
+
+    public static ItemStack getGun(Player player) {
+        ItemStack heldItem = player.getMainHandItem();
+        if (!(heldItem.getItem() instanceof AbstractBurnerGun)) {
+            heldItem = player.getOffhandItem();
+            if (!(heldItem.getItem() instanceof AbstractBurnerGun)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        return heldItem;
     }
 
     public static IItemHandler getHandler(ItemStack itemStack) {
