@@ -166,9 +166,9 @@ public class BurnerGunMK2 extends AbstractBurnerGun {
         UpgradeUtil.removeEnchantment(gun, Enchantments.BLOCK_FORTUNE);
         UpgradeUtil.removeEnchantment(gun, Enchantments.SILK_TOUCH);
         return InteractionResultHolder.consume(gun);
-    }*/
+    }
 
-    /*public static ItemStack getGun(Player player) {
+    public static ItemStack getGun(Player player) {
         ItemStack heldItem = player.getMainHandItem();
         if (!(heldItem.getItem() instanceof BurnerGunMK2)) {
             heldItem = player.getOffhandItem();

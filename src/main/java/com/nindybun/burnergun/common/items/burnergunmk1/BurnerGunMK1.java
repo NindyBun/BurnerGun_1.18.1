@@ -38,6 +38,12 @@ public class BurnerGunMK1 extends AbstractBurnerGun {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
+    @Nonnull
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
+        return new BurnerGunMK1Provider();
+    }
+
     /*@Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return false;
@@ -56,19 +62,13 @@ public class BurnerGunMK1 extends AbstractBurnerGun {
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
-    }*/
-
-    @Nonnull
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
-        return new BurnerGunMK1Provider();
     }
 
-    /*public static IItemHandler getHandler(ItemStack itemStack) {
+    public static IItemHandler getHandler(ItemStack itemStack) {
         return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
-    }*/
+    }
 
-    /*public static ItemStack getGun(Player player) {
+    public static ItemStack getGun(Player player) {
         ItemStack heldItem = player.getMainHandItem();
         if (!(heldItem.getItem() instanceof BurnerGunMK1)) {
             heldItem = player.getOffhandItem();
@@ -77,9 +77,9 @@ public class BurnerGunMK1 extends AbstractBurnerGun {
             }
         }
         return heldItem;
-    }*/
+    }
 
-    /*public void refuel(ItemStack gun){
+    public void refuel(ItemStack gun){
         IItemHandler handler = getHandler(gun);
         while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > 0){
             if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > base_use_buffer)
