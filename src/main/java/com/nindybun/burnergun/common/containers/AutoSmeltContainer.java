@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.common.containers;
 
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
@@ -101,10 +102,8 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
         ItemStack off = playerIn.getOffhandItem();
         return (!main.isEmpty() && main.getItem() instanceof AutoSmelt) ||
                 (!off.isEmpty() && off.getItem() instanceof AutoSmelt) ||
-                (!main.isEmpty() && main.getItem() instanceof BurnerGunMK1) ||
-                (!off.isEmpty() && off.getItem() instanceof BurnerGunMK1) ||
-                (!main.isEmpty() && main.getItem() instanceof BurnerGunMK2) ||
-                (!off.isEmpty() && off.getItem() instanceof BurnerGunMK2);
+                (!main.isEmpty() && main.getItem() instanceof AbstractBurnerGun) ||
+                (!off.isEmpty() && off.getItem() instanceof AbstractBurnerGun);
     }
 
     public boolean hasSmeltOption(ItemStack stack, Level level){
@@ -123,7 +122,7 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
             ItemStack currentStack = slot.getItem();
 
             // Stop our items at the very least :P
-            if (currentStack.getItem() instanceof BurnerGunMK1 || currentStack.getItem() instanceof UpgradeCard || currentStack.getItem() instanceof BurnerGunMK2)
+            if (currentStack.getItem() instanceof AbstractBurnerGun || currentStack.getItem() instanceof UpgradeCard)
                 return itemstack;
 
             if (currentStack.isEmpty())
@@ -156,8 +155,7 @@ public class AutoSmeltContainer extends AbstractContainerMenu {
     public void clicked(int slotId, int dragType, ClickType clickTypeIn, Player player) {
         if ((slotId < this.slots.size()
                 && slotId >= 0
-                && (this.slots.get(slotId).getItem().getItem() instanceof BurnerGunMK1
-                || this.slots.get(slotId).getItem().getItem() instanceof BurnerGunMK2
+                && (this.slots.get(slotId).getItem().getItem() instanceof AbstractBurnerGun
                 || this.slots.get(slotId).getItem().getItem() instanceof UpgradeCard))
                 || clickTypeIn == ClickType.SWAP) {
             return ;

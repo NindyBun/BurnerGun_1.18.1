@@ -1,6 +1,7 @@
 package com.nindybun.burnergun.common.network.packets;
 
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.network.PacketHandler;
@@ -36,10 +37,10 @@ public class PacketRefuel {
                 ServerPlayer player = ctx.get().getSender();
                 if (player == null)
                     return;
-                ItemStack gun = BurnerGunMK1.getGun(player);
-                if (gun.isEmpty())
+                ItemStack gun = AbstractBurnerGun.getGun(player);
+                if (gun.isEmpty() || !(gun.getItem() instanceof BurnerGunMK1))
                     return;
-                IItemHandler handler = BurnerGunMK1.getHandler(gun);
+                IItemHandler handler = AbstractBurnerGun.getHandler(gun);
                 ItemStack stack = handler.getStackInSlot(0);
                 while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0){
                     if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > BurnerGunMK1.base_use_buffer)

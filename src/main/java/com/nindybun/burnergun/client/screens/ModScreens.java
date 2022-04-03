@@ -8,5 +8,4 @@ public class ModScreens {
     public static void openColorScreen(ItemStack gun){
         Minecraft.getInstance().setScreen(new colorScreen(gun));
     }
-    public static void openFilterListScreen(ItemStack stack) { Minecraft.getInstance().setScreen(new FilterListScreen(stack)); }
 }

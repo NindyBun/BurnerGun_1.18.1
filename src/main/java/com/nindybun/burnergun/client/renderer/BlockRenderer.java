@@ -8,6 +8,7 @@ import com.nindybun.burnergun.client.Keybinds;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.blocks.Light;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.util.WorldUtil;
@@ -126,7 +127,7 @@ public class BlockRenderer {
     public static void onRenderWorldEvent(RenderLevelLastEvent e) {
         final GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
         Player player = Minecraft.getInstance().player;
-        ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
+        ItemStack gun = AbstractBurnerGun.getGun(player);
         if (gun.isEmpty())
             return;
         gameRenderer.resetProjectionMatrix(e.getProjectionMatrix());

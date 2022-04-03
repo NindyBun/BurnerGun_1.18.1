@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.common.containers;
 
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
@@ -41,7 +42,7 @@ public class AutoSmeltGhostSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        if (stack.getItem() instanceof BurnerGunMK1 || stack.getItem() instanceof BurnerGunMK2 || stack.getItem() instanceof UpgradeCard)
+        if (stack.getItem() instanceof AbstractBurnerGun || stack.getItem() instanceof UpgradeCard)
             return false;
         if (!hasSmeltOption(stack))
             return false;

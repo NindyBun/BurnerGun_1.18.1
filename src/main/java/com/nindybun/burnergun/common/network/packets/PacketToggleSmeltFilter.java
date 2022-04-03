@@ -1,6 +1,7 @@
 package com.nindybun.burnergun.common.network.packets;
 
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,7 +29,7 @@ public class PacketToggleSmeltFilter {
                 ServerPlayer player = ctx.get().getSender();
                 if (player == null)
                     return;
-                ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
+                ItemStack gun = AbstractBurnerGun.getGun(player);
                 if (gun.isEmpty())
                     return;
                 BurnerGunNBT.setSmeltWhitelist(gun, !BurnerGunNBT.getSmeltWhitelist(gun));

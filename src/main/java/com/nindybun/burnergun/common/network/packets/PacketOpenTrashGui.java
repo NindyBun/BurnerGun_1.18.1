@@ -2,6 +2,7 @@ package com.nindybun.burnergun.common.network.packets;
 
 import com.nindybun.burnergun.common.containers.TrashContainer;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Trash.Trash;
@@ -40,7 +41,7 @@ public class PacketOpenTrashGui {
                 if (player == null)
                     return;
 
-                ItemStack gun = !BurnerGunMK2.getGun(player).isEmpty() ? BurnerGunMK2.getGun(player) : BurnerGunMK1.getGun(player);
+                ItemStack gun = AbstractBurnerGun.getGun(player);
                 ItemStack trash = player.getMainHandItem();
                 if (!gun.isEmpty()){
                     List<Upgrade> upgradeList = BurnerGunNBT.getUpgrades(gun);
