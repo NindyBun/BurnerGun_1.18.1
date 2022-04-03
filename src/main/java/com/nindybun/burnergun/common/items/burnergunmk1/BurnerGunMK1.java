@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.nindybun.burnergun.client.Keybinds;
 import com.nindybun.burnergun.common.blocks.Light;
 import com.nindybun.burnergun.common.blocks.ModBlocks;
+import com.nindybun.burnergun.common.items.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.items.upgrades.UpgradeCard;
@@ -55,10 +56,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class BurnerGunMK1 extends Item {
-    private static final double base_use = 100;
+public class BurnerGunMK1 extends AbstractBurnerGun {
+    /*private static final double base_use = 100;
     public static final double base_use_buffer = 20_000;
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();*/
 
     public BurnerGunMK1() {
         super(new Properties().stacksTo(1).setNoRepair().tab(com.nindybun.burnergun.common.BurnerGun.itemGroup));
@@ -76,7 +77,7 @@ public class BurnerGunMK1 extends Item {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
-    @Override
+    /*@Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return false;
     }
@@ -94,7 +95,7 @@ public class BurnerGunMK1 extends Item {
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
-    }
+    }*/
 
     @Nonnull
     @Override
@@ -102,9 +103,9 @@ public class BurnerGunMK1 extends Item {
         return new BurnerGunMK1Provider();
     }
 
-    public static IItemHandler getHandler(ItemStack itemStack) {
+    /*public static IItemHandler getHandler(ItemStack itemStack) {
         return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
-    }
+    }*/
 
     public static ItemStack getGun(Player player) {
         ItemStack heldItem = player.getMainHandItem();
@@ -117,7 +118,7 @@ public class BurnerGunMK1 extends Item {
         return heldItem;
     }
 
-    public void refuel(ItemStack gun){
+    /*public void refuel(ItemStack gun){
         IItemHandler handler = getHandler(gun);
         while (handler.getStackInSlot(0).getCount() > 0 && ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > 0){
             if (BurnerGunNBT.getFuelValue(gun) + ForgeHooks.getBurnTime(handler.getStackInSlot(0), RecipeType.SMELTING) > base_use_buffer)
@@ -272,7 +273,7 @@ public class BurnerGunMK1 extends Item {
         UpgradeUtil.removeEnchantment(gun, Enchantments.BLOCK_FORTUNE);
         UpgradeUtil.removeEnchantment(gun, Enchantments.SILK_TOUCH);
         return InteractionResultHolder.consume(gun);
-    }
+    }*/
 
 
 }

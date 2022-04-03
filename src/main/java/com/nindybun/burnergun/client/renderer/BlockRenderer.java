@@ -47,6 +47,20 @@ import org.lwjgl.opengl.GL11;
 public class BlockRenderer {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public static boolean canMine(Level world, BlockPos pos, BlockState state, Player player){
+        if (    state.getDestroySpeed(world, pos) < 0
+                || state.getBlock() instanceof Light
+                || !world.mayInteract(player, pos)
+                || !player.getAbilities().mayBuild
+                || state.getBlock().equals(Blocks.AIR.defaultBlockState())
+                || state.getBlock().equals(Blocks.CAVE_AIR.defaultBlockState())
+                || (state.getFluidState().isSource() && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || (state.getFluidState().getAmount() > 0 && !state.hasProperty(BlockStateProperties.WATERLOGGED))
+                || world.isEmptyBlock(pos))
+            return false;
+        return true;
+    }
+
     public static void drawBoundingBoxAtBlockPos(PoseStack matrixStackIn, AABB aabbIn, float red, float green, float blue, float alpha, BlockPos pos, BlockPos aimed) {
         Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
@@ -101,7 +115,7 @@ public class BlockRenderer {
             for (int yPos = aimedPos.getY() - (int)size.y(); yPos <= aimedPos.getY() + (int)size.y(); ++yPos){
                 for (int zPos = aimedPos.getZ() - (int)size.z(); zPos <= aimedPos.getZ() + (int)size.z(); ++zPos){
                     BlockPos thePos = new BlockPos(xPos, yPos, zPos);
-                    if (thePos != aimedPos && BurnerGunMK2.canMine(player.level, thePos, player.level.getBlockState(thePos), player))
+                    if (thePos != aimedPos && canMine(player.level, thePos, player.level.getBlockState(thePos), player))
                         drawBoundingBoxAtBlockPos(matrixStack, player.level.getBlockState(thePos).getShape(player.getLevel(), aimedPos, CollisionContext.of(player)).optimize().bounds(), color[0], color[1], color[2], 1.0F, thePos, aimedPos);
                 }
             }

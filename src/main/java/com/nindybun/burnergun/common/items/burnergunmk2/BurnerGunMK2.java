@@ -4,6 +4,7 @@ import com.nindybun.burnergun.client.Keybinds;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.blocks.Light;
 import com.nindybun.burnergun.common.blocks.ModBlocks;
+import com.nindybun.burnergun.common.items.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.util.UpgradeUtil;
@@ -57,10 +58,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BurnerGunMK2 extends Item {
-    private static final Logger LOGGER = LogManager.getLogger();
+public class BurnerGunMK2 extends AbstractBurnerGun {
+    /*private static final Logger LOGGER = LogManager.getLogger();
     private static final RecipeType<? extends AbstractCookingRecipe> RECIPE_TYPE = RecipeType.SMELTING;
-
+*/
 
     public BurnerGunMK2() {
         super(new Properties().stacksTo(1).setNoRepair().fireResistant().tab(BurnerGun.itemGroup));
@@ -79,7 +80,7 @@ public class BurnerGunMK2 extends Item {
         return new BurnerGunMK2Provider();
     }
 
-    @Override
+    /*@Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return false;
     }
@@ -206,7 +207,7 @@ public class BurnerGunMK2 extends Item {
         UpgradeUtil.removeEnchantment(gun, Enchantments.BLOCK_FORTUNE);
         UpgradeUtil.removeEnchantment(gun, Enchantments.SILK_TOUCH);
         return InteractionResultHolder.consume(gun);
-    }
+    }*/
 
     public static ItemStack getGun(Player player) {
         ItemStack heldItem = player.getMainHandItem();
