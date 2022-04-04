@@ -33,8 +33,11 @@ public class BurnerGunNBT {
     private static final String COLOR = "burnergun.tag.color";
     private static final String BLOCKS_COLLECTED = "burnergun.tag.blocks_collected";
     private static final String MAX_BLOCKS_COLLECTED = "burnergun.tag.max_blocks_collected";
+    private static final String DAMAGE = "burnergun.tag.damage";
+    private static final String ATTACK_SPEED = "burnergun.tag.attack_speed";
 
     public static final int MIN_RAYCAST = 5;
+    public static final float BASE_ATKSPEED = -2.4f;
 
     public static boolean setSmeltWhitelist(ItemStack gun, Boolean isWhitelist){
         gun.getOrCreateTag().putBoolean(SMELTING_WHITELIST, isWhitelist);
@@ -186,5 +189,23 @@ public class BurnerGunNBT {
     public static int getMaxCollectedBlocks(ItemStack gun){
         CompoundTag tag = gun.getOrCreateTag();
         return !tag.contains(MAX_BLOCKS_COLLECTED) ? setMaxCollectedBlocks(gun, 1) : tag.getInt(MAX_BLOCKS_COLLECTED);
+    }
+
+    public static int setAtkDmg(ItemStack tool, int dmg){
+        tool.getOrCreateTag().putInt(DAMAGE, dmg);
+        return dmg;
+    }
+    public static int getAtkDmg(ItemStack tool){
+        CompoundTag tag = tool.getOrCreateTag();
+        return !tag.contains(DAMAGE) ? setAtkDmg(tool, 5) : tag.getInt(DAMAGE);
+    }
+
+    public static float setAtkSpeed(ItemStack tool, float atkSpeed){
+        tool.getOrCreateTag().putFloat(ATTACK_SPEED, atkSpeed);
+        return atkSpeed;
+    }
+    public static float getAtkSpeed(ItemStack tool){
+        CompoundTag tag = tool.getOrCreateTag();
+        return !tag.contains(ATTACK_SPEED) ? setAtkSpeed(tool, BASE_ATKSPEED) : tag.getFloat(ATTACK_SPEED);
     }
 }
