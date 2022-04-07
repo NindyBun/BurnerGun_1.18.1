@@ -35,6 +35,7 @@ public class BurnerGunNBT {
     private static final String MAX_BLOCKS_COLLECTED = "burnergun.tag.max_blocks_collected";
     private static final String DAMAGE = "burnergun.tag.damage";
     private static final String ATTACK_SPEED = "burnergun.tag.attack_speed";
+    private static final String ATTACK_COOLDOWN = "burnergun.tag.attack_cooldown";
 
     public static final int MIN_RAYCAST = 5;
     public static final float BASE_ATKSPEED = -2.4f;
@@ -207,5 +208,14 @@ public class BurnerGunNBT {
     public static float getAtkSpeed(ItemStack tool){
         CompoundTag tag = tool.getOrCreateTag();
         return !tag.contains(ATTACK_SPEED) ? setAtkSpeed(tool, BASE_ATKSPEED) : tag.getFloat(ATTACK_SPEED);
+    }
+
+    public static float setAtkCoolDown(ItemStack tool, float atkCoolDown){
+        tool.getOrCreateTag().putFloat(ATTACK_COOLDOWN, atkCoolDown);
+        return atkCoolDown;
+    }
+    public static float getAtkCoolDown(ItemStack tool){
+        CompoundTag tag = tool.getOrCreateTag();
+        return !tag.contains(ATTACK_COOLDOWN) ? setAtkCoolDown(tool, 2f/(BurnerGunNBT.getAtkSpeed(tool))) : tag.getFloat(ATTACK_COOLDOWN);
     }
 }
