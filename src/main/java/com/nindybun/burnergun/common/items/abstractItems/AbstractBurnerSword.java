@@ -6,6 +6,8 @@ import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,10 +17,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -97,7 +98,17 @@ public class AbstractBurnerSword extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack tool = player.getItemInHand(hand);
-        int range = 10;
+        if (!level.isClientSide){
+            ArrowItem arrowItem = (ArrowItem)Items.ARROW;
+            AbstractArrow arrow = arrowItem.createArrow(level, Items.ARROW.getDefaultInstance(), player);
+            arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
+            arrow.setBaseDamage(arrow.getBaseDamage()+8d);
+
+            level.addFreshEntity(arrow);
+            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
+        }
+
+        /*int range = 10;
         Vec3 look = player.getLookAngle();
         Vec3 start = player.position().add(new Vec3(0, player.getEyeHeight(), 0));
         Vec3 end = new Vec3(player.getX() + look.x * range, player.getY() + player.getEyeHeight() + look.y * range, player.getZ() + look.z * range);
@@ -123,7 +134,7 @@ public class AbstractBurnerSword extends Item {
                     return InteractionResultHolder.success(tool);
                 }
             }
-        }
+        }*/
         return super.use(level, player, hand);
     }
 
