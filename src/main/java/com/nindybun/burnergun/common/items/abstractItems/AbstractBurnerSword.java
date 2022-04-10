@@ -132,6 +132,7 @@ public class AbstractBurnerSword extends Item {
                 AbstractArrow arrow = arrowItem.createArrow(level, Items.ARROW.getDefaultInstance(), player);
                 arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
                 arrow.setBaseDamage(arrow.getBaseDamage()+8d);
+                arrow.setPierceLevel((byte)3);
 
                 level.addFreshEntity(arrow);
                 level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
