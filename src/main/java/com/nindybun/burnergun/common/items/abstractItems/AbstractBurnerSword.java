@@ -114,11 +114,14 @@ public class AbstractBurnerSword extends Item {
             if (!level.isClientSide){
                 if (!ent.isEmpty()){
                     Entity closest = ent.get(0);
+                    double range2 = 0;
                     for (Entity e : ent) {
                         double curr = e.position().distanceTo(player.position());
                         double old = closest.position().distanceTo(player.position());
-                        if (old > curr)
+                        if (old > curr){
                             closest = e;
+                            range2 = curr;
+                        }
                     }
                     /*if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                         player.attack(closest);
@@ -126,7 +129,7 @@ public class AbstractBurnerSword extends Item {
                         return true;
                     }*/
                     if (closest.isAlive()){
-                        Vec3 end2 = new Vec3(closest.getX(), closest.getY() + closest.getEyeHeight(), closest.getZ());
+                        Vec3 end2 = new Vec3(player.getX() + look.x * range2, player.getY() + player.getEyeHeight() + look.y * range2, player.getZ() + look.z * range2);
                         ClipContext context = new ClipContext(start, end2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
                         if (level.clip(context).getType() != HitResult.Type.BLOCK)
                             player.attack(closest);
