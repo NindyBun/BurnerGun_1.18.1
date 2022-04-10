@@ -97,32 +97,34 @@ public class AbstractBurnerSword extends Item {
 
     @Override
     public boolean onEntitySwing(ItemStack tool, LivingEntity livingEntity) {
-        Player player = (Player)livingEntity;
-        Level level = player.level;
-        int range = 10;
-        Vec3 look = player.getLookAngle();
-        Vec3 start = player.position().add(new Vec3(0, player.getEyeHeight(), 0));
-        Vec3 end = new Vec3(player.getX() + look.x * range, player.getY() + player.getEyeHeight() + look.y * range, player.getZ() + look.z * range);
-        List<Entity> entity = level.getEntities(player, new AABB(start, end));
-        List<Entity> ent = new ArrayList<>();
-        for (int i = 0; i < entity.size(); i++) {
-            Entity e = entity.get(i);
-            if (e instanceof Mob)
-                    ent.add(e);
-        }
-        if (!level.isClientSide){
-            if (!ent.isEmpty()){
-                Entity closest = ent.get(0);
-                for (Entity e : ent) {
-                    double curr = e.position().distanceTo(player.position());
-                    double old = closest.position().distanceTo(player.position());
-                    if (old > curr)
-                        closest = e;
-                }
-                if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
-                    player.attack(closest);
-                    BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
-                    return true;
+        if (livingEntity instanceof Player){
+            Player player = (Player)livingEntity;
+            Level level = player.level;
+            int range = 10;
+            Vec3 look = player.getLookAngle();
+            Vec3 start = player.position().add(new Vec3(0, player.getEyeHeight(), 0));
+            Vec3 end = new Vec3(player.getX() + look.x * range, player.getY() + player.getEyeHeight() + look.y * range, player.getZ() + look.z * range);
+            List<Entity> entity = level.getEntities(player, new AABB(start, end));
+            List<Entity> ent = new ArrayList<>();
+            for (int i = 0; i < entity.size(); i++) {
+                Entity e = entity.get(i);
+                if (e instanceof Mob)
+                        ent.add(e);
+            }
+            if (!level.isClientSide){
+                if (!ent.isEmpty()){
+                    Entity closest = ent.get(0);
+                    for (Entity e : ent) {
+                        double curr = e.position().distanceTo(player.position());
+                        double old = closest.position().distanceTo(player.position());
+                        if (old > curr)
+                            closest = e;
+                    }
+                    if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
+                        player.attack(closest);
+                        BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
+                        return true;
+                    }
                 }
             }
         }
