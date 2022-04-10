@@ -104,6 +104,8 @@ public class AbstractBurnerSword extends Item {
             Vec3 look = player.getLookAngle();
             Vec3 start = player.position().add(new Vec3(0, player.getEyeHeight(), 0));
             Vec3 end = new Vec3(player.getX() + look.x * range, player.getY() + player.getEyeHeight() + look.y * range, player.getZ() + look.z * range);
+            if (WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, 5).getType() == HitResult.Type.BLOCK)
+                return false;
             List<Entity> entity = level.getEntities(player, new AABB(start, end));
             List<Entity> ent = new ArrayList<>();
             for (int i = 0; i < entity.size(); i++) {
@@ -112,7 +114,7 @@ public class AbstractBurnerSword extends Item {
                         ent.add(e);
             }
             if (!level.isClientSide){
-                if (!ent.isEmpty()){
+                /*if (!ent.isEmpty()){
                     Entity closest = ent.get(0);
                     for (Entity e : ent) {
                         double curr = e.position().distanceTo(player.position());
@@ -125,7 +127,15 @@ public class AbstractBurnerSword extends Item {
                         BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
                         return true;
                     }
-                }
+                }*/
+                ArrowItem arrowItem = (ArrowItem)Items.ARROW;
+                AbstractArrow arrow = arrowItem.createArrow(level, Items.ARROW.getDefaultInstance(), player);
+                arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
+                arrow.setBaseDamage(arrow.getBaseDamage()+8d);
+
+                level.addFreshEntity(arrow);
+                level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
+
             }
         }
         return false;
@@ -135,13 +145,14 @@ public class AbstractBurnerSword extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack tool = player.getItemInHand(hand);
         if (!level.isClientSide){
-            ArrowItem arrowItem = (ArrowItem)Items.ARROW;
+            /*ArrowItem arrowItem = (ArrowItem)Items.ARROW;
             AbstractArrow arrow = arrowItem.createArrow(level, Items.ARROW.getDefaultInstance(), player);
             arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3.0F, 1.0F);
             arrow.setBaseDamage(arrow.getBaseDamage()+8d);
 
             level.addFreshEntity(arrow);
             level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
+        */
         }
         return super.use(level, player, hand);
     }
