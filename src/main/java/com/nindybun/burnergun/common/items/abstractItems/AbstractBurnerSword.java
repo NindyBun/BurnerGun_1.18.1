@@ -128,9 +128,10 @@ public class AbstractBurnerSword extends Item {
                         BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
                         return true;
                     }*/
+                    Vec3 end2 = new Vec3(player.getX() + look.x * range2, player.getY() + player.getEyeHeight() + look.y * range2, player.getZ() + look.z * range2);
+                    ClipContext context = new ClipContext(start, end2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
+                    LOGGER.info(level.clip(context).getType());
                     if (closest.isAlive()){
-                        Vec3 end2 = new Vec3(player.getX() + look.x * range2, player.getY() + player.getEyeHeight() + look.y * range2, player.getZ() + look.z * range2);
-                        ClipContext context = new ClipContext(start, end2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
                         if (level.clip(context).getType() != HitResult.Type.BLOCK)
                             player.attack(closest);
                     }
