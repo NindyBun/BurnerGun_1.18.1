@@ -95,7 +95,7 @@ public class AbstractBurnerSword extends Item {
     }
 
     public static EntityHitResult getPlayerPOVHitResult(Player player, double range) {
-        float playerRotX = player.getXRot();
+        /*float playerRotX = player.getXRot();
         float playerRotY = player.getYRot();
         Vec3 startPos = player.getEyePosition();
         float f2 = Mth.cos(-playerRotY * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -104,38 +104,59 @@ public class AbstractBurnerSword extends Item {
         float additionY = Mth.sin(-playerRotX * ((float)Math.PI / 180F));
         float additionX = f3 * f4;
         float additionZ = f2 * f4;
-        double d0 = range;
-        Vec3 endVec = startPos.add((double)additionX * d0, (double)additionY * d0, (double)additionZ * d0);
+        double range = range;
+        Vec3 endVec = startPos.add((double)additionX * range, (double)additionY * range, (double)additionZ * range);
+*/
+        Vec3 look = player.getLookAngle();
+        Vec3 startPos = player.position().add(new Vec3(0, player.getEyeHeight(), 0));
+        Vec3 endVec = new Vec3(player.getX() + look.x * range, player.getY() + player.getEyeHeight() + look.y * range, player.getZ() + look.z * range);
         AABB startEndBox = new AABB(startPos, endVec);
+
         Entity entity = null;
         for(Entity entity1 : player.level.getEntities(player, startEndBox, (val) -> true)) {
             AABB aabb = entity1.getBoundingBox().inflate(entity1.getPickRadius());
             Optional<Vec3> optional = aabb.clip(startPos, endVec);
             if (aabb.contains(startPos)) {
-                if (d0 >= 0.0D) {
+                if (range >= 0.0D) {
                     entity = entity1;
                     startPos = optional.orElse(startPos);
-                    d0 = 0.0D;
+                    range = 0.0D;
                 }
             } else if (optional.isPresent()) {
                 Vec3 vec31 = optional.get();
                 double d1 = startPos.distanceToSqr(vec31);
-                if (d1 < d0 || d0 == 0.0D) {
+                if (d1 < range || range == 0.0D) {
                     if (entity1.getRootVehicle() == player.getRootVehicle() && !entity1.canRiderInteract()) {
-                        if (d0 == 0.0D) {
+                        if (range == 0.0D) {
                             entity = entity1;
                             startPos = vec31;
                         }
                     } else {
                         entity = entity1;
                         startPos = vec31;
-                        d0 = d1;
+                        range = d1;
                     }
                 }
             }
         }
 
         return (entity == null) ? null:new EntityHitResult(entity);
+    }
+
+    public Entity getEntityPlayerLookAt(Level level, Player player, double range){
+        Vec3 look = player.getLookAngle();
+        for (int i = 1; i < range; i++){
+            Vec3 point = new Vec3(player.getX() + look.x * i, player.getY() + player.getEyeHeight() + look.y * i, player.getZ() + look.z * i);
+            AABB aabb = new AABB(point, point);
+            List<Entity> entities = level.getEntities(player, aabb);
+            if (!entities.isEmpty()){
+                for (Entity e : entities) {
+                    if (e.isAlive())
+                        return e;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -156,9 +177,16 @@ public class AbstractBurnerSword extends Item {
             }
             LOGGER.info(getPlayerPOVHitResult(player, range).getEntity());*/
             if (!level.isClientSide){
-                Entity entity = getPlayerPOVHitResult(player, 10).getEntity();
+                //EntityHitResult entity = getPlayerPOVHitResult(player, 10);
+                Entity entity = getEntityPlayerLookAt(level, player, 10);
                 if (entity != null){
-                    /*Entity closest = ent.get(0);
+                    BlockHitResult blockHitResult = WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, entity.distanceTo(player));
+                    if (blockHitResult.getType() != HitResult.Type.BLOCK)
+                        player.attack(entity);
+                        //LOGGER.info(entity.isAlive() + " >> " + blockHitResult.getType());
+                }
+                /*if (entity != null){
+                    *//*Entity closest = ent.get(0);
                     double range2 = 0;
                     for (Entity e : ent) {
                         double curr = e.position().distanceTo(player.position());
@@ -168,17 +196,17 @@ public class AbstractBurnerSword extends Item {
                             range2 = curr;
                         }
                     }
-                    *//*if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
+                    *//**//*if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                         player.attack(closest);
                         BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
                         return true;
-                    }*//*
+                    }*//**//*
                     Vec3 end2 = new Vec3(player.getX() + look.x * range2, player.getY() + player.getEyeHeight() + look.y * range2, player.getZ() + look.z * range2);
                     ClipContext context = new ClipContext(start, end2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
-                    //LOGGER.info(level.clip(context).getType());*/
-                    if (entity.isAlive())
-                        player.attack(entity);
-                }
+                    //LOGGER.info(level.clip(context).getType());*//*
+                    if (entity.getType() == HitResult.Type.ENTITY)
+                        player.attack(entity.getEntity());
+                }*/
             }
         }
         return false;
