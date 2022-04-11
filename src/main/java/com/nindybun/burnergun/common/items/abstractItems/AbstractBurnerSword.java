@@ -143,12 +143,13 @@ public class AbstractBurnerSword extends Item {
         return (entity == null) ? null:new EntityHitResult(entity);
     }
 
-    public Entity getEntityPlayerLookAt(Level level, Player player, double range){
+    public Entity getEntityPlayerLookingAt(Level level, Player player, double range){
         Vec3 look = player.getLookAngle();
         for (int i = 1; i < range; i++){
-            Vec3 point = new Vec3(player.getX() + look.x * i, player.getY() + player.getEyeHeight() + look.y * i, player.getZ() + look.z * i);
-            AABB aabb = new AABB(point, point);
-            List<Entity> entities = level.getEntities(player, aabb);
+            Vec3 point = new Vec3(  player.getX() + look.x * i,
+                                    player.getEyeY() + look.y * i,
+                                    player.getZ() + look.z * i);
+            List<Entity> entities = level.getEntities(player, new AABB(point, point));
             if (!entities.isEmpty()){
                 for (Entity e : entities) {
                     if (e.isAlive())
@@ -164,7 +165,7 @@ public class AbstractBurnerSword extends Item {
         if (livingEntity instanceof Player){
             Player player = (Player)livingEntity;
             Level level = player.level;
-            /*int range = 10;
+/*            int range = 10;
             Vec3 look = player.getLookAngle();
             Vec3 start = player.position().add(new Vec3(0, player.getEyeHeight(), 0));
             Vec3 end = new Vec3(player.getX() + look.x * range, player.getY() + player.getEyeHeight() + look.y * range, player.getZ() + look.z * range);
@@ -177,16 +178,14 @@ public class AbstractBurnerSword extends Item {
             }
             LOGGER.info(getPlayerPOVHitResult(player, range).getEntity());*/
             if (!level.isClientSide){
-                //EntityHitResult entity = getPlayerPOVHitResult(player, 10);
-                Entity entity = getEntityPlayerLookAt(level, player, 10);
+                Entity entity = getEntityPlayerLookingAt(level, player, 10);
                 if (entity != null){
                     BlockHitResult blockHitResult = WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, entity.distanceTo(player));
                     if (blockHitResult.getType() != HitResult.Type.BLOCK)
                         player.attack(entity);
-                        //LOGGER.info(entity.isAlive() + " >> " + blockHitResult.getType());
                 }
                 /*if (entity != null){
-                    *//*Entity closest = ent.get(0);
+                    Entity closest = ent.get(0);
                     double range2 = 0;
                     for (Entity e : ent) {
                         double curr = e.position().distanceTo(player.position());
@@ -196,14 +195,14 @@ public class AbstractBurnerSword extends Item {
                             range2 = curr;
                         }
                     }
-                    *//**//*if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
+                    if (closest.isAlive() && BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                         player.attack(closest);
                         BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
                         return true;
-                    }*//**//*
+                    }
                     Vec3 end2 = new Vec3(player.getX() + look.x * range2, player.getY() + player.getEyeHeight() + look.y * range2, player.getZ() + look.z * range2);
                     ClipContext context = new ClipContext(start, end2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
-                    //LOGGER.info(level.clip(context).getType());*//*
+                    //LOGGER.info(level.clip(context).getType());
                     if (entity.getType() == HitResult.Type.ENTITY)
                         player.attack(entity.getEntity());
                 }*/
