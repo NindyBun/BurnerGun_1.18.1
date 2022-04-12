@@ -153,7 +153,9 @@ public class AbstractBurnerSword extends Item {
             List<Entity> entities = level.getEntities(player, new AABB(point, point));
             if (!entities.isEmpty()){
                 for (Entity e : entities) {
-                    BlockHitResult result = WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, e.distanceTo(player));
+                    double dist = e.position().distanceTo(player.position());
+                    BlockHitResult result = WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, dist);
+                    LOGGER.info(e + " >> " + result.getType() + " >> " + dist);
                     if (e.isAlive() && result.getType() != HitResult.Type.BLOCK)
                         return e;
                 }
