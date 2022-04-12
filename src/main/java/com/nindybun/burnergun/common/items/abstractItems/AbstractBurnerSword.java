@@ -148,12 +148,13 @@ public class AbstractBurnerSword extends Item {
         Vec3 look = player.getLookAngle();
         for (int i = 1; i < range; i++){
             Vec3 point = new Vec3(  player.getX() + look.x * i,
-                                    player.getEyeY() + look.y * i,
+                                    player.getY() + player.getEyeHeight() + look.y * i,
                                     player.getZ() + look.z * i);
             List<Entity> entities = level.getEntities(player, new AABB(point, point));
             if (!entities.isEmpty()){
                 for (Entity e : entities) {
-                    if (e.isAlive() && WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, e.distanceTo(player)).getType() != HitResult.Type.BLOCK)
+                    BlockHitResult result = WorldUtil.getLookingAt(level, player, ClipContext.Fluid.NONE, e.distanceTo(player));
+                    if (e.isAlive() && result.getType() != HitResult.Type.BLOCK)
                         return e;
                 }
             }
