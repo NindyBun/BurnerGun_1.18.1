@@ -1,5 +1,6 @@
 package com.nindybun.burnergun.common.items;
 
+import com.nindybun.burnergun.common.items.burnerswordmk1.BurnerSwordMK1;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.util.UpgradeUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +39,8 @@ public class BurnerGunNBT {
     private static final String ATTACK_COOLDOWN = "burnergun.tag.attack_cooldown";
 
     public static final int MIN_RAYCAST = 5;
-    public static final float BASE_ATKSPEED = -2.4f;
+    public static final float BASE_ATKSPEED = 1.6f;
+    public static final int MIN_ATK = 6;
 
     public static boolean setSmeltWhitelist(ItemStack gun, Boolean isWhitelist){
         gun.getOrCreateTag().putBoolean(SMELTING_WHITELIST, isWhitelist);
@@ -198,7 +200,7 @@ public class BurnerGunNBT {
     }
     public static int getAtkDmg(ItemStack tool){
         CompoundTag tag = tool.getOrCreateTag();
-        return !tag.contains(DAMAGE) ? setAtkDmg(tool, 5) : tag.getInt(DAMAGE);
+        return !tag.contains(DAMAGE) ? setAtkDmg(tool, tool.getItem() instanceof BurnerSwordMK1 ? MIN_ATK :  1+MIN_ATK) : tag.getInt(DAMAGE);
     }
 
     public static float setAtkSpeed(ItemStack tool, float atkSpeed){
@@ -216,6 +218,6 @@ public class BurnerGunNBT {
     }
     public static float getAtkCoolDown(ItemStack tool){
         CompoundTag tag = tool.getOrCreateTag();
-        return !tag.contains(ATTACK_COOLDOWN) ? setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool))) : tag.getFloat(ATTACK_COOLDOWN);
+        return !tag.contains(ATTACK_COOLDOWN) ? setAtkCoolDown(tool, 2f/(BurnerGunNBT.getAtkSpeed(tool))) : tag.getFloat(ATTACK_COOLDOWN);
     }
 }

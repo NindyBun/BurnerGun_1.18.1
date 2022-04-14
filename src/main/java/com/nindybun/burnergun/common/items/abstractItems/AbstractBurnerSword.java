@@ -87,7 +87,7 @@ public class AbstractBurnerSword extends Item {
 
     @Override
     public int getDamage(ItemStack stack) {
-        return BurnerGunNBT.getAtkDmg(stack);
+        return 1+BurnerGunNBT.getAtkDmg(stack);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class AbstractBurnerSword extends Item {
             if (entity != null){
                 /*if (BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                     player.attack(entity);
-                    BurnerGunNBT.setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool)));
+                    BurnerGunNBT.setAtkCoolDown(tool, 2f/(BurnerGunNBT.getAtkSpeed(tool)));
                     return InteractionResultHolder.success(tool);
                 }*/
             }
@@ -158,8 +158,8 @@ public class AbstractBurnerSword extends Item {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack tool) {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(tool);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", BurnerGunNBT.getAtkDmg(tool), AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier( BASE_ATTACK_SPEED_UUID, "Weapon modifier", BurnerGunNBT.getAtkSpeed(tool), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", -1+BurnerGunNBT.getAtkDmg(tool), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier( BASE_ATTACK_SPEED_UUID, "Weapon modifier", -4+BurnerGunNBT.getAtkSpeed(tool), AttributeModifier.Operation.ADDITION));
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getAttributeModifiers(slot, tool);
     }
 

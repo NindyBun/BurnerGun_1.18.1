@@ -72,11 +72,16 @@ public enum Upgrade {
     BANE_OF_ARTHROPODS_3("bane_of_arthropods_3", 3, 125, 1, 0, true, "type.sword"),
     BANE_OF_ARTHROPODS_4("bane_of_arthropods_4", 4, 150, 1, 0, true, "type.sword"),
     BANE_OF_ARTHROPODS_5("bane_of_arthropods_5", 5, 175, 1, 0, true, "type.sword"),
-    ATTACK_SPEED_1("attack_speed_1", 1, 75, 1, 2.5, false, "type.sword"),
-    ATTACK_SPEED_2("attack_speed_2", 2, 75, 1, 2.5*2, false, "type.sword"),
-    ATTACK_SPEED_3("attack_speed_3", 3, 75, 1, 2.5*3, false, "type.sword"),
-    ATTACK_SPEED_4("attack_speed_4", 4, 75, 1, 2.5*4, false, "type.sword"),
-    ATTACK_SPEED_5("attack_speed_5", 5, 75, 1, 2.5*5, false, "type.sword"),
+    ATTACK_SPEED_1("attack_speed_1", 1, 75, 1, 1.6*2.5, false, "type.sword"),
+    ATTACK_SPEED_2("attack_speed_2", 2, 100, 1, 1.6*2.5*2, false, "type.sword"),
+    ATTACK_SPEED_3("attack_speed_3", 3, 125, 1, 1.6*2.5*3, false, "type.sword"),
+    ATTACK_SPEED_4("attack_speed_4", 4, 150, 1, 1.6*2.5*4, false, "type.sword"),
+    ATTACK_SPEED_5("attack_speed_5", 5, 175, 1, 1.6*2.5*5, false, "type.sword"),
+    ATTACK_DAMAGE_1("attack_damage_1", 1, 75, 1, 1.8, false, "type.sword"),
+    ATTACK_DAMAGE_2("attack_damage_2", 2, 100, 1, 2.6, false, "type.sword"),
+    ATTACK_DAMAGE_3("attack_damage_3", 3, 125, 1, 3.4, false, "type.sword"),
+    ATTACK_DAMAGE_4("attack_damage_4", 4, 150, 1, 4.2, false, "type.sword"),
+    ATTACK_DAMAGE_5("attack_damage_5", 5, 175, 1, 5, false, "type.sword"),
     ;
 
     private final String name;
