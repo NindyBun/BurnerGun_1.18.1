@@ -216,6 +216,6 @@ public class BurnerGunNBT {
     }
     public static float getAtkCoolDown(ItemStack tool){
         CompoundTag tag = tool.getOrCreateTag();
-        return !tag.contains(ATTACK_COOLDOWN) ? setAtkCoolDown(tool, 2f/(BurnerGunNBT.getAtkSpeed(tool))) : tag.getFloat(ATTACK_COOLDOWN);
+        return !tag.contains(ATTACK_COOLDOWN) ? setAtkCoolDown(tool, 2f/(4+BurnerGunNBT.getAtkSpeed(tool))) : tag.getFloat(ATTACK_COOLDOWN);
     }
 }
