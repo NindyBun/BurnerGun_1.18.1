@@ -136,7 +136,7 @@ public enum Upgrade {
     public String getToolTip() {
         return this.toolTip;
     }
-    public String getType() { return this.type; }
+    public String getType() { return this.type.substring(this.type.indexOf("type.")); }
     public UpgradeCard getCard() {
         return this.card;
     }

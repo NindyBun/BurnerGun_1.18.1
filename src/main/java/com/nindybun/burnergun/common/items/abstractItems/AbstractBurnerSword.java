@@ -43,10 +43,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AbstractBurnerSword extends Item {
+    private static final double base_use = 100;
+    public static final double base_use_buffer = 20_000;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public AbstractBurnerSword(Properties properties) {
         super(properties);
+    }
+
+    public static ItemStack getSword(Player player) {
+        ItemStack heldItem = player.getMainHandItem();
+        if (!(heldItem.getItem() instanceof AbstractBurnerSword)) {
+            heldItem = player.getOffhandItem();
+            if (!(heldItem.getItem() instanceof AbstractBurnerSword)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        return heldItem;
     }
 
     @Override
