@@ -40,7 +40,8 @@ public class BurnerGunNBT {
 
     public static final int MIN_RAYCAST = 5;
     public static final float BASE_ATKSPEED = 1.6f;
-    public static final int MIN_ATK = 6;
+    public static final int MIN_SWORD_MK1_ATK = 6;
+    public static final int MIN_SWORD_MK2_ATK = 8;
 
     public static boolean setSmeltWhitelist(ItemStack gun, Boolean isWhitelist){
         gun.getOrCreateTag().putBoolean(SMELTING_WHITELIST, isWhitelist);
@@ -200,7 +201,7 @@ public class BurnerGunNBT {
     }
     public static int getAtkDmg(ItemStack tool){
         CompoundTag tag = tool.getOrCreateTag();
-        return !tag.contains(DAMAGE) ? setAtkDmg(tool, tool.getItem() instanceof BurnerSwordMK1 ? MIN_ATK :  1+MIN_ATK) : tag.getInt(DAMAGE);
+        return !tag.contains(DAMAGE) ? setAtkDmg(tool, tool.getItem() instanceof BurnerSwordMK1 ? MIN_SWORD_MK1_ATK :  MIN_SWORD_MK2_ATK) : tag.getInt(DAMAGE);
     }
 
     public static float setAtkSpeed(ItemStack tool, float atkSpeed){

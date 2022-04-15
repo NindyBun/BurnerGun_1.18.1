@@ -52,6 +52,7 @@ public enum Upgrade {
     REACH_1("reach_1", 1, 10, 1, 10, false, "type.sword"),
     REACH_2("reach_2", 2, 20, 1, 15, false, "type.sword"),
     REACH_3("reach_3", 3, 30, 1, 25, false, "type.sword"),
+    AUTO_ATTACK("auto_attack", -1, 0, 1, 0, true, "type.sword"),
     LOOTING_1("looting_1", 1, 100, 1, 0, true, "type.sword"),
     LOOTING_2("looting_2", 2, 125, 1, 0, true, "type.sword"),
     LOOTING_3("looting_3", 3, 175, 1, 0, true, "type.sword"),
@@ -82,6 +83,11 @@ public enum Upgrade {
     ATTACK_DAMAGE_3("attack_damage_3", 3, 125, 1, 3.4, false, "type.sword"),
     ATTACK_DAMAGE_4("attack_damage_4", 4, 150, 1, 4.2, false, "type.sword"),
     ATTACK_DAMAGE_5("attack_damage_5", 5, 175, 1, 5, false, "type.sword"),
+    KNOCKBACK_1("knockback_1", 1, 75, 1, 0, true, "type.sword"),
+    KNOCKBACK_2("knockback_2", 2, 100, 1, 0, true, "type.sword"),
+    SWEEPING_EDGE_1("sweeping_edge_1", 1, 75, 1, 0, true, "type.sword"),
+    SWEEPING_EDGE_2("sweeping_edge_2", 2, 100, 1, 0, true, "type.sword"),
+    SWEEPING_EDGE_3("sweeping_edge_3", 3, 125, 1, 0, true, "type.sword"),
     ;
 
     private final String name;
