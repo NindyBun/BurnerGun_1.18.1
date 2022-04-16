@@ -20,10 +20,8 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 
 public class BurnerGunMK2Screen extends AbstractContainerScreen<BurnerGunMK2Container> {
-    ItemStack gun;
     public BurnerGunMK2Screen(BurnerGunMK2Container container, Inventory playerInv, Component title) {
         super(container, playerInv, title);
-        this.gun = BurnerGunMK1.getGun(playerInv.player);
     }
 
     @Override

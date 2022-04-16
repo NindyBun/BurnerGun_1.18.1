@@ -24,12 +24,8 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 
 public class BurnerGunMK1Screen extends AbstractContainerScreen<BurnerGunMK1Container> {
-    private static ItemStack gun;
-    private static Player player;
     public BurnerGunMK1Screen(BurnerGunMK1Container container, Inventory playerInv, Component title) {
         super(container, playerInv, title);
-        this.gun = BurnerGunMK1.getGun(playerInv.player);
-        this.player = Minecraft.getInstance().player;
     }
 
     @Override

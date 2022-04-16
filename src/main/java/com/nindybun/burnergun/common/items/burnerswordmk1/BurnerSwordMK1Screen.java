@@ -27,12 +27,8 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 
 public class BurnerSwordMK1Screen extends AbstractContainerScreen<BurnerSwordMK1Container> {
-    private static ItemStack gun;
-    private static Player player;
     public BurnerSwordMK1Screen(BurnerSwordMK1Container container, Inventory playerInv, Component title) {
         super(container, playerInv, title);
-        this.gun = BurnerSwordMK1.getSword(playerInv.player);
-        this.player = Minecraft.getInstance().player;
     }
 
     @Override
@@ -63,7 +59,7 @@ public class BurnerSwordMK1Screen extends AbstractContainerScreen<BurnerSwordMK1
 
     private static final Logger LOGGER = LogManager.getLogger();
     // This is the resource location for the background image
-    private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(BurnerGun.MOD_ID, "textures/gui/burnergunmk1_gui.png");
+    private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(BurnerGun.MOD_ID, "textures/gui/burnerswordmk1_gui.png");
 
     @Override
     public void removed() {

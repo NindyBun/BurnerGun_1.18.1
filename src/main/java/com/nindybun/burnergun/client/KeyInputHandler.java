@@ -26,9 +26,9 @@ public class KeyInputHandler {
             PacketHandler.sendToServer(new PacketSpawnLightAtRaycast());
         if (Keybinds.burnergun_lightPlayer_key.isDown() && event.getAction() == 1 && Minecraft.getInstance().screen == null)
             PacketHandler.sendToServer(new PacketSpawnLightAtPlayer());
-        if (Keybinds.burnergun_gui_key.isDown() && event.getAction() == 1 && Minecraft.getInstance().screen == null
-                && (player.getMainHandItem().getItem() instanceof AbstractBurnerGun || player.getOffhandItem().getItem() instanceof AbstractBurnerGun)){
-            PacketHandler.sendToServer(new PacketOpenBurnerGunGui());
+        if (Keybinds.burnergun_gui_key.isDown() && event.getAction() == 1 && Minecraft.getInstance().screen == null){
+            if (player.getMainHandItem().getItem() instanceof AbstractBurnerGun || player.getOffhandItem().getItem() instanceof AbstractBurnerGun)
+                PacketHandler.sendToServer(new PacketOpenBurnerGunGui());
         }
     }
 }
