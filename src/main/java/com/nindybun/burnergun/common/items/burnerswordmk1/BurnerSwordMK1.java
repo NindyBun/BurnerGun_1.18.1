@@ -31,7 +31,6 @@ public class BurnerSwordMK1 extends AbstractBurnerSword {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TextComponent("Now with +5 reach!").withStyle(ChatFormatting.YELLOW));
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 

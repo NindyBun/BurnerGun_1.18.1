@@ -27,7 +27,10 @@ public class BurnerGunMK2Handler extends ItemStackHandler {
         if (stack.getItem() instanceof UpgradeCard
                 && !(Upgrade.AMBIENCE_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade()))
                 && !(Upgrade.FUEL_EFFICIENCY_1.lazyIs(((UpgradeCard) stack.getItem()).getUpgrade()))
-                && getUpgradeByUpgrade(((UpgradeCard) stack.getItem()).getUpgrade()) == null){
+                && getUpgradeByUpgrade(((UpgradeCard) stack.getItem()).getUpgrade()) == null
+                && (((UpgradeCard) stack.getItem()).getUpgrade().getType() == "type.burnergun"
+                    || ((UpgradeCard) stack.getItem()).getUpgrade().getType() == "type.util"
+                    || ((UpgradeCard) stack.getItem()).getUpgrade().getType() == "type.tool")){
             return true;
         }
         return false;
