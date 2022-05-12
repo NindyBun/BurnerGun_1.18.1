@@ -2,6 +2,7 @@ package com.nindybun.burnergun.client;
 
 import com.nindybun.burnergun.client.screens.ModScreens;
 import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
+import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerSword;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.network.PacketHandler;
@@ -27,7 +28,8 @@ public class KeyInputHandler {
         if (Keybinds.burnergun_lightPlayer_key.isDown() && event.getAction() == 1 && Minecraft.getInstance().screen == null)
             PacketHandler.sendToServer(new PacketSpawnLightAtPlayer());
         if (Keybinds.burnergun_gui_key.isDown() && event.getAction() == 1 && Minecraft.getInstance().screen == null
-                && (player.getMainHandItem().getItem() instanceof AbstractBurnerGun || player.getOffhandItem().getItem() instanceof AbstractBurnerGun)){
+                && (player.getMainHandItem().getItem() instanceof AbstractBurnerGun || player.getOffhandItem().getItem() instanceof AbstractBurnerGun
+                    || player.getMainHandItem().getItem() instanceof AbstractBurnerSword || player.getOffhandItem().getItem() instanceof AbstractBurnerSword)){
             PacketHandler.sendToServer(new PacketOpenBurnerGunGui());
         }
     }

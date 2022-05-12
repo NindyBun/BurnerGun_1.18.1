@@ -3,6 +3,7 @@ package com.nindybun.burnergun.client.renderer;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
+import com.nindybun.burnergun.common.items.burnerswordmk1.BurnerSwordMK1;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
@@ -28,16 +29,16 @@ public class FuelValueRenderer {
     @SubscribeEvent
     public static void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event){
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL){
-            ItemStack stack = ItemStack.EMPTY;
             Minecraft mc = Minecraft.getInstance();
             LocalPlayer player = mc.player;
-            if (player.getMainHandItem().getItem() instanceof BurnerGunMK1)
-                stack = player.getMainHandItem();
-            else if (player.getOffhandItem().getItem() instanceof BurnerGunMK1)
-                stack = player.getOffhandItem();
-            if (stack.getItem() instanceof BurnerGunMK1)
+            ItemStack stack = BurnerGunMK1.getGun(player);
+            if (stack.isEmpty()){
+                stack = BurnerSwordMK1.getSword(player);
+                if (stack.isEmpty())
+                    return;
+            }
+            if (!stack.isEmpty())
                 renderFuel(event, stack);
-
         }
     }
 

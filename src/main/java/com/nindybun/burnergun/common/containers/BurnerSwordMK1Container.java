@@ -73,7 +73,7 @@ public class BurnerSwordMK1Container extends AbstractContainerMenu {
 
         int gunSlotCount = handler.getSlots();
         if (gunSlotCount < 1 || gunSlotCount > MAX_EXPECTED_SWORD_SLOT_COUNT) {
-            LOGGER.warn("Unexpected invalid slot count in BurnerGunMK1(" + gunSlotCount + ")");
+            LOGGER.warn("Unexpected invalid slot count in BurnerSwordMK1(" + gunSlotCount + ")");
             gunSlotCount = Math.max(1, Math.min(MAX_EXPECTED_SWORD_SLOT_COUNT, gunSlotCount));
         }
 

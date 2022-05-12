@@ -33,6 +33,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,6 +51,10 @@ public class AbstractBurnerSword extends Item {
 
     public AbstractBurnerSword(Properties properties) {
         super(properties);
+    }
+
+    public static IItemHandler getHandler(ItemStack itemStack) {
+        return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
     }
 
     public static ItemStack getSword(Player player) {
