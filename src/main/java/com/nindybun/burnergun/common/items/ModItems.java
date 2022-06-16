@@ -8,6 +8,7 @@ import com.nindybun.burnergun.common.items.burnerswordmk1.BurnerSwordMK1;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
 import com.nindybun.burnergun.common.items.upgrades.Trash.Trash;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
+import com.nindybun.burnergun.common.items.util_Inventory.UtilInventory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,6 +33,7 @@ public class ModItems {
     public static final RegistryObject<Item> BURNER_GUN_MK1 = ITEMS.register("burnergun_mk1", () ->  new BurnerGunMK1());
     public static final RegistryObject<Item> BURNER_GUN_MK2 = ITEMS.register("burnergun_mk2", () -> new BurnerGunMK2());
     public static final RegistryObject<Item> BURNER_SWORD_MK1 = ITEMS.register("burnersword_mk1", () -> new BurnerSwordMK1());
+    public static final RegistryObject<Item> UTIL_INVENTORY = ITEMS.register("util_inventory", () -> new UtilInventory());
 
     public static final RegistryObject<Item> LIGHT_ITEM = ITEMS.register("light", () -> new BlockItem(ModBlocks.LIGHT.get(), ITEM_GROUP.stacksTo(1)));
     //public static final RegistryObject<Item> GLITTERING_DIAMOND = ITEMS.register("glittering_diamond", () -> new Item(new Item.Properties().stacksTo(64).tab(BurnerGun.itemGroup)));

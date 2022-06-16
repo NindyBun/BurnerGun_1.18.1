@@ -8,4 +8,7 @@ public class ModScreens {
     public static void openColorScreen(ItemStack gun){
         Minecraft.getInstance().setScreen(new colorScreen(gun));
     }
+    public static void openUtilInventorScreen(ItemStack utilInv) {
+        Minecraft.getInstance().setScreen(new utilInventoryScreen(utilInv));
+    }
 }
