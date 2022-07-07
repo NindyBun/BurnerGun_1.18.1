@@ -9,10 +9,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -32,6 +38,17 @@ public class BurnerSwordMK1 extends AbstractBurnerSword {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    }
+
+    @Override
+    public boolean onEntitySwing(ItemStack tool, LivingEntity livingEntity) {
+        Level level = livingEntity.level;
+        if (livingEntity instanceof Player) {
+            SmallFireball fireball = new SmallFireball(level, livingEntity, livingEntity.getLookAngle().normalize().x, livingEntity.getLookAngle().normalize().y, livingEntity.getLookAngle().normalize().z);
+            fireball.setPos(livingEntity.getX(), livingEntity.getY(0.5)+0.5, livingEntity.getZ());
+            level.addFreshEntity(fireball);
+        }
+        return super.onEntitySwing(tool, livingEntity);
     }
 
     @Nonnull

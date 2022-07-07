@@ -12,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class utilInventoryScreen extends EffectRenderingInventoryScreen<utilInventoryScreen.ChestInventoryMenu> {
-    public utilInventoryScreen(ItemStack utilInv) {
-        super(new TextComponent("Titile"));
+    public utilInventoryScreen(ItemStack utilInv, Player player) {
+        super(new ChestInventoryMenu(player, utilInv), player.getInventory(), TextComponent.EMPTY);
     }
 
     @Override
@@ -23,8 +23,9 @@ public class utilInventoryScreen extends EffectRenderingInventoryScreen<utilInve
 
     static class ChestInventoryMenu extends AbstractContainerMenu {
 
-        protected ChestInventoryMenu(Player player) {
+        protected ChestInventoryMenu(Player player, ItemStack utilInv) {
             super((MenuType<?>)null, 0);
+
         }
 
         @Override
