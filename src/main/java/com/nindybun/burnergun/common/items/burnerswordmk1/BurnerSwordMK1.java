@@ -40,17 +40,6 @@ public class BurnerSwordMK1 extends AbstractBurnerSword {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
-    @Override
-    public boolean onEntitySwing(ItemStack tool, LivingEntity livingEntity) {
-        Level level = livingEntity.level;
-        if (livingEntity instanceof Player) {
-            SmallFireball fireball = new SmallFireball(level, livingEntity, livingEntity.getLookAngle().normalize().x, livingEntity.getLookAngle().normalize().y, livingEntity.getLookAngle().normalize().z);
-            fireball.setPos(livingEntity.getX(), livingEntity.getY(0.5)+0.5, livingEntity.getZ());
-            level.addFreshEntity(fireball);
-        }
-        return super.onEntitySwing(tool, livingEntity);
-    }
-
     @Nonnull
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {

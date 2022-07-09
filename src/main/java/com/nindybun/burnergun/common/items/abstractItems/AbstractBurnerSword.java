@@ -2,10 +2,14 @@ package com.nindybun.burnergun.common.items.abstractItems;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.nindybun.burnergun.client.particles.ModParticles;
+import com.nindybun.burnergun.client.particles.lightParticle.LightParticleType;
 import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -21,6 +25,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -138,10 +143,21 @@ public class AbstractBurnerSword extends Item {
         if (livingEntity instanceof Player){
             Player player = (Player)livingEntity;
             Level level = player.level;
-            if (!level.isClientSide){
-                Entity entity = getEntityPlayerLookingAt(level, player, BurnerGunNBT.getRaycast(tool));
-                if (entity != null)
-                    player.attack(entity);
+            if (!level.isClientSide) {
+                if (player.isCrouching()){
+                    ArrowItem arrowitem = (ArrowItem)(Items.ARROW);
+                    AbstractArrow abstractarrow = arrowitem.createArrow(level, Items.ARROW.getDefaultInstance(), player);
+                    abstractarrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3F, 0.0F);
+                    abstractarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
+                    /*if (BurnerGunNBT.getAtkCoolDown(tool) <= 0){
+                        BurnerGunNBT.setAtkCoolDown(tool, 1);
+                        level.addFreshEntity(abstractarrow);
+                    }*/
+                    if (!player.getCooldowns().isOnCooldown(tool.getItem())){
+                        level.addFreshEntity(abstractarrow);
+                        player.getCooldowns().addCooldown(tool.getItem(), 10);
+                    }
+                }
             }
         }
         return false;
@@ -153,24 +169,18 @@ public class AbstractBurnerSword extends Item {
         if (!level.isClientSide){
             Entity entity = getEntityPlayerLookingAt(level, player, BurnerGunNBT.getRaycast(tool));
             if (entity != null){
-                /*if (BurnerGunNBT.getAtkCoolDown(tool) <= 0){
-                    player.attack(entity);
-                    BurnerGunNBT.setAtkCoolDown(tool, 2f/(BurnerGunNBT.getAtkSpeed(tool)));
-                    return InteractionResultHolder.success(tool);
-                }*/
             }
-
         }
         return InteractionResultHolder.pass(tool);
     }
 
     @Override
-    public void inventoryTick(ItemStack tool, Level world, Entity player, int slot, boolean held) {
-        super.inventoryTick(tool, world, player, slot, held);
-        if (BurnerGunNBT.getAtkCoolDown(tool) > 0)
+    public void inventoryTick(ItemStack tool, Level level, Entity player, int slot, boolean held) {
+        super.inventoryTick(tool, level, player, slot, held);
+        /*if (BurnerGunNBT.getAtkCoolDown(tool) > 0)
             BurnerGunNBT.setAtkCoolDown(tool, BurnerGunNBT.getAtkCoolDown(tool)-0.1f);
         else if (BurnerGunNBT.getAtkCoolDown(tool) <= 0)
-            BurnerGunNBT.setAtkCoolDown(tool, 0);
+            BurnerGunNBT.setAtkCoolDown(tool, 0);*/
     }
 
     @Override

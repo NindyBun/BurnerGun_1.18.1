@@ -49,10 +49,6 @@ public enum Upgrade {
     AMBIENCE_5("ambience_5", 1, 0, 1, 120, false, "type.util"),
 
     //Sword
-    REACH_1("reach_1", 1, 10, 1, 10, false, "type.sword"),
-    REACH_2("reach_2", 2, 20, 1, 15, false, "type.sword"),
-    REACH_3("reach_3", 3, 30, 1, 25, false, "type.sword"),
-    AUTO_ATTACK("auto_attack", -1, 0, 1, 0, true, "type.sword"),
     LOOTING_1("looting_1", 1, 100, 1, 0, true, "type.sword"),
     LOOTING_2("looting_2", 2, 125, 1, 0, true, "type.sword"),
     LOOTING_3("looting_3", 3, 175, 1, 0, true, "type.sword"),
