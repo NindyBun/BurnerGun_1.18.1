@@ -153,6 +153,7 @@ public class AbstractBurnerSword extends Item {
                         BurnerGunNBT.setAtkCoolDown(tool, 1);
                         level.addFreshEntity(abstractarrow);
                     }*/
+
                     if (!player.getCooldowns().isOnCooldown(tool.getItem())){
                         level.addFreshEntity(abstractarrow);
                         player.getCooldowns().addCooldown(tool.getItem(), 10);
