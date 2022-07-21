@@ -116,6 +116,7 @@ public class AbstractBurnerSword extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack tool, LivingEntity entity, LivingEntity player) {
+        entity.invulnerableTime = 0;
         return super.hurtEnemy(tool, entity, player);
     }
 
@@ -145,19 +146,21 @@ public class AbstractBurnerSword extends Item {
             Level level = player.level;
             if (!level.isClientSide) {
                 if (player.isCrouching()){
-                    ArrowItem arrowitem = (ArrowItem)(Items.ARROW);
+                    /*ArrowItem arrowitem = (ArrowItem)(Items.ARROW);
                     AbstractArrow abstractarrow = arrowitem.createArrow(level, Items.ARROW.getDefaultInstance(), player);
                     abstractarrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 3F, 0.0F);
                     abstractarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
+                    abstractarrow.setNoGravity(false);
+                    level.addFreshEntity(abstractarrow);*/
                     /*if (BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                         BurnerGunNBT.setAtkCoolDown(tool, 1);
                         level.addFreshEntity(abstractarrow);
                     }*/
-
-                    if (!player.getCooldowns().isOnCooldown(tool.getItem())){
+                    //SmallFireball smallFireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
+                    /*if (!player.getCooldowns().isOnCooldown(tool.getItem())){
                         level.addFreshEntity(abstractarrow);
                         player.getCooldowns().addCooldown(tool.getItem(), 10);
-                    }
+                    }*/
                 }
             }
         }
