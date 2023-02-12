@@ -2,7 +2,7 @@ package com.nindybun.burnergun.client.screens;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.network.PacketHandler;
 import com.nindybun.burnergun.common.network.packets.PacketChangeColor;

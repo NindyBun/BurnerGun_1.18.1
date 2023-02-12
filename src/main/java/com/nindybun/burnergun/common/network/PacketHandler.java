@@ -1,6 +1,6 @@
 package com.nindybun.burnergun.common.network;
 
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.common.network.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

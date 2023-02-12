@@ -2,34 +2,21 @@ package com.nindybun.burnergun.common.items.abstractItems;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.nindybun.burnergun.client.particles.ModParticles;
-import com.nindybun.burnergun.client.particles.lightParticle.LightParticleType;
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.client.entities.ModEntities;
+import com.nindybun.burnergun.client.entities.testArrowEntity.TestArrowEntity;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
-import com.nindybun.burnergun.util.WorldUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -37,17 +24,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class AbstractBurnerSword extends Item {
     private static final double base_use = 100;
@@ -116,7 +99,7 @@ public class AbstractBurnerSword extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack tool, LivingEntity entity, LivingEntity player) {
-        entity.invulnerableTime = 0;
+        LOGGER.info("HURTING");
         return super.hurtEnemy(tool, entity, player);
     }
 
@@ -152,12 +135,15 @@ public class AbstractBurnerSword extends Item {
                     abstractarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
                     abstractarrow.setNoGravity(false);
                     level.addFreshEntity(abstractarrow);*/
+                    TestArrowEntity test = new TestArrowEntity(ModEntities.TEST_ARROW_ENTITY.get(), player, level);
+                    test.setDeltaMovement(0, 1, 0);
+                    level.addFreshEntity(test);
                     /*if (BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                         BurnerGunNBT.setAtkCoolDown(tool, 1);
                         level.addFreshEntity(abstractarrow);
-                    }*/
-                    //SmallFireball smallFireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
-                    /*if (!player.getCooldowns().isOnCooldown(tool.getItem())){
+                    }
+                    SmallFireball smallFireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
+                    if (!player.getCooldowns().isOnCooldown(tool.getItem())){
                         level.addFreshEntity(abstractarrow);
                         player.getCooldowns().addCooldown(tool.getItem(), 10);
                     }*/

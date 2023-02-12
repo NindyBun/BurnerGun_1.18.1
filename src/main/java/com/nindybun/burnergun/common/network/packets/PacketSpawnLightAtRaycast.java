@@ -1,11 +1,9 @@
 package com.nindybun.burnergun.common.network.packets;
 
-import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.blocks.ModBlocks;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
-import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
 import com.nindybun.burnergun.common.network.PacketHandler;
 import com.nindybun.burnergun.util.UpgradeUtil;

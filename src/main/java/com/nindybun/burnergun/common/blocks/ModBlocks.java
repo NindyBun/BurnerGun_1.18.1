@@ -1,6 +1,6 @@
 package com.nindybun.burnergun.common.blocks;
 
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

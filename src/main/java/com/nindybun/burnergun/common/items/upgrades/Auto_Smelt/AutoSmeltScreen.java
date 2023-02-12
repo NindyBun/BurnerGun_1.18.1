@@ -2,7 +2,7 @@ package com.nindybun.burnergun.common.items.upgrades.Auto_Smelt;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.common.containers.AutoSmeltContainer;
 import com.nindybun.burnergun.common.network.PacketHandler;
 import com.nindybun.burnergun.common.network.packets.PacketUpdateGun;

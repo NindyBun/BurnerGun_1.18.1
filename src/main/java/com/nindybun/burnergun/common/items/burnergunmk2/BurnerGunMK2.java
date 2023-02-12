@@ -1,6 +1,6 @@
 package com.nindybun.burnergun.common.items.burnergunmk2;
 
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.common.items.abstractItems.AbstractBurnerGun;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;

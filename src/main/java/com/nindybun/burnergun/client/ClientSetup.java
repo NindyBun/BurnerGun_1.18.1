@@ -1,7 +1,5 @@
 package com.nindybun.burnergun.client;
 
-import com.mojang.blaze3d.platform.ScreenManager;
-import com.nindybun.burnergun.common.BurnerGun;
 import com.nindybun.burnergun.common.containers.ModContainers;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1Screen;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2Screen;

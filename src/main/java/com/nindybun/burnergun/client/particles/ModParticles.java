@@ -1,7 +1,7 @@
 package com.nindybun.burnergun.client.particles;
 
+import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.client.particles.lightParticle.LightParticleType;
-import com.nindybun.burnergun.common.BurnerGun;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;

@@ -1,6 +1,6 @@
 package com.nindybun.burnergun.common.items.upgrades;
 
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -10,7 +10,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.List;
 
 public class UpgradeCard extends Item {

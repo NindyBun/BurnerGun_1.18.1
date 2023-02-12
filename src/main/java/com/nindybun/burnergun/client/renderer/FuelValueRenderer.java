@@ -1,6 +1,6 @@
 package com.nindybun.burnergun.client.renderer;
 
-import com.nindybun.burnergun.common.BurnerGun;
+import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.common.items.BurnerGunNBT;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnerswordmk1.BurnerSwordMK1;
@@ -17,9 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod.EventBusSubscriber(modid = BurnerGun.MOD_ID, value = Dist.CLIENT)
 public class FuelValueRenderer {

@@ -3,11 +3,15 @@ package com.nindybun.burnergun;
 import com.nindybun.burnergun.client.ClientSetup;
 import com.nindybun.burnergun.client.KeyInputHandler;
 import com.nindybun.burnergun.client.Keybinds;
+import com.nindybun.burnergun.client.entities.ModEntities;
 import com.nindybun.burnergun.client.particles.ModParticles;
 import com.nindybun.burnergun.common.blocks.ModBlocks;
 import com.nindybun.burnergun.common.containers.ModContainers;
 import com.nindybun.burnergun.common.items.ModItems;
 import com.nindybun.burnergun.common.network.PacketHandler;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,6 +22,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.image.renderable.RenderContext;
 
 @Mod(BurnerGun.MOD_ID)
 public class BurnerGun {
@@ -34,6 +41,7 @@ public class BurnerGun {
         ModItems.UPGRADE_ITEMS.register(modEventBus);
         ModContainers.CONTAINERS.register(modEventBus);
         ModParticles.PARTICLE.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
 
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::setupClient);

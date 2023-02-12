@@ -23,7 +23,7 @@ public class BurnerGunMK1 extends AbstractBurnerGun {
     private static final Logger LOGGER = LogManager.getLogger();*/
 
     public BurnerGunMK1() {
-        super(new Properties().stacksTo(1).setNoRepair().tab(com.nindybun.burnergun.common.BurnerGun.itemGroup));
+        super(new Properties().stacksTo(1).setNoRepair().tab(com.nindybun.burnergun.BurnerGun.itemGroup));
     }
 
     @OnlyIn(Dist.CLIENT)
