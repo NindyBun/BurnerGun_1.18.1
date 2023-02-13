@@ -136,7 +136,7 @@ public class AbstractBurnerSword extends Item {
                     abstractarrow.setNoGravity(false);
                     level.addFreshEntity(abstractarrow);*/
                     TestArrowEntity test = new TestArrowEntity(ModEntities.TEST_ARROW_ENTITY.get(), player, level);
-                    test.setDeltaMovement(0, 1, 0);
+                    test.shootFromRotation(player, player.getXRot(), player.getYRot(), 0F, 3F, 0F);
                     level.addFreshEntity(test);
                     /*if (BurnerGunNBT.getAtkCoolDown(tool) <= 0){
                         BurnerGunNBT.setAtkCoolDown(tool, 1);
