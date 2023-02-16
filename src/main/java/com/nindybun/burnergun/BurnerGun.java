@@ -1,5 +1,6 @@
 package com.nindybun.burnergun;
 
+import com.nindybun.burnergun.client.ClientEvents;
 import com.nindybun.burnergun.client.ClientSetup;
 import com.nindybun.burnergun.client.KeyInputHandler;
 import com.nindybun.burnergun.client.Keybinds;
@@ -29,7 +30,7 @@ import java.awt.image.renderable.RenderContext;
 @Mod(BurnerGun.MOD_ID)
 public class BurnerGun {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "burnergun";
 
     public BurnerGun()

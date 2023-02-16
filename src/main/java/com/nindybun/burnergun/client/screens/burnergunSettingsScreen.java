@@ -269,6 +269,7 @@ public class burnergunSettingsScreen extends Screen implements Slider.ISlider {
         }
     }
 
+
     public static final class WhitelistButton extends Button {
         private boolean isWhitelist;
 
