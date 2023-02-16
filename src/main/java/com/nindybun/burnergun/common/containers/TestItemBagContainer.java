@@ -28,8 +28,11 @@ public class TestItemBagContainer extends AbstractContainerMenu {
 
     public TestItemBagContainer(int windowId, Inventory playerInventory, TestItemBagHandler handler){
         super(ModContainers.TESTITEMBAG_CONTAINER.get(), windowId);
-        this.setup(new InvWrapper(playerInventory), handler);
+        this.handler = handler;
+        this.setup(new InvWrapper(playerInventory));
     }
+
+    private final IItemHandler handler;
 
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -54,7 +57,7 @@ public class TestItemBagContainer extends AbstractContainerMenu {
     private final int HOTBAR_XPOS = 8;
     private final int HOTBAR_YPOS = 142;
 
-    private void setup(InvWrapper playerInv, IItemHandler handler){
+    private void setup(InvWrapper playerInv){
         // Add the players hotbar to the gui - the [xpos, ypos] location of each item
         for (int x = 0; x < HOTBAR_SLOT_COUNT; x++) {
             int slotNumber = x;
@@ -98,51 +101,38 @@ public class TestItemBagContainer extends AbstractContainerMenu {
 
 
     @Override
-    public ItemStack quickMoveStack(Player playrIn, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+    public ItemStack quickMoveStack(Player player, int sourceSlotIndex) {
+        Slot sourceSlot = slots.get(sourceSlotIndex);
+        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        ItemStack sourceStack = sourceSlot.getItem();
+        ItemStack copyOfSourceStack = sourceStack.copy();
+        final int BAG_SLOT_COUNT = handler.getSlots();
 
-        if (slot != null && slot.hasItem()) {
-            ItemStack currentStack = slot.getItem();
-
-            // Stop our items at the very least :P
-            if (currentStack.getItem() instanceof TestItemBag)
-                return itemstack;
-
-            if (currentStack.isEmpty())
-                return itemstack;
-
-            // Find the first empty slot number
-            int slotNumber = -1;
-            for (int i = 36; i <= 63; i++) {
-                if (this.slots.get(i).getItem().isEmpty()) {
-                    slotNumber = i;
-                    break;
-                } else {
-                    if (this.slots.get(i).getItem().getItem() == currentStack.getItem()) {
-                        break;
-                    }
-                }
+        // Check if the slot clicked is one of the vanilla container slots
+        if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
+            // This is a vanilla container slot so merge the stack into the bag inventory
+            if (!moveItemStackTo(sourceStack, HANDLER_FIRST_SLOT_INDEX, HANDLER_FIRST_SLOT_INDEX + BAG_SLOT_COUNT, false)){
+                return ItemStack.EMPTY;  // EMPTY_ITEM
             }
-
-            if (slotNumber == -1)
-                return itemstack;
-
-            this.slots.get(slotNumber).set(currentStack.copy().split(1));
+        } else if (sourceSlotIndex >= HANDLER_FIRST_SLOT_INDEX && sourceSlotIndex < HANDLER_FIRST_SLOT_INDEX + BAG_SLOT_COUNT) {
+            // This is a bag slot so merge the stack into the players inventory
+            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else {
+            LOGGER.warn("Invalid slotIndex:" + sourceSlotIndex);
+            return ItemStack.EMPTY;
         }
 
-        return itemstack;
-    }
-
-    @Override
-    public void clicked(int slotId, int dragType, ClickType clickTypeIn, Player player) {
-        if ((slotId < this.slots.size()
-                && slotId >= 0
-                && (this.slots.get(slotId).getItem().getItem() instanceof TestItemBag))
-                || clickTypeIn == ClickType.SWAP) {
-            return ;
+        // If stack size == 0 (the entire stack was moved) set slot contents to null
+        if (sourceStack.getCount() == 0) {
+            sourceSlot.set(ItemStack.EMPTY);
+        } else {
+            sourceSlot.setChanged();
         }
-        super.clicked(slotId, dragType, clickTypeIn, player);
+
+        sourceSlot.onTake(player, sourceStack);
+        return copyOfSourceStack;
     }
 
     private static final Logger LOGGER = LogManager.getLogger();

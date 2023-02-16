@@ -7,41 +7,73 @@ import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.client.ClientEvents;
 import com.nindybun.burnergun.client.KeyInputHandler;
 import com.nindybun.burnergun.client.Keybinds;
+import com.nindybun.burnergun.common.items.testitems.TestItemBagHandler;
 import com.nindybun.burnergun.util.StringUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MathUtil;
 
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class testScreen extends Screen {
     private KeyMapping key;
     private int selected;
     private Player player;
+    private ItemStack tool;
+    private List<ItemStack> containedItems = new ArrayList<ItemStack>();
 
     protected testScreen(KeyMapping key, Player player) {
         super(new TextComponent("Title"));
         this.key = key;
         this.player = player;
+        this.tool = player.getMainHandItem();
         this.selected = -1;
+
+    }
+
+    @Override
+    protected void init(){
+        IItemHandler handler = tool.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+        for (int i = 0; i < handler.getSlots(); i++){
+            if (handler.getStackInSlot(i) != ItemStack.EMPTY){
+                if (!doesContainInList(containedItems, handler.getStackInSlot(i)))
+                    containedItems.add(handler.getStackInSlot(i));
+            }
+        }
+    }
+
+    public boolean doesContainInList(List<ItemStack> list, ItemStack itemStack){
+        for (ItemStack stack : list){
+            if (stack.equals(itemStack, false))
+                return true;
+    }
+        return false;
     }
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float ticks_) {
         super.render(matrixStack, mouseX, mouseY, ticks_);
-        int numberOfSlices = 12;
+        int numberOfSlices = containedItems.size();
+        if (numberOfSlices == 0)
+            return;
 
         float radiusIn = 30;
         float radiusOut = radiusIn * 2;
@@ -62,6 +94,7 @@ public class testScreen extends Screen {
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         boolean hasMouseOver = false;
+        ItemStack mousedOverItem = ItemStack.EMPTY;
 
         int numberOfRings = (int)Math.ceil(numberOfSlices/9.0D);
         for (int i = 0; i < numberOfRings; i++) {
@@ -92,6 +125,7 @@ public class testScreen extends Screen {
                 if (selected == j+(i*9)){
                     drawPieArc(buffer, x, y, 0, radiusIn+addRadius, radiusOut+addRadius, start, end, 255, 255, 255, 64);
                     hasMouseOver = true;
+                    mousedOverItem = containedItems.get(selected);
                 }else{
                     drawPieArc(buffer, x, y, 0, radiusIn+addRadius, radiusOut+addRadius, start, end, 0, 0, 0, 64);
                 }
@@ -121,8 +155,50 @@ public class testScreen extends Screen {
         tesselator.end();
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
-
         matrixStack.popPose();
+
+        matrixStack.pushPose();
+        PoseStack poseStack = RenderSystem.getModelViewStack();
+        poseStack.pushPose();
+        poseStack.mulPoseMatrix(matrixStack.last().pose());
+        poseStack.translate(-8, -8, 0);
+        RenderSystem.applyModelViewMatrix();
+        for (int i = 0; i < numberOfRings; i++) {
+            int slices = i < numberOfRings-1 ? 9 : numberOfSlices%9 == 0 ? 9 : numberOfSlices%9;
+            for (int j = 0; j < slices; j++) {
+                float start = (((j - 0.5f) / (float) slices) + 0.25f) * 360;
+                float end = (((j + 0.5f) / (float) slices) + 0.25f) * 360;
+                float addRadius = (radiusIn+5)*i;
+                float itemRadius = (radiusIn+radiusOut+(addRadius*2))/2;
+                float middle = (float) Math.toRadians(start+end)/2;
+                float midX = x + itemRadius * (float) Math.cos(middle);
+                float midY = y + itemRadius * (float) Math.sin(middle);
+                this.itemRenderer.renderAndDecorateItem(containedItems.get(j+(i*9)), (int)midX, (int)midY);
+                this.itemRenderer.renderGuiItemDecorations(this.font, containedItems.get(j+(i*9)), (int)midX, (int)midY, "");
+            }
+        }
+        poseStack.popPose();
+        RenderSystem.applyModelViewMatrix();
+        matrixStack.popPose();
+
+        matrixStack.pushPose();
+        for (int i = 0; i < numberOfRings; i++) {
+            int slices = i < numberOfRings-1 ? 9 : numberOfSlices%9 == 0 ? 9 : numberOfSlices%9;
+            for (int j = 0; j < slices; j++) {
+                float start = (((j - 0.5f) / (float) slices) + 0.25f) * 360;
+                float end = (((j + 0.5f) / (float) slices) + 0.25f) * 360;
+                float addRadius = (radiusIn+5)*i;
+                float itemRadius = (radiusIn+radiusOut+(addRadius*2))/2;
+                float middle = (float) Math.toRadians(start+end)/2;
+                float midX = x + itemRadius * (float) Math.cos(middle);
+                float midY = y + itemRadius * (float) Math.sin(middle);
+                if (selected == j+(i*9))
+                    this.renderTooltip(matrixStack, containedItems.get(j+(i*9)), (int)midX, (int)midY);
+            }
+        }
+        matrixStack.popPose();
+
+
 
     }
 
