@@ -78,7 +78,6 @@ public class testScreen extends Screen {
                 float addRadius = (radiusIn+5)*i;
                 if (angle >= start && angle < end && distance >= (radiusIn+addRadius) && distance < (radiusOut+addRadius)) {
                     selected = j+(i*9);
-                    BurnerGun.LOGGER.info(selected);
                     break;
                 }
             }
