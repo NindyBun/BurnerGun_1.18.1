@@ -29,8 +29,7 @@ public class ClientEvents {
             if (keyIsDown && !keyWasDown){
                 while (Keybinds.burnergun_testScreen_key.consumeClick()) {
                     if (Minecraft.getInstance().screen == null){
-                        ItemStack hand = Minecraft.getInstance().player.getMainHandItem();
-                        ModScreens.openTestScreen(Keybinds.burnergun_testScreen_key);
+                        ModScreens.openTestScreen(Keybinds.burnergun_testScreen_key, Minecraft.getInstance().player);
                     }
                 }
             }

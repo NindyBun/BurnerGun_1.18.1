@@ -12,5 +12,5 @@ public class ModScreens {
     public static void openColorScreen(ItemStack gun){
         Minecraft.getInstance().setScreen(new colorScreen(gun));
     }
-    public static void openTestScreen(KeyMapping key){ Minecraft.getInstance().setScreen(new testScreen(key));}
+    public static void openTestScreen(KeyMapping key, Player player){ Minecraft.getInstance().setScreen(new testScreen(key, player));}
 }

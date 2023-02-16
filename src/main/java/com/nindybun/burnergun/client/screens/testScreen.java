@@ -15,6 +15,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.VanillaGameEvent;
@@ -28,10 +29,12 @@ import java.awt.*;
 public class testScreen extends Screen {
     private KeyMapping key;
     private int selected;
+    private Player player;
 
-    protected testScreen(KeyMapping key) {
+    protected testScreen(KeyMapping key, Player player) {
         super(new TextComponent("Title"));
         this.key = key;
+        this.player = player;
         this.selected = -1;
     }
 
