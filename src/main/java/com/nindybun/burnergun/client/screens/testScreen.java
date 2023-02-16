@@ -38,19 +38,12 @@ public class testScreen extends Screen {
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float ticks_) {
         super.render(matrixStack, mouseX, mouseY, ticks_);
-        int numberOfSlices = 8;
+        int numberOfSlices = 12;
 
         float radiusIn = 30;
         float radiusOut = radiusIn * 2;
         int x = width / 2;
         int y = height / 2;
-
-        double a = Math.toDegrees(Math.atan2(mouseY - y, mouseX - x));
-        double d = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
-        float s0 = (((0 - 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
-        if (a < s0) {
-            a += 360;
-        }
 
         matrixStack.pushPose();
         matrixStack.translate(0, 0, 0);
@@ -67,10 +60,46 @@ public class testScreen extends Screen {
 
         boolean hasMouseOver = false;
 
-       for (int i = 0; i < numberOfSlices; i++) {
+        int numberOfRings = (int)Math.ceil(numberOfSlices/9.0D);
+        for (int i = 0; i < numberOfRings; i++) {
+            int slices = i < numberOfRings-1 ? 9 : numberOfSlices%9 == 0 ? 9 : numberOfSlices%9;
+            for (int j = 0; j < slices; j++){
+                float s0 = (((0 - 0.5f) / (float) slices) + 0.25f) * 360;
+                double angle = Math.toDegrees(Math.atan2(mouseY - y, mouseX - x)); //Angle the mouse makes with the screen's equator
+                double distance = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2)); //Distance of the mouse from the center of the screen
+                if (angle < s0) {
+                    angle += 360;
+                }
+                float start = (((j - 0.5f) / (float) slices) + 0.25f) * 360;
+                float end = (((j + 0.5f) / (float) slices) + 0.25f) * 360;
+                float addRadius = (radiusIn+5)*i;
+                if (angle >= start && angle < end && distance >= (radiusIn+addRadius) && distance < (radiusOut+addRadius)) {
+                    selected = j+(i*9);
+                    BurnerGun.LOGGER.info(selected);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < numberOfRings; i++) {
+            int slices = i < numberOfRings-1 ? 9 : numberOfSlices%9 == 0 ? 9 : numberOfSlices%9;
+            for (int j = 0; j < slices; j++){
+                float start = (((j - 0.5f) / (float) slices) + 0.25f) * 360;
+                float end = (((j + 0.5f) / (float) slices) + 0.25f) * 360;
+                float addRadius = (radiusIn+5)*i;
+                if (selected == j+(i*9)){
+                    drawPieArc(buffer, x, y, 0, radiusIn+addRadius, radiusOut+addRadius, start, end, 255, 255, 255, 64);
+                    hasMouseOver = true;
+                }else{
+                    drawPieArc(buffer, x, y, 0, radiusIn+addRadius, radiusOut+addRadius, start, end, 0, 0, 0, 64);
+                }
+            }
+        }
+
+        /*for (int i = 0; i < numberOfSlices; i++) {
             float s = (((i - 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
             float e = (((i + 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
-            if (a >= s && a < e && d >= radiusIn && d < radiusOut) {
+            if (a >= s && a < e && d >= (radiusIn) && d < (radiusOut)) {
                 selected = i;
                 break;
             }
@@ -85,7 +114,8 @@ public class testScreen extends Screen {
             }else{
                 drawPieArc(buffer, x, y, 0, radiusIn, radiusOut, s, e, 0, 0, 0, 64);
             }
-        }
+        }*/
+
         tesselator.end();
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();

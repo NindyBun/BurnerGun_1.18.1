@@ -5,6 +5,7 @@ import com.nindybun.burnergun.common.blocks.ModBlocks;
 import com.nindybun.burnergun.common.items.burnergunmk1.BurnerGunMK1;
 import com.nindybun.burnergun.common.items.burnergunmk2.BurnerGunMK2;
 import com.nindybun.burnergun.common.items.burnerswordmk1.BurnerSwordMK1;
+import com.nindybun.burnergun.common.items.testitems.TestItemBag;
 import com.nindybun.burnergun.common.items.upgrades.Auto_Smelt.AutoSmelt;
 import com.nindybun.burnergun.common.items.upgrades.Trash.Trash;
 import com.nindybun.burnergun.common.items.upgrades.Upgrade;
@@ -25,6 +26,8 @@ public class ModItems {
             () -> new ModSpawnEggs(ModEntities.MEGA_BLAZE, 0x000000, 0xffa200, ITEM_GROUP.stacksTo(64)));*/
 
     //public static final RegistryObject<Item> MEGA_BLAZE_SUMMON_ITEM = ITEMS.register("mega_blaze_summon", () -> new MegaBlazeSummon());
+
+    public static final RegistryObject<Item> TESTITEMBAG = ITEMS.register("testitembag", () -> new TestItemBag());
 
     public static final RegistryObject<Item> BLAZE_CAGE = ITEMS.register("blaze_cage", () -> new BlazeCage());
     public static final RegistryObject<Item> CAGED_BLAZE= ITEMS.register("caged_blaze", () -> new Item(ITEM_GROUP.stacksTo(64)));

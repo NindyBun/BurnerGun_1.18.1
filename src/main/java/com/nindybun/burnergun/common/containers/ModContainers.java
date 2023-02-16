@@ -1,6 +1,7 @@
 package com.nindybun.burnergun.common.containers;
 
 import com.nindybun.burnergun.BurnerGun;
+import com.nindybun.burnergun.common.items.testitems.TestItemBag;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,5 +18,7 @@ public class ModContainers {
 
     public static final RegistryObject<MenuType<TrashContainer>> TRASH_CONTAINER = CONTAINERS.register("trash_container", () -> IForgeMenuType.create(TrashContainer::new));
     public static final RegistryObject<MenuType<AutoSmeltContainer>> AUTO_SMELT_CONTAINER = CONTAINERS.register("auto_smelt_container", () -> IForgeMenuType.create(AutoSmeltContainer::new));
+
+    public static final RegistryObject<MenuType<TestItemBagContainer>> TESTITEMBAG_CONTAINER = CONTAINERS.register("testitembag_container", () -> IForgeMenuType.create(TestItemBagContainer::new));
 
     }
