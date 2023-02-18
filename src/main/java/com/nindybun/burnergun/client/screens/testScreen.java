@@ -7,7 +7,10 @@ import com.nindybun.burnergun.BurnerGun;
 import com.nindybun.burnergun.client.ClientEvents;
 import com.nindybun.burnergun.client.KeyInputHandler;
 import com.nindybun.burnergun.client.Keybinds;
+import com.nindybun.burnergun.common.items.testitems.TestItemBag;
 import com.nindybun.burnergun.common.items.testitems.TestItemBagHandler;
+import com.nindybun.burnergun.common.network.PacketHandler;
+import com.nindybun.burnergun.common.network.packets.PacketSaveSelection;
 import com.nindybun.burnergun.util.StringUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -69,6 +72,22 @@ public class testScreen extends Screen {
     }
 
     @Override
+    public boolean mouseReleased(double x, double y, int mouseButton) {
+        processClick(true);
+        return super.mouseReleased(x, y, mouseButton);
+    }
+
+    private void processClick(boolean mousePressed){
+        processSlot();
+    }
+
+    private void processSlot(){
+        if (selected != -1)
+            PacketHandler.sendToServer(new PacketSaveSelection(containedItems.get(selected)));
+        onClose();
+    }
+
+    @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float ticks_) {
         super.render(matrixStack, mouseX, mouseY, ticks_);
         int numberOfSlices = containedItems.size();
@@ -92,9 +111,6 @@ public class testScreen extends Screen {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-        boolean hasMouseOver = false;
-        ItemStack mousedOverItem = ItemStack.EMPTY;
 
         int numberOfRings = (int)Math.ceil(numberOfSlices/9.0D);
         for (int i = 0; i < numberOfRings; i++) {
@@ -124,33 +140,11 @@ public class testScreen extends Screen {
                 float addRadius = (radiusIn+5)*i;
                 if (selected == j+(i*9)){
                     drawPieArc(buffer, x, y, 0, radiusIn+addRadius, radiusOut+addRadius, start, end, 255, 255, 255, 64);
-                    hasMouseOver = true;
-                    mousedOverItem = containedItems.get(selected);
                 }else{
                     drawPieArc(buffer, x, y, 0, radiusIn+addRadius, radiusOut+addRadius, start, end, 0, 0, 0, 64);
                 }
             }
         }
-
-        /*for (int i = 0; i < numberOfSlices; i++) {
-            float s = (((i - 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
-            float e = (((i + 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
-            if (a >= s && a < e && d >= (radiusIn) && d < (radiusOut)) {
-                selected = i;
-                break;
-            }
-        }
-
-        for (int i = 0; i < numberOfSlices; i++){
-            float s = (((i - 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
-            float e = (((i + 0.5f) / (float) numberOfSlices) + 0.25f) * 360;
-            if (selected == i){
-                drawPieArc(buffer, x, y, 0, radiusIn, radiusOut, s, e, 255, 255, 255, 64);
-                hasMouseOver = true;
-            }else{
-                drawPieArc(buffer, x, y, 0, radiusIn, radiusOut, s, e, 0, 0, 0, 64);
-            }
-        }*/
 
         tesselator.end();
         RenderSystem.enableTexture();
